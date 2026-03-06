@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// In production VITE_API_URL = Railway backend URL (e.g. https://xxx.up.railway.app)
-// In dev it's empty — Vite proxy handles /api → localhost:3001
+// In dev: Vite proxy handles /api → localhost:3001 (BASE is empty)
+// In production: Express serves both frontend and /api from same origin (BASE is empty)
+// Set VITE_API_URL only if backend is on a different domain
 const BASE = import.meta.env.VITE_API_URL || '';
 
 const api = axios.create({
