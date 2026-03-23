@@ -1,47 +1,63 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Loader2, ArrowRight, Mail, Calendar, BrainCircuit } from 'lucide-react';
+import {
+  Loader2, ArrowRight, Mail, Calendar, BrainCircuit,
+  GripVertical, UserPlus, UserX, UserCheck, Sparkles, Plus,
+} from 'lucide-react';
 import { candidatesApi } from '../utils/api';
 import { Candidate } from '../types';
 import { getCategoryColor, getCategoryLabel, formatDate } from '../utils/helpers';
+import { staggerItem } from '../utils/animations';
 
 const COLUMNS = [
   {
     id: 'new' as const,
-    label: 'Новые',
+    label: 'НОВЫЕ',
     color: '#fbbf24',
-    border: 'rgba(245,158,11,0.3)',
-    bg: 'rgba(245,158,11,0.04)',
+    dotCls: 'bg-yellow-400',
+    cls: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500',
     statuses: ['new', 'error'],
+    icon: Sparkles,
   },
   {
     id: 'analyzed' as const,
-    label: 'Оценены',
-    color: '#FF9A3C',
-    border: 'rgba(255,110,0,0.3)',
-    bg: 'rgba(255,110,0,0.04)',
+    label: 'ОЦЕНЕНЫ',
+    color: '#f97316',
+    dotCls: 'bg-orange-500',
+    cls: 'bg-orange-500/10 border-orange-500/30 text-orange-500',
     statuses: ['analyzed', 'analyzing'],
+    icon: BrainCircuit,
   },
   {
     id: 'invited' as const,
-    label: 'Приглашены',
+    label: 'ПРИГЛАШЕНЫ',
     color: '#10b981',
-    border: 'rgba(16,185,129,0.3)',
-    bg: 'rgba(16,185,129,0.04)',
+    dotCls: 'bg-emerald-500',
+    cls: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500',
     statuses: ['invited'],
+    icon: UserCheck,
   },
   {
     id: 'rejected' as const,
-    label: 'Отклонены',
+    label: 'ОТКЛОНЕНЫ',
     color: '#f87171',
-    border: 'rgba(239,68,68,0.3)',
-    bg: 'rgba(239,68,68,0.04)',
+    dotCls: 'bg-red-400',
+    cls: 'bg-red-500/10 border-red-500/30 text-red-500',
     statuses: ['rejected'],
+    icon: UserX,
   },
 ] as const;
 
 type MoveTarget = 'new' | 'analyzed' | 'invited' | 'rejected';
+
+const COLUMN_ICONS: Record<string, typeof Sparkles> = {
+  new: Sparkles,
+  analyzed: BrainCircuit,
+  invited: UserCheck,
+  rejected: UserX,
+};
 
 interface KanbanBoardProps {
   candidates: Candidate[];
@@ -51,6 +67,8 @@ interface KanbanBoardProps {
 export default function KanbanBoard({ candidates, onRefetch }: KanbanBoardProps) {
   const navigate = useNavigate();
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [dragOverCol, setDragOverCol] = useState<string | null>(null);
+  const dragCounterRef = useRef<Record<string, number>>({});
 
   const moveCandidate = async (id: string, status: string) => {
     setMovingId(id);
@@ -64,33 +82,71 @@ export default function KanbanBoard({ candidates, onRefetch }: KanbanBoardProps)
     }
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragEnter = (e: React.DragEvent, colId: string) => {
+    e.preventDefault();
+    if (!dragCounterRef.current[colId]) dragCounterRef.current[colId] = 0;
+    dragCounterRef.current[colId]++;
+    setDragOverCol(colId);
+  };
+
+  const handleDragLeave = (_e: React.DragEvent, colId: string) => {
+    if (!dragCounterRef.current[colId]) dragCounterRef.current[colId] = 0;
+    dragCounterRef.current[colId]--;
+    if (dragCounterRef.current[colId] <= 0) {
+      dragCounterRef.current[colId] = 0;
+      if (dragOverCol === colId) setDragOverCol(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, colId: string) => {
+    e.preventDefault();
+    dragCounterRef.current[colId] = 0;
+    setDragOverCol(null);
+    const candidateId = e.dataTransfer.getData('candidateId');
+    if (!candidateId) return;
+    // Find current status of the candidate
+    const candidate = candidates.find(c => c.id === candidateId);
+    if (!candidate) return;
+    // Don't move if already in the target column
+    const col = COLUMNS.find(c => c.id === colId);
+    if (col && (col.statuses as readonly string[]).includes(candidate.status)) return;
+    moveCandidate(candidateId, colId);
+  };
+
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="kanban-board grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none">
       {COLUMNS.map((col) => {
         const colCandidates = candidates.filter((c) =>
           (col.statuses as readonly string[]).includes(c.status),
         );
 
         return (
-          <div key={col.id} className="flex flex-col gap-3 min-w-0">
+          <div
+            key={col.id}
+            className={`kanban-column flex flex-col gap-3 min-w-[280px] sm:min-w-0 snap-center transition-all duration-200 ${dragOverCol === col.id ? 'drag-over' : ''}`}
+            onDragOver={handleDragOver}
+            onDragEnter={(e) => handleDragEnter(e, col.id)}
+            onDragLeave={(e) => handleDragLeave(e, col.id)}
+            onDrop={(e) => handleDrop(e, col.id)}
+          >
             {/* Column header */}
-            <div
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl"
-              style={{ background: col.bg, border: `1px solid ${col.border}` }}
-            >
+            <div className={`flex items-center justify-between px-3.5 py-3 rounded-xl border ${col.cls}`}>
+              <div className="flex items-center gap-2">
+                <span className={`w-2.5 h-2.5 rounded-full ${col.dotCls} shrink-0`} />
+                <span className="text-xs font-bold tracking-wider">
+                  {col.label}
+                </span>
+              </div>
               <span
-                className="text-xs font-black uppercase tracking-widest"
-                style={{ color: col.color }}
-              >
-                {col.label}
-              </span>
-              <span
-                className="text-xs font-black min-w-[20px] h-5 flex items-center justify-center rounded-full"
+                className="text-[11px] font-black font-mono rounded-md px-2 py-0.5 min-w-[28px] text-center"
                 style={{
-                  background: col.bg,
+                  background: `${col.color}20`,
                   color: col.color,
-                  border: `1px solid ${col.border}`,
-                  padding: '0 6px',
                 }}
               >
                 {colCandidates.length}
@@ -98,27 +154,35 @@ export default function KanbanBoard({ candidates, onRefetch }: KanbanBoardProps)
             </div>
 
             {/* Cards */}
-            <div className="space-y-2.5" style={{ minHeight: 240 }}>
-              {colCandidates.map((c) => (
-                <KanbanCard
-                  key={c.id}
-                  candidate={c}
-                  col={col}
-                  moving={movingId === c.id}
-                  onMove={moveCandidate}
-                  onClick={() => navigate(`/candidates/${c.id}`)}
-                />
-              ))}
+            <div className="space-y-2.5 min-h-[240px]">
+              <AnimatePresence mode="popLayout">
+                {colCandidates.map((c) => (
+                  <motion.div
+                    key={c.id}
+                    layout
+                    variants={staggerItem}
+                    initial="initial"
+                    animate="animate"
+                    exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+                  >
+                    <KanbanCard
+                      candidate={c}
+                      col={col}
+                      moving={movingId === c.id}
+                      onMove={moveCandidate}
+                      onClick={() => navigate(`/candidates/${c.id}`)}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
               {colCandidates.length === 0 && (
                 <div
-                  className="rounded-2xl flex items-center justify-center"
-                  style={{
-                    minHeight: 100,
-                    border: `1px dashed ${col.border}`,
-                    background: `${col.bg}`,
-                  }}
+                  className="rounded-xl flex flex-col items-center justify-center min-h-[120px] border-2 border-dashed border-neutral-700/60 bg-neutral-800/20 gap-2"
                 >
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.15)' }}>
+                  <div className="w-8 h-8 rounded-lg bg-neutral-800/60 flex items-center justify-center">
+                    <Plus size={14} className="text-neutral-600" />
+                  </div>
+                  <p className="text-xs text-neutral-600">
                     Нет кандидатов
                   </p>
                 </div>
@@ -145,100 +209,112 @@ function KanbanCard({
   onClick: () => void;
 }) {
   const [showMove, setShowMove] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const analysis = c.ai_analysis;
   const isAnalyzing = c.status === 'analyzing';
+  const isExcellent = analysis && analysis.overall_score >= 90;
 
   const targets = COLUMNS.filter((col2) => col2.id !== col.id && col2.id !== 'analyzed');
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData('candidateId', c.id);
+    e.dataTransfer.effectAllowed = 'move';
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
     <div
-      className="card flex flex-col gap-2.5"
-      style={{
-        padding: '0.875rem',
-        position: 'relative',
-        borderColor: col.border,
-        cursor: 'pointer',
-        transition: 'all 0.15s',
-      }}
+      className={`kanban-card group bg-neutral-900 border border-neutral-700/80 rounded-xl cursor-pointer hover:border-orange-500/50 transition-all duration-200 flex flex-col relative overflow-hidden hover:shadow-lg hover:shadow-orange-500/5 ${isDragging ? 'dragging' : ''}`}
+      style={{ borderLeftWidth: 3, borderLeftColor: col.color }}
       onClick={onClick}
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
     >
-      {/* Name + score */}
-      <div className="flex items-start justify-between gap-2">
-        <p className="font-bold text-white text-sm leading-tight flex-1 truncate">
-          {c.full_name}
-        </p>
-        {analysis ? (
-          <div
-            className="shrink-0 flex items-center justify-center rounded-full font-black text-xs"
-            style={{
-              width: 32, height: 32,
-              background:
-                analysis.overall_score >= 90
-                  ? 'rgba(16,185,129,0.15)'
-                  : analysis.overall_score >= 75
-                  ? 'rgba(255,110,0,0.15)'
-                  : 'rgba(255,255,255,0.06)',
-              border: `1.5px solid ${
-                analysis.overall_score >= 90
-                  ? 'rgba(16,185,129,0.4)'
-                  : analysis.overall_score >= 75
-                  ? 'rgba(255,110,0,0.4)'
-                  : 'rgba(255,255,255,0.12)'
-              }`,
-              color: getCategoryColor(analysis.category).replace('text-', '').includes('emerald')
-                ? '#10b981'
-                : getCategoryColor(analysis.category).includes('blue')
-                ? '#60a5fa'
-                : getCategoryColor(analysis.category).includes('yellow')
-                ? '#fbbf24'
-                : '#f87171',
-            }}
-          >
-            {analysis.overall_score}
+      <div className="p-3.5 flex flex-col gap-2.5">
+        {/* Grip handle + Name + Score */}
+        <div className="flex items-start gap-2">
+          <div className="mt-0.5 opacity-0 group-hover:opacity-40 transition-opacity shrink-0 cursor-grab">
+            <GripVertical size={14} className="text-neutral-500" />
           </div>
-        ) : isAnalyzing ? (
-          <Loader2 size={14} className="text-blue-400 animate-spin shrink-0 mt-0.5" />
-        ) : null}
-      </div>
-
-      {/* Email */}
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-        <Mail size={10} />
-        <span className="truncate">{c.email}</span>
-      </div>
-
-      {/* AI category */}
-      {analysis && (
-        <span className={`text-xs font-semibold ${getCategoryColor(analysis.category)}`}>
-          {getCategoryLabel(analysis.category)}
-        </span>
-      )}
-
-      {!analysis && !isAnalyzing && (
-        <div className="flex items-center gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-          <BrainCircuit size={11} />
-          Без анализа
+          <p className="font-bold text-white text-sm leading-tight flex-1 truncate">
+            {c.full_name}
+          </p>
+          {analysis ? (
+            <div className="relative shrink-0">
+              {isExcellent && (
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    border: '2px solid rgba(16,185,129,0.3)',
+                    animation: 'statusPulse 2s ease-in-out infinite',
+                    margin: -3,
+                    borderRadius: '50%',
+                  }}
+                />
+              )}
+              <div
+                className={`flex items-center justify-center rounded-full font-black text-xs w-9 h-9 font-mono ${
+                  analysis.overall_score >= 90
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
+                    : analysis.overall_score >= 75
+                    ? 'bg-orange-500/20 border-orange-500/50 text-orange-400'
+                    : analysis.overall_score >= 60
+                    ? 'bg-yellow-500/15 border-yellow-500/40 text-yellow-400'
+                    : 'bg-neutral-800 border-neutral-600 text-neutral-400'
+                } border`}
+              >
+                {analysis.overall_score}
+              </div>
+            </div>
+          ) : isAnalyzing ? (
+            <div className="shrink-0 w-9 h-9 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
+              <Loader2 size={14} className="text-blue-400 animate-spin" />
+            </div>
+          ) : null}
         </div>
-      )}
 
-      {/* Date */}
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-        <Calendar size={10} />
-        {formatDate(c.submitted_at)}
+        {/* Email */}
+        <div className="flex items-center gap-1.5 text-xs text-neutral-500 pl-6">
+          <Mail size={10} className="shrink-0" />
+          <span className="truncate">{c.email}</span>
+        </div>
+
+        {/* AI category */}
+        {analysis && (
+          <div className="pl-6">
+            <span className={`text-xs font-semibold ${getCategoryColor(analysis.category)}`}>
+              {getCategoryLabel(analysis.category)}
+            </span>
+          </div>
+        )}
+
+        {!analysis && !isAnalyzing && (
+          <div className="flex items-center gap-1.5 text-xs text-neutral-600 pl-6">
+            <BrainCircuit size={11} />
+            Без анализа
+          </div>
+        )}
+
+        {/* Date */}
+        <div className="flex items-center gap-1.5 text-xs text-neutral-600 font-mono pl-6">
+          <Calendar size={10} className="shrink-0" />
+          {formatDate(c.submitted_at)}
+        </div>
       </div>
 
       {/* Move button */}
       {!isAnalyzing && (
         <div
-          className="relative pt-2 mt-0.5"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}
+          className="relative px-3.5 py-2.5 border-t border-neutral-800/80 bg-neutral-900/50"
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="flex items-center gap-1 text-xs w-full transition-colors"
-            style={{ color: 'rgba(255,255,255,0.2)' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = col.color)}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+            className="flex items-center gap-1.5 text-xs w-full text-neutral-500 hover:text-orange-400 transition-colors font-medium"
             onClick={() => setShowMove(!showMove)}
             disabled={moving}
           >
@@ -251,38 +327,24 @@ function KanbanCard({
           </button>
 
           {showMove && (
-            <div
-              className="absolute bottom-full left-0 mb-1 rounded-xl overflow-hidden z-30"
-              style={{
-                background: 'rgba(10,7,3,0.98)',
-                border: '1px solid rgba(255,110,0,0.2)',
-                backdropFilter: 'blur(24px)',
-                minWidth: 150,
-                boxShadow: '0 12px 32px rgba(0,0,0,0.6)',
-              }}
-            >
-              {targets.map((target) => (
-                <button
-                  key={target.id}
-                  className="w-full text-left text-xs px-3 py-2.5 flex items-center gap-2 transition-colors"
-                  style={{ color: 'rgba(255,255,255,0.65)' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255,110,0,0.08)';
-                    e.currentTarget.style.color = target.color;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.65)';
-                  }}
-                  onClick={() => {
-                    setShowMove(false);
-                    onMove(c.id, target.id);
-                  }}
-                >
-                  <span style={{ color: target.color, fontSize: 8 }}>●</span>
-                  {target.label}
-                </button>
-              ))}
+            <div className="absolute bottom-full left-2 right-2 mb-1.5 rounded-xl overflow-hidden z-30 bg-neutral-900 border border-neutral-700 shadow-xl shadow-black/50">
+              {targets.map((target) => {
+                const Icon = COLUMN_ICONS[target.id] || UserPlus;
+                return (
+                  <button
+                    key={target.id}
+                    className="w-full text-left text-xs px-3.5 py-3 flex items-center gap-3 text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors"
+                    onClick={() => {
+                      setShowMove(false);
+                      onMove(c.id, target.id);
+                    }}
+                  >
+                    <Icon size={13} style={{ color: target.color }} className="shrink-0" />
+                    <span className="flex-1">{target.label}</span>
+                    <ArrowRight size={10} className="text-neutral-600" />
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

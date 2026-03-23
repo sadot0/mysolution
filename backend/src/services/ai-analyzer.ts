@@ -189,18 +189,37 @@ export async function analyzeCandidate(
 ): Promise<AIAnalysisResult> {
   const prompt = buildAnalysisPrompt(candidate, vacancy);
 
-  const stream = client.messages.stream({
-    model: 'claude-opus-4-6',
-    max_tokens: 4000,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    thinking: { type: 'adaptive' } as any,
-    messages: [{ role: 'user', content: prompt }],
-  });
+  let response;
+  try {
+    const stream = client.messages.stream({
+      model: 'claude-opus-4-6',
+      max_tokens: 4000,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      thinking: { type: 'adaptive' } as any,
+      messages: [{ role: 'user', content: prompt }],
+    });
 
-  const response = await stream.finalMessage();
+    response = await stream.finalMessage();
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const status = (err as any)?.status;
+    if (status === 429) {
+      console.error(`[AI Analyzer] Rate limit exceeded for candidate ${candidate.id}:`, errMsg);
+      throw new Error('AI rate limit exceeded. Please try again later.');
+    }
+    if (status === 529) {
+      console.error(`[AI Analyzer] API overloaded for candidate ${candidate.id}:`, errMsg);
+      throw new Error('AI service is temporarily overloaded. Please try again later.');
+    }
+    console.error(`[AI Analyzer] API error for candidate ${candidate.id}:`, errMsg);
+    throw new Error(`AI analysis failed: ${errMsg}`);
+  }
+
   const textBlock = response.content.find((b) => b.type === 'text');
 
   if (!textBlock || textBlock.type !== 'text') {
+    console.error(`[AI Analyzer] No text block in response for candidate ${candidate.id}. Content types:`, response.content.map(b => b.type));
     throw new Error('No text response from AI');
   }
 
@@ -209,7 +228,13 @@ export async function analyzeCandidate(
   // Strip markdown code blocks if present
   const jsonText = text.replace(/^```(?:json)?\n?|\n?```$/g, '').trim();
 
-  const result = JSON.parse(jsonText) as AIAnalysisResult;
+  let result: AIAnalysisResult;
+  try {
+    result = JSON.parse(jsonText) as AIAnalysisResult;
+  } catch (err) {
+    console.error(`[AI Analyzer] Failed to parse JSON response for candidate ${candidate.id}. Raw text (first 500 chars):`, jsonText.slice(0, 500));
+    throw new Error('Failed to parse AI response as JSON');
+  }
 
   // Validate category
   if (!['excellent', 'good', 'average', 'below'].includes(result.category)) {
@@ -235,9 +260,11 @@ export async function batchAnalyzeCandidates(
       // Rate limiting pause
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
+      const errMsg = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`[AI Analyzer] Batch analysis failed for candidate ${candidate.id}:`, errMsg);
       results.push({
         candidate_id: candidate.id,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: errMsg,
       });
     }
   }
@@ -277,17 +304,35 @@ ${candidate.resume_text ? `Резюме (фрагмент):\n${candidate.resume_
   "situational": ["вопрос1", "вопрос2"]
 }`;
 
-  const message = await client.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 1024,
-    messages: [{ role: 'user', content: prompt }],
-  });
+  let message;
+  try {
+    message = await client.messages.create({
+      model: 'claude-opus-4-6',
+      max_tokens: 1024,
+      messages: [{ role: 'user', content: prompt }],
+    });
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    console.error(`[AI Analyzer] Interview questions API error for candidate ${candidate.id}:`, errMsg);
+    throw new Error(`Failed to generate interview questions: ${errMsg}`);
+  }
 
   const content = message.content[0];
-  if (content.type !== 'text') throw new Error('Unexpected response type');
+  if (content.type !== 'text') {
+    console.error(`[AI Analyzer] Unexpected response type for interview questions: ${content.type}`);
+    throw new Error('Unexpected response type from AI');
+  }
 
   const jsonMatch = content.text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('Could not extract JSON from response');
+  if (!jsonMatch) {
+    console.error('[AI Analyzer] Could not extract JSON from interview questions response. Raw text (first 500 chars):', content.text.slice(0, 500));
+    throw new Error('Could not extract JSON from AI response');
+  }
 
-  return JSON.parse(jsonMatch[0]) as InterviewQuestions;
+  try {
+    return JSON.parse(jsonMatch[0]) as InterviewQuestions;
+  } catch (err) {
+    console.error('[AI Analyzer] Failed to parse interview questions JSON:', err instanceof Error ? err.message : err);
+    throw new Error('Failed to parse interview questions response as JSON');
+  }
 }

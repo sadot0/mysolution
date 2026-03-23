@@ -1,5 +1,8 @@
+import { motion } from 'framer-motion';
+import { usePageTitle } from '../utils/usePageTitle';
+import { pageVariants } from '../utils/animations';
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Layout from '../components/Layout';
 import ScoreRing from '../components/ScoreRing';
@@ -9,7 +12,7 @@ import { getCategoryColor, getCategoryLabel, getStatusColor, getStatusLabel, for
 import {
   Search, Users, Mail, Calendar, FileText, Loader2, BrainCircuit,
   Trophy, Star, TrendingUp, UserCheck, UserX, X,
-  CheckCircle2, Clock, Zap, AlertCircle,
+  CheckCircle2, Clock, Zap, AlertCircle, ArrowUpDown, SlidersHorizontal,
 } from 'lucide-react';
 
 interface GlobalCandidate {
@@ -27,7 +30,7 @@ interface GlobalCandidate {
 // Deterministic avatar gradient from name
 function getAvatarGradient(name: string): [string, string] {
   const palettes: [string, string][] = [
-    ['#FF6A00', '#FF9A3C'],
+    ['#f97316', '#fb923c'],
     ['#7C3AED', '#A78BFA'],
     ['#0EA5E9', '#38BDF8'],
     ['#10B981', '#34D399'],
@@ -42,24 +45,24 @@ function getAvatarGradient(name: string): [string, string] {
 }
 
 // Deterministic vacancy badge color
-function getVacancyColor(id: string): { bg: string; border: string; color: string } {
-  const colors = [
-    { bg: 'rgba(255,110,0,0.12)', border: 'rgba(255,110,0,0.25)', color: '#FF9A3C' },
-    { bg: 'rgba(124,58,237,0.12)', border: 'rgba(124,58,237,0.25)', color: '#A78BFA' },
-    { bg: 'rgba(14,165,233,0.12)', border: 'rgba(14,165,233,0.25)', color: '#38BDF8' },
-    { bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)', color: '#34D399' },
-    { bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)', color: '#FCD34D' },
+function getVacancyBadgeClass(id: string): string {
+  const classes = [
+    'bg-orange-500/[0.12] border-orange-500/25 text-orange-400',
+    'bg-violet-500/[0.12] border-violet-500/25 text-violet-400',
+    'bg-sky-500/[0.12] border-sky-500/25 text-sky-400',
+    'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-400',
+    'bg-amber-500/[0.12] border-amber-500/25 text-amber-400',
   ];
   let hash = 0;
   for (let i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
-  return colors[Math.abs(hash) % colors.length];
+  return classes[Math.abs(hash) % classes.length];
 }
 
-function getScoreBarColor(score: number): string {
-  if (score >= 90) return 'linear-gradient(90deg, #10b981, #34d399)';
-  if (score >= 75) return 'linear-gradient(90deg, #3b82f6, #60a5fa)';
-  if (score >= 60) return 'linear-gradient(90deg, #FF6A00, #FF9A3C)';
-  return 'linear-gradient(90deg, #ef4444, #f87171)';
+function getScoreBarClass(score: number): string {
+  if (score >= 90) return 'bg-gradient-to-r from-emerald-500 to-emerald-400';
+  if (score >= 75) return 'bg-gradient-to-r from-blue-500 to-blue-400';
+  if (score >= 60) return 'bg-gradient-to-r from-orange-500 to-orange-400';
+  return 'bg-gradient-to-r from-red-500 to-red-400';
 }
 
 const statusIcons: Record<string, React.ReactNode> = {
@@ -72,11 +75,46 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 export default function CandidatesGlobalPage() {
+  usePageTitle('Кандидаты');
   const navigate = useNavigate();
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [vacancyFilter, setVacancyFilter] = useState('all');
-  const [sortBy, setSortBy] = useState<'date' | 'score'>('date');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('q') || '';
+  const statusFilter = searchParams.get('status') || 'all';
+  const vacancyFilter = searchParams.get('vacancy') || 'all';
+  const sortBy = (searchParams.get('sort') as 'date' | 'score' | 'name') || 'date';
+
+  const setSearch = (value: string) => {
+    setSearchParams(prev => {
+      if (!value) prev.delete('q');
+      else prev.set('q', value);
+      return prev;
+    });
+  };
+
+  const setStatusFilter = (value: string) => {
+    setSearchParams(prev => {
+      if (value === 'all') prev.delete('status');
+      else prev.set('status', value);
+      return prev;
+    });
+  };
+
+  const setVacancyFilter = (value: string) => {
+    setSearchParams(prev => {
+      if (value === 'all') prev.delete('vacancy');
+      else prev.set('vacancy', value);
+      return prev;
+    });
+  };
+
+  const setSortBy = (value: 'date' | 'score' | 'name') => {
+    setSearchParams(prev => {
+      if (value === 'date') prev.delete('sort');
+      else prev.set('sort', value);
+      return prev;
+    });
+  };
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const { data: candidatesData, isLoading } = useQuery({
     queryKey: ['candidates-all', statusFilter, vacancyFilter, sortBy],
@@ -85,7 +123,7 @@ export default function CandidatesGlobalPage() {
         .listAll({
           status: statusFilter !== 'all' ? statusFilter : undefined,
           vacancy_id: vacancyFilter !== 'all' ? vacancyFilter : undefined,
-          sort: sortBy,
+          sort: sortBy === 'name' ? 'date' : sortBy,
         })
         .then((r) => r.data),
   });
@@ -97,14 +135,17 @@ export default function CandidatesGlobalPage() {
 
   const allCandidates: GlobalCandidate[] = candidatesData?.candidates || [];
 
-  const candidates: GlobalCandidate[] = useMemo(() =>
-    allCandidates.filter((c) => {
+  const candidates: GlobalCandidate[] = useMemo(() => {
+    let filtered = allCandidates.filter((c) => {
       if (!search) return true;
       const s = search.toLowerCase();
       return c.full_name?.toLowerCase().includes(s) || c.email?.toLowerCase().includes(s);
-    }),
-    [allCandidates, search]
-  );
+    });
+    if (sortBy === 'name') {
+      filtered = [...filtered].sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''));
+    }
+    return filtered;
+  }, [allCandidates, search, sortBy]);
 
   const stats = useMemo(() => {
     const analyzed = allCandidates.filter((c) => c.ai_analysis).length;
@@ -145,57 +186,45 @@ export default function CandidatesGlobalPage() {
     activeFilters.push({ key: 'vacancy', label: vac?.title || 'Вакансия', clear: () => setVacancyFilter('all') });
   }
   if (search) {
-    activeFilters.push({ key: 'search', label: `«${search}»`, clear: () => setSearch('') });
+    activeFilters.push({ key: 'search', label: `"${search}"`, clear: () => setSearch('') });
   }
 
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const clearSelection = () => setSelectedIds(new Set());
+
   const statCards = [
-    {
-      label: 'Всего', value: stats.total, color: '#fff',
-      icon: <Users size={18} />, accent: 'rgba(255,255,255,0.12)',
-      bars: [40, 55, 35, 70, 50, 80, 60].map((h) => ({ h, op: 0.4 })),
-    },
-    {
-      label: 'AI оценено', value: stats.analyzed, color: '#FF9A3C',
-      icon: <BrainCircuit size={18} />, accent: 'rgba(255,154,60,0.18)',
-      bars: [30, 50, 45, 65, 55, 75, 70].map((h) => ({ h, op: 0.7 })),
-    },
-    {
-      label: 'Приглашено', value: stats.invited, color: '#10b981',
-      icon: <UserCheck size={18} />, accent: 'rgba(16,185,129,0.18)',
-      bars: [20, 35, 28, 42, 38, 55, 48].map((h) => ({ h, op: 0.7 })),
-    },
-    {
-      label: 'Отклонено', value: stats.rejected, color: '#f87171',
-      icon: <UserX size={18} />, accent: 'rgba(248,113,113,0.16)',
-      bars: [15, 22, 18, 30, 25, 35, 28].map((h) => ({ h, op: 0.6 })),
-    },
-    {
-      label: 'Средний скор', value: stats.avgScore ? `${stats.avgScore}%` : '—', color: '#60a5fa',
-      icon: <TrendingUp size={18} />, accent: 'rgba(96,165,250,0.18)',
-      bars: [45, 50, 55, 52, 60, 58, 65].map((h) => ({ h, op: 0.7 })),
-    },
+    { label: 'Всего', value: stats.total, colorClass: 'text-white', iconBg: 'bg-white/[0.12]', icon: <Users size={18} /> },
+    { label: 'AI оценено', value: stats.analyzed, colorClass: 'text-orange-400', iconBg: 'bg-orange-500/[0.18]', icon: <BrainCircuit size={18} /> },
+    { label: 'Приглашено', value: stats.invited, colorClass: 'text-emerald-500', iconBg: 'bg-emerald-500/[0.18]', icon: <UserCheck size={18} /> },
+    { label: 'Отклонено', value: stats.rejected, colorClass: 'text-red-400', iconBg: 'bg-red-400/[0.16]', icon: <UserX size={18} /> },
+    { label: 'Средний скор', value: stats.avgScore ? `${stats.avgScore}%` : '--', colorClass: 'text-blue-400', iconBg: 'bg-blue-400/[0.18]', icon: <TrendingUp size={18} /> },
   ];
 
-  const medalColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
+  const medalColors = ['text-yellow-400', 'text-gray-400', 'text-amber-600'];
+  const medalBg = ['bg-yellow-400/[0.13] border-yellow-400/[0.33]', 'bg-gray-400/[0.13] border-gray-400/[0.33]', 'bg-amber-700/[0.13] border-amber-700/[0.33]'];
   const medalIcons = [<Trophy size={14} />, <Star size={14} />, <Star size={12} />];
 
   return (
     <Layout>
-      <div className="p-6 md:p-8 max-w-7xl mx-auto page-content">
+      <motion.div variants={pageVariants} initial="initial" animate="animate" className="p-6 md:p-8 max-w-7xl mx-auto page-content">
 
         {/* Header */}
         <div className="mb-8">
-          <h2
-            className="text-gradient-animated font-black mb-1"
-            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)' }}
-          >
+          <h2 className="text-gradient-animated font-black mb-1 text-[clamp(1.75rem,4vw,2.25rem)]">
             Все кандидаты
           </h2>
-          <div className="flex items-center gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <div className="flex items-center gap-2 text-sm text-white/35">
             <span>База данных кандидатов по всем вакансиям</span>
             {lastUpdated && (
               <>
-                <span style={{ color: 'rgba(255,255,255,0.15)' }}>·</span>
+                <span className="text-white/15">·</span>
                 <span>Последнее обновление: {lastUpdated}</span>
               </>
             )}
@@ -204,34 +233,21 @@ export default function CandidatesGlobalPage() {
 
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-7">
-          {statCards.map(({ label, value, color, icon, accent, bars }, i) => (
+          {statCards.map(({ label, value, colorClass, iconBg, icon }, i) => (
             <div
               key={label}
               className="stat-card"
               style={{ animationDelay: `${i * 0.07}s` }}
             >
-              <div className="flex items-start justify-between mb-2">
-                <div
-                  className="flex items-center justify-center rounded-xl"
-                  style={{ width: 36, height: 36, background: accent, color }}
-                >
+              <div className="flex items-start justify-between mb-3">
+                <div className={`flex items-center justify-center rounded-xl w-9 h-9 ${iconBg} ${colorClass}`}>
                   {icon}
                 </div>
-                {/* Mini sparkline */}
-                <div className="sparkline" style={{ color }}>
-                  {bars.map((b, bi) => (
-                    <div
-                      key={bi}
-                      className="sparkline-bar"
-                      style={{ height: `${b.h}%`, opacity: b.op, animationDelay: `${bi * 0.06}s` }}
-                    />
-                  ))}
-                </div>
               </div>
-              <div className="stat-card-value" style={{ color, animationDelay: `${i * 0.09}s` }}>
+              <div className={`stat-card-value ${colorClass}`} style={{ animationDelay: `${i * 0.09}s` }}>
                 {value}
               </div>
-              <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.35)' }}>{label}</p>
+              <p className="text-xs mt-1 text-white/35">{label}</p>
             </div>
           ))}
         </div>
@@ -240,11 +256,11 @@ export default function CandidatesGlobalPage() {
         {topCandidates.length > 0 && (
           <div className="mb-7">
             <div className="flex items-center gap-2 mb-3">
-              <Trophy size={16} style={{ color: '#FFD700' }} />
+              <Trophy size={16} className="text-yellow-400" />
               <h3 className="text-sm font-bold text-white">Лучшие кандидаты</h3>
-              <span className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>по AI-оценке</span>
+              <span className="text-xs text-white/30">по AI-оценке</span>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
               {topCandidates.map((c, i) => {
                 const [g1, g2] = getAvatarGradient(c.full_name || '?');
                 const initials = (c.full_name || '?').split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
@@ -256,25 +272,15 @@ export default function CandidatesGlobalPage() {
                     onClick={() => navigate(`/candidates/${c.id}`)}
                   >
                     {/* Medal */}
-                    <div
-                      className="absolute top-3 right-3 flex items-center justify-center rounded-full"
-                      style={{
-                        width: 24, height: 24,
-                        background: `${medalColors[i]}22`,
-                        border: `1px solid ${medalColors[i]}55`,
-                        color: medalColors[i],
-                      }}
-                    >
+                    <div className={`absolute top-3 right-3 flex items-center justify-center rounded-full w-6 h-6 border ${medalBg[i]} ${medalColors[i]}`}>
                       {medalIcons[i]}
                     </div>
 
                     {/* Avatar */}
                     <div
-                      className="avatar-circle mb-3"
+                      className="avatar-circle mb-3 w-[52px] h-[52px] text-lg"
                       style={{
-                        width: 52, height: 52,
                         background: `linear-gradient(135deg, ${g1}, ${g2})`,
-                        fontSize: '1.125rem',
                         boxShadow: `0 4px 16px ${g1}44`,
                       }}
                     >
@@ -282,26 +288,19 @@ export default function CandidatesGlobalPage() {
                     </div>
 
                     {/* Score */}
-                    <div
-                      className="text-2xl font-black mb-0.5"
-                      style={{ color: g1 }}
-                    >
+                    <div className="text-2xl font-black mb-0.5" style={{ color: g1 }}>
                       {c.ai_analysis?.overall_score}%
                     </div>
                     <p className="text-xs font-semibold text-white truncate mb-1">{c.full_name}</p>
-                    <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                      {c.vacancies?.title || '—'}
+                    <p className="text-xs truncate text-white/35">
+                      {c.vacancies?.title || '--'}
                     </p>
 
                     {/* Score bar */}
-                    <div className="score-bar-track mt-3">
+                    <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden mt-3">
                       <div
-                        className="score-bar-fill"
-                        style={{
-                          width: `${c.ai_analysis?.overall_score ?? 0}%`,
-                          background: getScoreBarColor(c.ai_analysis?.overall_score ?? 0),
-                          ['--score-width' as string]: `${c.ai_analysis?.overall_score ?? 0}%`,
-                        }}
+                        className={`h-full rounded-full transition-all duration-1000 ${getScoreBarClass(c.ai_analysis?.overall_score ?? 0)}`}
+                        style={{ width: `${c.ai_analysis?.overall_score ?? 0}%` }}
                       />
                     </div>
                   </div>
@@ -314,7 +313,7 @@ export default function CandidatesGlobalPage() {
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'rgba(255,255,255,0.3)' }} />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/30" />
             <input
               type="text"
               placeholder="Поиск по имени или email..."
@@ -324,9 +323,8 @@ export default function CandidatesGlobalPage() {
             />
             {search && (
               <button
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
                 onClick={() => setSearch('')}
-                style={{ color: 'rgba(255,255,255,0.3)' }}
               >
                 <X size={13} />
               </button>
@@ -348,9 +346,10 @@ export default function CandidatesGlobalPage() {
             <option value="rejected">Отклонены</option>
           </select>
 
-          <select className="select-premium" value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'score')}>
+          <select className="select-premium" value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'score' | 'name')}>
             <option value="date">По дате</option>
             <option value="score">По скору</option>
+            <option value="name">По имени</option>
           </select>
         </div>
 
@@ -367,11 +366,8 @@ export default function CandidatesGlobalPage() {
             ))}
             {activeFilters.length > 1 && (
               <button
-                className="text-xs font-semibold transition-colors"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
+                className="text-xs font-semibold text-white/35 hover:text-red-400 transition-colors"
                 onClick={() => { setSearch(''); setStatusFilter('all'); setVacancyFilter('all'); }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}
               >
                 Сбросить всё
               </button>
@@ -379,32 +375,61 @@ export default function CandidatesGlobalPage() {
           </div>
         )}
 
+        {/* Bulk actions bar */}
+        {selectedIds.size > 0 && (
+          <div className="flex items-center gap-3 mb-4 px-4 py-3 rounded-xl bg-orange-500/10 border border-orange-500/20">
+            <SlidersHorizontal size={14} className="text-orange-400" />
+            <span className="text-sm font-semibold text-orange-400">
+              Выбрано: {selectedIds.size}
+            </span>
+            <div className="flex-1" />
+            <button
+              className="text-xs font-semibold text-white/40 hover:text-white/70 transition-colors"
+              onClick={clearSelection}
+            >
+              Снять выбор
+            </button>
+          </div>
+        )}
+
         {/* Results count */}
         {!isLoading && (
-          <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.28)' }}>
-            Показано{' '}
-            <span className="font-bold" style={{ color: '#FF9A3C' }}>{candidates.length}</span>
-            {' '}из{' '}
-            <span className="font-bold" style={{ color: 'rgba(255,255,255,0.5)' }}>{stats.total}</span>
-            {' '}кандидатов
-          </p>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs text-white/28">
+              Показано{' '}
+              <span className="font-bold text-orange-400">{candidates.length}</span>
+              {' '}из{' '}
+              <span className="font-bold text-white/50">{stats.total}</span>
+              {' '}кандидатов
+            </p>
+            <div className="flex items-center gap-1.5 text-xs text-white/30">
+              <ArrowUpDown size={11} />
+              <span>{sortBy === 'date' ? 'По дате' : sortBy === 'score' ? 'По скору' : 'По имени'}</span>
+            </div>
+          </div>
         )}
 
         {/* Grid */}
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={32} className="animate-spin" style={{ color: '#FF9A3C' }} />
+            <Loader2 size={32} className="animate-spin text-orange-400" />
           </div>
         ) : !candidates.length ? (
           <div className="card text-center py-16">
-            <div
-              className="inline-flex items-center justify-center mb-4"
-              style={{ width: 64, height: 64, background: 'rgba(255,110,0,0.08)', border: '1px solid rgba(255,110,0,0.15)', borderRadius: 18 }}
-            >
-              <Users size={28} style={{ color: 'rgba(255,110,0,0.4)' }} />
+            <div className="inline-flex items-center justify-center mb-4 w-16 h-16 bg-orange-500/[0.08] border border-orange-500/15 rounded-[18px]">
+              <Users size={28} className="text-orange-500/40" />
             </div>
             <p className="text-white font-semibold text-lg mb-1">Кандидаты не найдены</p>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>Попробуйте изменить фильтры</p>
+            <p className="text-sm text-white/30 mb-4">Попробуйте изменить фильтры или добавить кандидатов через форму</p>
+            {activeFilters.length > 0 && (
+              <button
+                className="btn-secondary text-sm"
+                onClick={() => { setSearch(''); setStatusFilter('all'); setVacancyFilter('all'); }}
+              >
+                <X size={13} />
+                Сбросить фильтры
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -413,12 +438,14 @@ export default function CandidatesGlobalPage() {
                 key={c.id}
                 candidate={c}
                 index={idx}
+                selected={selectedIds.has(c.id)}
+                onToggleSelect={() => toggleSelect(c.id)}
                 onClick={() => navigate(`/candidates/${c.id}`)}
               />
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
     </Layout>
   );
 }
@@ -428,51 +455,52 @@ export default function CandidatesGlobalPage() {
 function CandidateGlobalCard({
   candidate: c,
   index,
+  selected,
+  onToggleSelect,
   onClick,
 }: {
   candidate: GlobalCandidate;
   index: number;
+  selected: boolean;
+  onToggleSelect: () => void;
   onClick: () => void;
 }) {
   const analysis = c.ai_analysis;
   const [g1, g2] = getAvatarGradient(c.full_name || '?');
   const initials = (c.full_name || '?').split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
-  const vacColor = c.vacancies?.id ? getVacancyColor(c.vacancies.id) : null;
+  const vacBadgeClass = c.vacancies?.id ? getVacancyBadgeClass(c.vacancies.id) : '';
 
   // Skill preview from analysis strengths
   const skillPreview: string[] = analysis?.strengths?.slice(0, 2) || [];
 
   return (
     <div
-      className="card stagger-item flex flex-col gap-3 cursor-pointer"
-      style={{
-        animationDelay: `${index * 0.04}s`,
-        borderColor: analysis ? 'rgba(255,110,0,0.18)' : 'rgba(255,110,0,0.10)',
-        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
-      }}
+      className={`card stagger-item flex flex-col gap-3 cursor-pointer candidate-global-card ${
+        selected ? 'border-orange-500/40 ring-1 ring-orange-500/20' : analysis ? 'border-orange-500/[0.18]' : 'border-orange-500/10'
+      }`}
+      style={{ animationDelay: `${index * 0.04}s` }}
       onClick={onClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-6px)';
-        e.currentTarget.style.borderColor = 'rgba(255,110,0,0.32)';
-        e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.4), 0 0 40px rgba(255,106,0,0.10)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = '';
-        e.currentTarget.style.borderColor = analysis ? 'rgba(255,110,0,0.18)' : 'rgba(255,110,0,0.10)';
-        e.currentTarget.style.boxShadow = '';
-      }}
     >
       {/* Top row: avatar + name + score ring */}
       <div className="flex items-start gap-3">
+        {/* Select checkbox area */}
+        <button
+          className={`shrink-0 w-5 h-5 rounded border-2 mt-3 flex items-center justify-center transition-all ${
+            selected
+              ? 'bg-orange-500 border-orange-500 text-white'
+              : 'border-white/20 bg-transparent hover:border-orange-400/50'
+          }`}
+          onClick={(e) => { e.stopPropagation(); onToggleSelect(); }}
+        >
+          {selected && <CheckCircle2 size={12} />}
+        </button>
+
         {/* Avatar */}
         <div
-          className="avatar-circle"
+          className="avatar-circle w-11 h-11 text-[0.9375rem] shrink-0"
           style={{
-            width: 44, height: 44,
             background: `linear-gradient(135deg, ${g1}, ${g2})`,
-            fontSize: '0.9375rem',
             boxShadow: `0 3px 12px ${g1}44`,
-            flexShrink: 0,
           }}
         >
           {initials}
@@ -481,11 +509,8 @@ function CandidateGlobalCard({
         {/* Name + vacancy */}
         <div className="flex-1 min-w-0">
           <p className="font-bold text-white truncate mb-1">{c.full_name}</p>
-          {vacColor && c.vacancies && (
-            <div
-              className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-semibold"
-              style={{ background: vacColor.bg, border: `1px solid ${vacColor.border}`, color: vacColor.color }}
-            >
+          {c.vacancies && (
+            <div className={`inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-semibold border ${vacBadgeClass}`}>
               {c.vacancies.title}
             </div>
           )}
@@ -499,18 +524,18 @@ function CandidateGlobalCard({
 
       {/* Contact */}
       <div className="space-y-1">
-        <div className="flex items-center gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.38)' }}>
+        <div className="flex items-center gap-2 text-xs text-white/38">
           <Mail size={11} />
           <span className="truncate">{c.email}</span>
         </div>
-        <div className="flex items-center gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.38)' }}>
+        <div className="flex items-center gap-2 text-xs text-white/38">
           <Calendar size={11} />
           <span>{formatDate(c.submitted_at)}</span>
           {c.resume_text && (
             <>
-              <span style={{ color: 'rgba(255,255,255,0.15)' }}>·</span>
-              <FileText size={10} style={{ color: 'rgba(16,185,129,0.6)' }} />
-              <span style={{ color: 'rgba(16,185,129,0.6)' }}>Резюме</span>
+              <span className="text-white/15">·</span>
+              <FileText size={10} className="text-emerald-500/60" />
+              <span className="text-emerald-500/60">Резюме</span>
             </>
           )}
         </div>
@@ -521,22 +546,18 @@ function CandidateGlobalCard({
         <>
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>AI-оценка</span>
-              <span className="text-xs font-bold" style={{ color: '#FF9A3C' }}>{analysis.overall_score}%</span>
+              <span className="text-xs text-white/35">AI-оценка</span>
+              <span className="text-xs font-bold text-orange-400">{analysis.overall_score}%</span>
             </div>
-            <div className="score-bar-track">
+            <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden">
               <div
-                className="score-bar-fill"
-                style={{
-                  width: `${analysis.overall_score}%`,
-                  background: getScoreBarColor(analysis.overall_score),
-                  ['--score-width' as string]: `${analysis.overall_score}%`,
-                }}
+                className={`h-full rounded-full transition-all duration-1000 ${getScoreBarClass(analysis.overall_score)}`}
+                style={{ width: `${analysis.overall_score}%` }}
               />
             </div>
           </div>
           {analysis.summary && (
-            <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-xs leading-relaxed line-clamp-2 text-white/45">
               {analysis.summary}
             </p>
           )}
@@ -551,21 +572,15 @@ function CandidateGlobalCard({
       )}
 
       {!analysis && c.status === 'new' && (
-        <div className="flex items-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
+        <div className="flex items-center gap-1.5 text-xs text-white/20">
           <BrainCircuit size={11} />
           Ожидает анализа
         </div>
       )}
 
       {/* Footer */}
-      <div
-        className="flex items-center justify-between mt-auto pt-2"
-        style={{ borderTop: '1px solid rgba(255,110,0,0.07)' }}
-      >
-        <span
-          className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold ${getStatusColor(c.status)}`}
-          style={{ background: 'rgba(0,0,0,0.25)' }}
-        >
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-orange-500/[0.07]">
+        <span className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold bg-black/25 ${getStatusColor(c.status)}`}>
           {statusIcons[c.status]}
           {getStatusLabel(c.status)}
         </span>

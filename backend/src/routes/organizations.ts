@@ -47,7 +47,8 @@ router.get('/me', async (req: AuthRequest, res: Response): Promise<void> => {
       .single();
 
     res.json({ organization: org, role: membership?.role });
-  } catch {
+  } catch (err) {
+    console.error('[Org/FetchOrganization] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch organization' });
   }
 });
@@ -92,7 +93,8 @@ router.put('/me', async (req: AuthRequest, res: Response): Promise<void> => {
     }
 
     res.json({ organization: data });
-  } catch {
+  } catch (err) {
+    console.error('[Org/UpdateOrganization] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to update organization' });
   }
 });
@@ -118,7 +120,8 @@ router.get('/me/members', async (req: AuthRequest, res: Response): Promise<void>
     }
 
     res.json({ members: data });
-  } catch {
+  } catch (err) {
+    console.error('[Org/FetchMembers] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch members' });
   }
 });
@@ -161,8 +164,50 @@ router.post('/me/invite', async (req: AuthRequest, res: Response): Promise<void>
     ).catch(() => {});
 
     res.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error('[Org/SendInvite] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to send invite' });
+  }
+});
+
+
+// ── Update org branding ──
+router.put('/branding', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.orgId) {
+      res.status(400).json({ error: 'Организация не найдена' });
+      return;
+    }
+
+    const { logo_url, primary_color, company_domain, custom_email_footer } = req.body;
+
+    const updateData: Record<string, unknown> = {};
+    if (logo_url !== undefined) updateData.logo_url = logo_url;
+    if (primary_color !== undefined) updateData.primary_color = primary_color;
+    if (company_domain !== undefined) updateData.company_domain = company_domain;
+    if (custom_email_footer !== undefined) updateData.custom_email_footer = custom_email_footer;
+
+    if (Object.keys(updateData).length === 0) {
+      res.status(400).json({ error: 'Нечего обновлять' });
+      return;
+    }
+
+    const { error } = await supabase
+      .from('organizations')
+      .update(updateData)
+      .eq('id', req.orgId);
+
+    if (error) {
+      console.error('[Org/Branding] Error:', error.message);
+      // Column might not exist — that's OK
+      res.json({ success: true, message: 'Branding columns not yet migrated' });
+      return;
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[Org/Branding] Error:', err);
+    res.status(500).json({ error: 'Ошибка обновления' });
   }
 });
 

@@ -33,6 +33,9 @@ export interface User {
   company_name?: string;
   role?: 'user' | 'superadmin';
   org_id?: string;
+  token_balance?: number;
+  tokens_used?: number;
+  is_whitelisted?: boolean;
 }
 
 export interface VacancyRequirements {
@@ -69,6 +72,8 @@ export interface Vacancy {
   google_form_url?: string;
   custom_questions: CustomQuestion[];
   organization_id?: string;
+  hh_vacancy_id?: string;
+  hh_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -127,4 +132,17 @@ export interface Candidate {
   submitted_at: string;
   status: 'new' | 'analyzing' | 'analyzed' | 'invited' | 'rejected' | 'error';
   ai_analysis?: AIAnalysis | null;
+}
+
+export interface SupportTicket {
+  id: string;
+  user_id: string;
+  category: 'bug' | 'feature' | 'question' | 'billing' | 'other';
+  subject: string;
+  message: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  admin_reply?: string;
+  created_at: string;
+  updated_at: string;
 }

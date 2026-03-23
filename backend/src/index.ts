@@ -1,10 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import jwt from 'jsonwebtoken';
+import hpp from 'hpp';
 
 dotenv.config();
 
@@ -28,6 +30,9 @@ if (!process.env.FRONTEND_URL && process.env.NODE_ENV === 'production') {
 if (!process.env.WEBHOOK_SECRET) {
   console.warn('WARNING: WEBHOOK_SECRET is not set — webhook endpoint is unauthenticated');
 }
+if (!process.env.GOOGLE_CLIENT_ID) {
+  console.warn('WARNING: GOOGLE_CLIENT_ID is not set — Google OAuth will not verify audience');
+}
 // ─────────────────────────────────────────────────────────────────────────────
 
 import authRouter from './routes/auth';
@@ -36,28 +41,43 @@ import candidatesRouter, { webhookRouter } from './routes/candidates';
 import analyticsRouter from './routes/analytics';
 import organizationsRouter from './routes/organizations';
 import adminRouter from './routes/admin';
+import supportRouter from './routes/support';
+import tokensRouter from './routes/tokens';
+import notificationsRouter from './routes/notifications';
+import interviewsRouter from './routes/interviews';
+import talentPoolRouter from './routes/talent-pool';
+import paymentsRouter from './routes/payments';
 import { extractTextFromBuffer } from './services/document-parser';
 import { supabase } from './config/supabase';
 import { authenticate, AuthRequest } from './middleware/auth';
+import { requestLogger } from './middleware/logger';
 import { generateVerificationCode, sendVerificationEmail } from './services/email';
+import { isValidUUID } from './utils/validate';
 import { canRequestCode, storeCode, consumeCode } from './services/candidate-verification';
+import { createNotification } from './services/notify';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ── Security headers ──────────────────────────────────────────────────────────
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:'],
-      connectSrc: ["'self'"],
-    },
-  },
-  crossOriginResourcePolicy: { policy: 'same-origin' },
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  noSniff: true,
+  xssFilter: true,
 }));
+
+// ── Compression ──────────────────────────────────────────────────────────────
+app.use(compression());
+
+// ── Additional security headers ──────────────────────────────────────────────
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -66,14 +86,20 @@ const allowedOrigins = [
   'http://localhost:3000',
 ].filter(Boolean) as string[];
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+      if (!origin) { callback(null, true); return; }
+      if (allowedOrigins.includes(origin)) { callback(null, true); return; }
+      // Allow tunnel domains for testing (non-production only)
+      if (!isProduction) {
+        if (origin.endsWith('.trycloudflare.com') || origin.endsWith('.ngrok.io') || origin.endsWith('.ngrok-free.app')) {
+          callback(null, true); return;
+        }
       }
+      callback(null, false);
     },
     credentials: true,
   })
@@ -91,7 +117,7 @@ app.use('/api/', apiLimiter);
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 50,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many authentication attempts, please try again later' },
@@ -128,6 +154,12 @@ app.use('/api/candidates/:id/analyze', aiLimiter);
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
+// ── HPP (HTTP Parameter Pollution protection) ─────────────────────────────────
+app.use(hpp());
+
+// ── Request logging ──────────────────────────────────────────────────────────
+app.use(requestLogger);
+
 // ── File upload ───────────────────────────────────────────────────────────────
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
@@ -147,6 +179,22 @@ const upload = multer({
   },
 });
 
+// Rate limit for support tickets (prevent spam)
+const supportLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: { error: 'Слишком много обращений. Попробуйте через час.' },
+});
+app.use('/api/support', supportLimiter);
+
+// Rate limit for token operations
+const tokenLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  message: { error: 'Слишком много операций с токенами.' },
+});
+app.use('/api/tokens', tokenLimiter);
+
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/api/auth', authRouter);
 app.use('/api/vacancies', vacanciesRouter);
@@ -155,6 +203,12 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/webhook', webhookRouter);
 app.use('/api/organizations', organizationsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/support', supportRouter);
+app.use('/api/tokens', tokensRouter);
+app.use('/api/notifications', notificationsRouter);
+app.use('/api/interviews', interviewsRouter);
+app.use('/api/talent-pool', talentPoolRouter);
+app.use('/api/payments', paymentsRouter);
 
 // ── Resume upload (authenticated, ownership-verified) ─────────────────────────
 app.post(
@@ -163,28 +217,38 @@ app.post(
   upload.single('resume'),
   async (req: AuthRequest, res): Promise<void> => {
     try {
-      if (!req.file) {
-        res.status(400).json({ error: 'No file uploaded' });
+      if (!isValidUUID(req.params.id)) {
+        res.status(400).json({ error: 'Некорректный ID' });
         return;
       }
 
-      const { data: candidate } = await supabase
+      if (!req.file) {
+        res.status(400).json({ error: 'Файл не загружен' });
+        return;
+      }
+
+      const { data: candidate, error: candidateError } = await supabase
         .from('candidates')
         .select('id, vacancies!inner(created_by)')
         .eq('id', req.params.id)
         .eq('vacancies.created_by', req.userId!)
         .single();
 
+      if (candidateError && candidateError.code !== 'PGRST116') {
+        console.error('[Upload] Candidate lookup error:', candidateError.message);
+      }
+
       if (!candidate) {
-        res.status(404).json({ error: 'Candidate not found' });
+        res.status(404).json({ error: 'Кандидат не найден' });
         return;
       }
 
       let text: string;
       try {
         text = await extractTextFromBuffer(req.file.buffer, req.file.mimetype);
-      } catch {
-        res.status(422).json({ error: 'Could not parse the uploaded document' });
+      } catch (parseErr) {
+        console.error('[Upload] Document parse error:', parseErr instanceof Error ? parseErr.message : parseErr);
+        res.status(422).json({ error: 'Не удалось разобрать загруженный документ' });
         return;
       }
 
@@ -194,13 +258,15 @@ app.post(
         .eq('id', req.params.id);
 
       if (error) {
-        res.status(500).json({ error: 'Failed to save resume' });
+        console.error('[Upload] Save error:', error.message);
+        res.status(500).json({ error: 'Ошибка сохранения резюме' });
         return;
       }
 
       res.json({ success: true, characters: text.length });
-    } catch {
-      res.status(500).json({ error: 'Upload failed' });
+    } catch (err) {
+      console.error('[Upload] Unhandled error:', err instanceof Error ? err.message : err);
+      res.status(500).json({ error: 'Ошибка загрузки файла' });
     }
   }
 );
@@ -211,6 +277,11 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // ── PUBLIC: Get vacancy info ───────────────────────────────────────────────────
 app.get('/api/public/vacancy/:id', async (req, res): Promise<void> => {
   try {
+    if (!isValidUUID(req.params.id)) {
+      res.status(400).json({ error: 'Некорректный ID' });
+      return;
+    }
+
     // Try with custom_questions first; fall back if column doesn't exist yet
     let data: Record<string, unknown> | null = null;
 
@@ -221,7 +292,7 @@ app.get('/api/public/vacancy/:id', async (req, res): Promise<void> => {
       .eq('status', 'active')
       .single();
 
-    if (withCustom.error && withCustom.error.code === '42703') {
+    if (withCustom.error && (withCustom.error.code === '42703' || withCustom.error.code === 'PGRST204')) {
       // Column doesn't exist yet — fetch without it
       const fallback = await supabase
         .from('vacancies')
@@ -230,20 +301,24 @@ app.get('/api/public/vacancy/:id', async (req, res): Promise<void> => {
         .eq('status', 'active')
         .single();
       if (fallback.error || !fallback.data) {
-        res.status(404).json({ error: 'Vacancy not found or closed' });
+        res.status(404).json({ error: 'Вакансия не найдена или закрыта' });
         return;
       }
       data = { ...fallback.data, custom_questions: [] };
     } else if (withCustom.error || !withCustom.data) {
-      res.status(404).json({ error: 'Vacancy not found or closed' });
+      if (withCustom.error && withCustom.error.code !== 'PGRST116') {
+        console.error('[Public/Vacancy] Supabase error:', withCustom.error.message);
+      }
+      res.status(404).json({ error: 'Вакансия не найдена или закрыта' });
       return;
     } else {
       data = withCustom.data as Record<string, unknown>;
     }
 
     res.json({ vacancy: data });
-  } catch {
-    res.status(500).json({ error: 'Server error' });
+  } catch (err) {
+    console.error('[Public/Vacancy] Unhandled error:', err instanceof Error ? err.message : err);
+    res.status(500).json({ error: 'Ошибка сервера' });
   }
 });
 
@@ -267,15 +342,19 @@ app.post('/api/public/request-candidate-code', async (req, res): Promise<void> =
     storeCode(sanitizedEmail, code);
 
     // Non-blocking: send email (or log in dev)
-    sendVerificationEmail(sanitizedEmail, sanitizedEmail.split('@')[0], code).catch(() => {});
+    sendVerificationEmail(sanitizedEmail, sanitizedEmail.split('@')[0], code).catch((err) => {
+      console.error('[Public/CandidateCode] Email send failed:', err instanceof Error ? err.message : err);
+      console.log(`[Public/CandidateCode] Verification code for ${sanitizedEmail}: ${code}`);
+    });
 
     res.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error('[Public/CandidateCode] Unhandled error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 });
 
-// ── PUBLIC: Verify candidate code → returns short-lived token ─────────────────
+// ── PUBLIC: Verify candidate code -> returns short-lived token ─────────────────
 app.post('/api/public/verify-candidate-code', async (req, res): Promise<void> => {
   try {
     const { email, code } = req.body;
@@ -299,7 +378,8 @@ app.post('/api/public/verify-candidate-code', async (req, res): Promise<void> =>
     );
 
     res.json({ success: true, candidate_token: candidateToken });
-  } catch {
+  } catch (err) {
+    console.error('[Public/VerifyCandidateCode] Unhandled error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 });
@@ -354,25 +434,26 @@ app.post(
           res.status(400).json({ error: 'Email токен не совпадает с указанным email' });
           return;
         }
-      } catch {
+      } catch (err) {
+        console.error('[Apply/VerifyToken] Error:', err instanceof Error ? err.message : err);
         res.status(400).json({ error: 'Токен подтверждения истёк. Верифицируйте email заново.' });
         return;
       }
 
       // ── Load vacancy + check required custom questions ───────────────────────
-      let vacancy: { id: string; title: string; custom_questions?: unknown } | null = null;
+      let vacancy: { id: string; title: string; created_by: string; custom_questions?: unknown } | null = null;
       const vacancyWithQ = await supabase
         .from('vacancies')
-        .select('id, title, custom_questions')
+        .select('id, title, created_by, custom_questions')
         .eq('id', vacancyId)
         .eq('status', 'active')
         .single();
 
-      if (vacancyWithQ.error && vacancyWithQ.error.code === '42703') {
+      if (vacancyWithQ.error && (vacancyWithQ.error.code === '42703' || vacancyWithQ.error.code === 'PGRST204')) {
         // Column not yet migrated — fetch without custom_questions
         const vacancyFallback = await supabase
           .from('vacancies')
-          .select('id, title')
+          .select('id, title, created_by')
           .eq('id', vacancyId)
           .eq('status', 'active')
           .single();
@@ -395,7 +476,7 @@ app.post(
         let parsedAnswersForCheck: Record<string, unknown> = {};
         if (custom_answers) {
           if (typeof custom_answers === 'string') {
-            try { parsedAnswersForCheck = JSON.parse(custom_answers); } catch { /* ignore */ }
+            try { parsedAnswersForCheck = JSON.parse(custom_answers); } catch (err) { console.error('[Apply/ParseCustomAnswers] Error:', err instanceof Error ? err.message : err); }
           } else if (typeof custom_answers === 'object') {
             parsedAnswersForCheck = custom_answers as Record<string, unknown>;
           }
@@ -419,7 +500,8 @@ app.post(
       if (req.file) {
         try {
           resumeText = await extractTextFromBuffer(req.file.buffer, req.file.mimetype);
-        } catch {
+        } catch (parseErr) {
+          console.error('[Public/Apply] Resume parse error:', parseErr instanceof Error ? parseErr.message : parseErr);
           resumeText = '';
         }
       }
@@ -435,7 +517,8 @@ app.post(
         if (typeof custom_answers === 'string') {
           try {
             parsedAnswers = JSON.parse(custom_answers);
-          } catch {
+          } catch (err) {
+            console.error('[Apply/ParseAnswers] Error:', err instanceof Error ? err.message : err);
             parsedAnswers = { 'Ответы на вопросы': String(custom_answers).slice(0, MAX_FIELD) };
           }
         } else if (typeof custom_answers === 'object') {
@@ -459,8 +542,22 @@ app.post(
         .single();
 
       if (insertError) {
+        console.error('[Public/Apply] Insert error:', insertError.message, insertError.details);
         res.status(500).json({ error: 'Ошибка при сохранении заявки' });
         return;
+      }
+
+      // Notify vacancy owner about new candidate
+      try {
+        await createNotification(
+          vacancy.created_by,
+          'new_candidate',
+          `Новый кандидат: ${sanitizedName} на ${vacancy.title}`,
+          `Email: ${sanitizedEmail}`,
+          `/vacancies/${vacancyId}`
+        );
+      } catch (notifyErr) {
+        console.error('[Public/Apply] Notification error:', notifyErr);
       }
 
       res.status(201).json({
@@ -468,15 +565,160 @@ app.post(
         message: 'Заявка успешно отправлена!',
         candidate_id: candidate.id,
       });
-    } catch {
+    } catch (err) {
+      console.error('[Public/Apply] Unhandled error:', err instanceof Error ? err.message : err);
       res.status(500).json({ error: 'Ошибка сервера' });
     }
   }
 );
 
+// ── Bulk resume upload (up to 100 files at once) ──────────────────────────────
+const bulkUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024, files: 100 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    cb(null, allowed.includes(file.mimetype));
+  },
+}).array('resumes', 100);
+
+app.post('/api/vacancies/:vacancyId/bulk-upload', authenticate, (req: AuthRequest, res, next) => {
+  bulkUpload(req, res, (err) => {
+    if (err) {
+      console.error('[BulkUpload] Multer error:', err.message);
+      return res.status(400).json({ error: err.message || 'Ошибка загрузки файлов' });
+    }
+    next();
+  });
+}, async (req: AuthRequest, res): Promise<void> => {
+  try {
+    const vacancyId = req.params.vacancyId;
+
+    if (!isValidUUID(vacancyId)) {
+      res.status(400).json({ error: 'Некорректный ID вакансии' });
+      return;
+    }
+
+    // Verify vacancy ownership
+    const { data: vacancy, error: vacancyError } = await supabase
+      .from('vacancies')
+      .select('id, title, created_by')
+      .eq('id', vacancyId)
+      .eq('created_by', req.userId!)
+      .single();
+
+    if (vacancyError || !vacancy) {
+      res.status(404).json({ error: 'Вакансия не найдена' });
+      return;
+    }
+
+    const files = req.files as Express.Multer.File[];
+    if (!files || files.length === 0) {
+      res.status(400).json({ error: 'Загрузите хотя бы один файл' });
+      return;
+    }
+
+    const results: { file: string; status: string; candidate_id?: string; error?: string }[] = [];
+
+    for (const file of files) {
+      try {
+        // Extract text from resume
+        let resumeText = '';
+        try {
+          resumeText = await extractTextFromBuffer(file.buffer, file.mimetype);
+        } catch (err) {
+          console.error('[BulkUpload/ParseFile] Error:', err instanceof Error ? err.message : err);
+          results.push({ file: file.originalname, status: 'error', error: 'Не удалось разобрать файл' });
+          continue;
+        }
+
+        if (!resumeText || resumeText.trim().length < 50) {
+          results.push({ file: file.originalname, status: 'error', error: 'Файл пуст или слишком мал' });
+          continue;
+        }
+
+        // Extract name from filename or first line of resume
+        const nameFromFile = file.originalname
+          .replace(/\.(pdf|doc|docx)$/i, '')
+          .replace(/[_-]/g, ' ')
+          .replace(/resume|cv|резюме/gi, '')
+          .trim();
+
+        const fullName = nameFromFile || resumeText.split('\n')[0]?.trim().slice(0, 100) || 'Кандидат';
+
+        // Create candidate
+        const { data: candidate, error: insertError } = await supabase
+          .from('candidates')
+          .insert({
+            vacancy_id: vacancyId,
+            full_name: fullName,
+            resume_text: resumeText,
+            status: 'new',
+            form_responses: { source: 'bulk_upload', original_filename: file.originalname },
+          })
+          .select('id')
+          .single();
+
+        if (insertError) {
+          results.push({ file: file.originalname, status: 'error', error: insertError.message });
+        } else {
+          results.push({ file: file.originalname, status: 'ok', candidate_id: candidate.id });
+        }
+      } catch (err) {
+        console.error('[BulkUpload/ProcessFile] Error:', err instanceof Error ? err.message : err);
+        results.push({ file: file.originalname, status: 'error', error: 'Неожиданная ошибка' });
+      }
+    }
+
+    const success = results.filter(r => r.status === 'ok').length;
+    const failed = results.filter(r => r.status === 'error').length;
+
+    res.json({
+      success: true,
+      message: 'Загружено: ' + success + ' из ' + files.length + '. Ошибок: ' + failed,
+      total: files.length,
+      uploaded: success,
+      errors: failed,
+      results,
+    });
+  } catch (err) {
+    console.error('[BulkUpload] Error:', err);
+    res.status(500).json({ error: 'Ошибка массовой загрузки' });
+  }
+});
+
 // ── Health check ──────────────────────────────────────────────────────────────
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', async (_req, res) => {
+  const checks: Record<string, string> = { server: 'ok' };
+
+  // Check Supabase
+  try {
+    const { error } = await supabase.from('users').select('id').limit(1);
+    checks.database = error ? 'error' : 'ok';
+  } catch {
+    checks.database = 'error';
+  }
+
+  // Check AI API key
+  checks.ai = process.env.ANTHROPIC_API_KEY ? 'configured' : 'missing';
+
+  // Check email
+  checks.email = process.env.EMAIL_USER ? 'configured' : 'missing';
+
+  const allOk = Object.values(checks).every(v => v === 'ok' || v === 'configured');
+
+  res.status(allOk ? 200 : 503).json({
+    status: allOk ? 'healthy' : 'degraded',
+    checks,
+    uptime: Math.round(process.uptime()),
+    timestamp: new Date().toISOString(),
+    version: '2.1.0',
+  });
+});
+
+// ── API 404 handler — return JSON for unmatched /api/* routes ─────────────────
+app.all('/api/*', (_req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
 });
 
 // ── Serve frontend static files (production) ──────────────────────────────────
@@ -486,14 +728,29 @@ import fs from 'fs';
 const frontendDist = path.join(__dirname, '../../frontend/dist');
 if (fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist));
-  // SPA fallback — все не-API маршруты отдают index.html
+  // SPA fallback — all non-API routes serve index.html
   app.get('*', (_req, res) => {
-    res.sendFile(path.join(frontendDist, 'index.html'));
+    const indexPath = path.join(frontendDist, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      console.error('[Static] index.html not found at', indexPath);
+      res.status(500).json({ error: 'Frontend not built' });
+    }
   });
+} else {
+  console.warn('[Static] Frontend dist not found at', frontendDist, '— static serving disabled');
 }
 
 app.listen(PORT, () => {
-  console.log(`Recrutor AI Backend running on port ${PORT}`);
+  console.log('');
+  console.log('  ╔══════════════════════════════════════╗');
+  console.log('  ║     SOLUTION AI Recruiter v2.1       ║');
+  console.log('  ║     ───────────────────────        ║');
+  console.log(`  ║     Port: ${String(PORT).padEnd(27)}║`);
+  console.log(`  ║     Env:  ${(process.env.NODE_ENV || 'development').padEnd(27)}║`);
+  console.log('  ╚══════════════════════════════════════╝');
+  console.log('');
 });
 
 export default app;

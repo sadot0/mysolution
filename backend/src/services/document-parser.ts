@@ -31,7 +31,8 @@ export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
   try {
     const data = await pdfParse(buffer);
     return data.text.slice(0, MAX_TEXT_LENGTH);
-  } catch {
+  } catch (err) {
+    console.error('[DocumentParser/PDF] Error:', err instanceof Error ? err.message : err);
     throw new Error('Failed to parse PDF document');
   }
 }
@@ -40,7 +41,8 @@ export async function extractTextFromDocx(buffer: Buffer): Promise<string> {
   try {
     const result = await mammoth.extractRawText({ buffer });
     return result.value.slice(0, MAX_TEXT_LENGTH);
-  } catch {
+  } catch (err) {
+    console.error('[DocumentParser/DOCX] Error:', err instanceof Error ? err.message : err);
     throw new Error('Failed to parse DOCX document');
   }
 }

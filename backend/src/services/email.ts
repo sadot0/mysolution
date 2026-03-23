@@ -128,14 +128,19 @@ export async function sendInviteEmail(
   const resendKey = process.env.RESEND_API_KEY;
   if (resendKey) {
     try {
-      await fetch('https://api.resend.com/emails', {
+      const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ from: `${fromName} <${fromEmail}>`, to: [email], subject: `Приглашение в ${orgName}`, html }),
       });
-    } catch { /* silent */ }
+      if (res.ok) return;
+      console.error('[Email] Invite Resend error:', res.status, await res.text());
+    } catch (err) {
+      console.error('[Email] Invite Resend fetch error:', err);
+    }
   }
 
+  // Dev fallback: print to console
   console.log(`[DEV] Invite email to ${email} from ${inviterName} (${orgName}): ${frontendUrl}/register`);
 }
 

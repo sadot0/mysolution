@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { supabase } from '../config/supabase';
 import { authenticate, requireSuperadmin, AuthRequest } from '../middleware/auth';
+import { isValidUUID } from '../utils/validate';
 
 const router = Router();
 router.use(authenticate, requireSuperadmin);
@@ -28,7 +29,8 @@ router.get('/stats', async (_req: AuthRequest, res: Response): Promise<void> => 
         candidates: candidateCount ?? 0,
       },
     });
-  } catch {
+  } catch (err) {
+    console.error('[Admin/Stats] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch stats' });
   }
 });
@@ -52,7 +54,8 @@ router.get('/organizations', async (req: AuthRequest, res: Response): Promise<vo
     }
 
     res.json({ organizations: data, total: count, page, limit });
-  } catch {
+  } catch (err) {
+    console.error('[Admin/ListOrganizations] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch organizations' });
   }
 });
@@ -76,7 +79,8 @@ router.get('/users', async (req: AuthRequest, res: Response): Promise<void> => {
     }
 
     res.json({ users: data, total: count, page, limit });
-  } catch {
+  } catch (err) {
+    console.error('[Admin/ListUsers] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch users' });
   }
 });
@@ -84,6 +88,7 @@ router.get('/users', async (req: AuthRequest, res: Response): Promise<void> => {
 // PUT /api/admin/organizations/:id/plan
 router.put('/organizations/:id/plan', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    if (!isValidUUID(req.params.id)) { res.status(400).json({ error: 'Некорректный ID' }); return; }
     const { plan } = req.body;
     if (!plan || !['free', 'pro'].includes(plan)) {
       res.status(400).json({ error: 'plan must be "free" or "pro"' });
@@ -103,7 +108,8 @@ router.put('/organizations/:id/plan', async (req: AuthRequest, res: Response): P
     }
 
     res.json({ organization: data });
-  } catch {
+  } catch (err) {
+    console.error('[Admin/UpdatePlan] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to update plan' });
   }
 });
@@ -111,6 +117,7 @@ router.put('/organizations/:id/plan', async (req: AuthRequest, res: Response): P
 // PUT /api/admin/users/:id/role
 router.put('/users/:id/role', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    if (!isValidUUID(req.params.id)) { res.status(400).json({ error: 'Некорректный ID' }); return; }
     const { role } = req.body;
     if (!role || !['user', 'superadmin'].includes(role)) {
       res.status(400).json({ error: 'role must be "user" or "superadmin"' });
@@ -130,8 +137,53 @@ router.put('/users/:id/role', async (req: AuthRequest, res: Response): Promise<v
     }
 
     res.json({ user: data });
-  } catch {
+  } catch (err) {
+    console.error('[Admin/UpdateRole] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to update role' });
+  }
+});
+
+
+// ── Admin: Usage statistics ──
+router.get('/usage', authenticate, requireSuperadmin, async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { data: logs } = await supabase
+      .from('usage_logs')
+      .select('action, tokens_cost, created_at, user_id')
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    const allLogs = logs || [];
+    
+    // Aggregate by action
+    const byAction: Record<string, { count: number; tokens: number }> = {};
+    allLogs.forEach(l => {
+      if (!byAction[l.action]) byAction[l.action] = { count: 0, tokens: 0 };
+      byAction[l.action].count++;
+      byAction[l.action].tokens += l.tokens_cost || 0;
+    });
+
+    // Aggregate by day (last 30 days)
+    const byDay: Record<string, number> = {};
+    allLogs.forEach(l => {
+      const day = l.created_at?.split('T')[0] || 'unknown';
+      byDay[day] = (byDay[day] || 0) + 1;
+    });
+
+    // Unique users
+    const uniqueUsers = new Set(allLogs.map(l => l.user_id)).size;
+
+    res.json({
+      usage: {
+        total_actions: allLogs.length,
+        unique_users: uniqueUsers,
+        by_action: byAction,
+        by_day: byDay,
+      }
+    });
+  } catch (err) {
+    console.error('[Admin/Usage] Error:', err);
+    res.json({ usage: { total_actions: 0, unique_users: 0, by_action: {}, by_day: {} } });
   }
 });
 

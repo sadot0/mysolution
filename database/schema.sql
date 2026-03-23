@@ -184,3 +184,180 @@ END $$;
 
 -- Mark all existing users as verified (they registered before verification was introduced)
 UPDATE users SET email_verified = TRUE WHERE email_verified = FALSE;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- v3: Token system, Support tickets, Usage logs, Admin whitelist
+-- ═══════════════════════════════════════════════════════════════════
+
+-- Token balance for users
+ALTER TABLE users ADD COLUMN IF NOT EXISTS token_balance INTEGER DEFAULT 100;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS tokens_used INTEGER DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_whitelisted BOOLEAN DEFAULT FALSE;
+
+-- Token transactions (purchases, usage, bonuses)
+CREATE TABLE IF NOT EXISTS token_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  type VARCHAR(20) NOT NULL CHECK (type IN ('purchase', 'usage', 'bonus', 'refund')),
+  amount INTEGER NOT NULL,
+  balance_after INTEGER NOT NULL,
+  description TEXT,
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_token_transactions_user ON token_transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_token_transactions_type ON token_transactions(type);
+
+-- Token pricing plans
+CREATE TABLE IF NOT EXISTS token_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  tokens INTEGER NOT NULL,
+  price_usd DECIMAL(10,2) NOT NULL,
+  price_uzs DECIMAL(12,0),
+  popular BOOLEAN DEFAULT FALSE,
+  active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Insert default plans (cost ~$0.01/token, sell at $0.02-0.03 = 100-200% margin)
+INSERT INTO token_plans (name, tokens, price_usd, price_uzs, popular) VALUES
+  ('Стартер', 100, 2.99, 38000, false),
+  ('Базовый', 500, 9.99, 128000, true),
+  ('Про', 1500, 24.99, 320000, false),
+  ('Бизнес', 5000, 69.99, 900000, false)
+ON CONFLICT DO NOTHING;
+
+-- Support tickets
+CREATE TABLE IF NOT EXISTS support_tickets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  user_email VARCHAR(255) NOT NULL,
+  user_name VARCHAR(255),
+  category VARCHAR(50) NOT NULL CHECK (category IN ('bug', 'feature', 'question', 'billing', 'other')),
+  priority VARCHAR(20) DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'urgent')),
+  subject VARCHAR(500) NOT NULL,
+  message TEXT NOT NULL,
+  status VARCHAR(20) DEFAULT 'open' CHECK (status IN ('open', 'in_progress', 'resolved', 'closed')),
+  admin_reply TEXT,
+  admin_id UUID REFERENCES users(id),
+  resolved_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_support_tickets_user ON support_tickets(user_id);
+CREATE INDEX IF NOT EXISTS idx_support_tickets_status ON support_tickets(status);
+CREATE INDEX IF NOT EXISTS idx_support_tickets_category ON support_tickets(category);
+
+-- Usage logs (track every AI analysis, form creation, etc.)
+CREATE TABLE IF NOT EXISTS usage_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  org_id UUID REFERENCES organizations(id) ON DELETE SET NULL,
+  action VARCHAR(50) NOT NULL,
+  tokens_cost INTEGER DEFAULT 0,
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_user ON usage_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_action ON usage_logs(action);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_created ON usage_logs(created_at DESC);
+
+-- Admin whitelist emails
+CREATE TABLE IF NOT EXISTS admin_whitelist (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  added_by UUID REFERENCES users(id),
+  note VARCHAR(500),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE token_transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE token_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE support_tickets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE usage_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admin_whitelist ENABLE ROW LEVEL SECURITY;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- v4: Auto rules for candidate processing automation
+-- ═══════════════════════════════════════════════════════════════════
+
+CREATE TABLE IF NOT EXISTS auto_rules (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  vacancy_id UUID REFERENCES vacancies(id) ON DELETE CASCADE,
+  condition_type VARCHAR(30) NOT NULL,
+  condition_value INTEGER DEFAULT 0,
+  action_type VARCHAR(30) NOT NULL,
+  enabled BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_auto_rules_user ON auto_rules(user_id);
+CREATE INDEX IF NOT EXISTS idx_auto_rules_vacancy ON auto_rules(vacancy_id);
+
+ALTER TABLE auto_rules ENABLE ROW LEVEL SECURITY;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- v5: In-app notifications
+-- ═══════════════════════════════════════════════════════════════════
+
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  type VARCHAR(30) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  message TEXT,
+  link VARCHAR(500),
+  read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);
+
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+
+-- ═══════════════════════════════════════════════════════════════════
+-- v6: Interviews and Talent Pool
+-- ═══════════════════════════════════════════════════════════════════
+
+-- Interviews
+CREATE TABLE IF NOT EXISTS interviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  candidate_id UUID REFERENCES candidates(id) ON DELETE CASCADE,
+  vacancy_id UUID REFERENCES vacancies(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  scheduled_at TIMESTAMPTZ NOT NULL,
+  duration_minutes INTEGER DEFAULT 30,
+  type VARCHAR(20) DEFAULT 'online',
+  location TEXT,
+  meeting_link TEXT,
+  notes TEXT,
+  status VARCHAR(20) DEFAULT 'scheduled',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_interviews_user ON interviews(user_id);
+
+ALTER TABLE interviews ENABLE ROW LEVEL SECURITY;
+
+-- Talent Pool
+CREATE TABLE IF NOT EXISTS talent_pool (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  candidate_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255),
+  phone VARCHAR(50),
+  title VARCHAR(255),
+  skills TEXT[],
+  experience VARCHAR(50),
+  city VARCHAR(100),
+  rating INTEGER DEFAULT 0,
+  favorite BOOLEAN DEFAULT FALSE,
+  source_vacancy_id UUID REFERENCES vacancies(id),
+  source_candidate_id UUID REFERENCES candidates(id),
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_talent_pool_user ON talent_pool(user_id);
+
+ALTER TABLE talent_pool ENABLE ROW LEVEL SECURITY;

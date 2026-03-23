@@ -82,7 +82,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
           style={{
             background: 'rgba(255,110,0,0.12)',
             border: '1px solid rgba(255,110,0,0.25)',
-            color: '#FF9A3C',
+            color: '#fb923c',
           }}
         >
           #{index + 1}
@@ -154,7 +154,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
                 type="button"
                 onClick={() => onChange({ ...question, required: !question.required })}
                 className="flex items-center gap-2 text-sm transition-all"
-                style={{ color: question.required ? '#FF9A3C' : 'rgba(255,255,255,0.35)' }}
+                style={{ color: question.required ? '#fb923c' : 'rgba(255,255,255,0.35)' }}
               >
                 <div
                   style={{
@@ -173,7 +173,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
                       left: question.required ? 18 : 2,
                       width: 14, height: 14,
                       borderRadius: '50%',
-                      background: question.required ? '#FF9A3C' : 'rgba(255,255,255,0.3)',
+                      background: question.required ? '#fb923c' : 'rgba(255,255,255,0.3)',
                       transition: 'all 0.2s',
                     }}
                   />

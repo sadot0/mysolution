@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { supabase } from '../config/supabase';
 import { authenticate, AuthRequest } from '../middleware/auth';
+import { isValidUUID } from '../utils/validate';
 
 const router = Router();
 router.use(authenticate);
@@ -49,7 +50,8 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
       avg_score: avgScore,
       by_category: byCategory,
     });
-  } catch {
+  } catch (err) {
+    console.error('[Analytics/Overview] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch analytics' });
   }
 });
@@ -57,6 +59,7 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
 // GET /api/analytics/vacancy/:id
 router.get('/vacancy/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    if (!isValidUUID(req.params.id)) { res.status(400).json({ error: 'Некорректный ID' }); return; }
     const { data: vacancy } = await supabase
       .from('vacancies')
       .select('*')
@@ -103,8 +106,76 @@ router.get('/vacancy/:id', async (req: AuthRequest, res: Response): Promise<void
         by_status: byStatus,
       },
     });
-  } catch {
+  } catch (err) {
+    console.error('[Analytics/Vacancy] Error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Failed to fetch vacancy analytics' });
+  }
+});
+
+// ── Hiring funnel ──
+router.get('/funnel', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Get all candidates for user's vacancies — use separate queries to avoid type conflicts
+    let candidates: Record<string, unknown>[] | null = null;
+
+    if (req.orgId) {
+      const result = await supabase
+        .from('candidates')
+        .select('id, status, submitted_at, vacancies!inner(organization_id)')
+        .eq('vacancies.organization_id', req.orgId);
+      candidates = result.data;
+    } else {
+      const result = await supabase
+        .from('candidates')
+        .select('id, status, submitted_at, vacancies!inner(created_by)')
+        .eq('vacancies.created_by', req.userId!);
+      candidates = result.data;
+    }
+
+    const all = candidates || [];
+
+    const funnel = {
+      total_applications: all.length,
+      new: all.filter(c => c.status === 'new').length,
+      analyzing: all.filter(c => c.status === 'analyzing').length,
+      analyzed: all.filter(c => c.status === 'analyzed').length,
+      invited: all.filter(c => c.status === 'invited').length,
+      rejected: all.filter(c => c.status === 'rejected').length,
+    };
+
+    // Conversion rates
+    const conversions = {
+      analysis_rate: all.length > 0 ? ((funnel.analyzed + funnel.invited + funnel.rejected) / all.length * 100) : 0,
+      invite_rate: all.length > 0 ? (funnel.invited / all.length * 100) : 0,
+      rejection_rate: all.length > 0 ? (funnel.rejected / all.length * 100) : 0,
+    };
+
+    // Time metrics (approximate from submission dates)
+    const now = Date.now();
+    const avgAge = all.length > 0
+      ? all.reduce((sum, c) => sum + (now - new Date(c.submitted_at as string).getTime()), 0) / all.length / (1000 * 60 * 60 * 24)
+      : 0;
+
+    // Weekly trend
+    const weeklyData: Record<string, number> = {};
+    all.forEach(c => {
+      const week = new Date(c.submitted_at as string).toISOString().split('T')[0];
+      weeklyData[week] = (weeklyData[week] || 0) + 1;
+    });
+
+    res.json({
+      funnel,
+      conversions: {
+        analysis_rate: Math.round(conversions.analysis_rate * 10) / 10,
+        invite_rate: Math.round(conversions.invite_rate * 10) / 10,
+        rejection_rate: Math.round(conversions.rejection_rate * 10) / 10,
+      },
+      avg_days_in_pipeline: Math.round(avgAge),
+      daily_applications: weeklyData,
+    });
+  } catch (err) {
+    console.error('[Analytics/Funnel] Error:', err);
+    res.json({ funnel: {}, conversions: {}, avg_days_in_pipeline: 0, daily_applications: {} });
   }
 });
 

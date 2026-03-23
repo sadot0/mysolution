@@ -15,7 +15,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const u = localStorage.getItem('user');
       return u ? JSON.parse(u) : null;
-    } catch {
+    } catch (e) {
+      console.error('Ошибка чтения данных из localStorage:', e);
       return null;
     }
   })(),
@@ -23,7 +24,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const o = localStorage.getItem('organization');
       return o ? JSON.parse(o) : null;
-    } catch {
+    } catch (e) {
+      console.error('Ошибка чтения данных из localStorage:', e);
       return null;
     }
   })(),

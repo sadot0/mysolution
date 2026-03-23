@@ -39,11 +39,11 @@ export default function SkillsRadar({ scores }: SkillsRadarProps) {
         <Radar
           name="Score"
           dataKey="value"
-          stroke="#FF9A3C"
-          fill="#FF6A00"
+          stroke="#fb923c"
+          fill="#f97316"
           fillOpacity={0.18}
           strokeWidth={2}
-          dot={{ fill: '#FF9A3C', r: 4, strokeWidth: 0 }}
+          dot={{ fill: '#fb923c', r: 4, strokeWidth: 0 }}
         />
         <Tooltip
           contentStyle={{
@@ -53,7 +53,7 @@ export default function SkillsRadar({ scores }: SkillsRadarProps) {
             boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
           }}
           labelStyle={{ color: '#fff', fontWeight: 700 }}
-          itemStyle={{ color: '#FF9A3C' }}
+          itemStyle={{ color: '#fb923c' }}
           formatter={(value: number) => [`${value}%`, 'Оценка']}
         />
       </RadarChart>
