@@ -745,7 +745,7 @@ if (fs.existsSync(frontendDist)) {
 app.listen(PORT, () => {
   console.log('');
   console.log('  ╔══════════════════════════════════════╗');
-  console.log('  ║     SOLUTION AI Recruiter v2.1       ║');
+  console.log('  ║     SOLUTION HUB v2.1       ║');
   console.log('  ║     ───────────────────────        ║');
   console.log(`  ║     Port: ${String(PORT).padEnd(27)}║`);
   console.log(`  ║     Env:  ${(process.env.NODE_ENV || 'development').padEnd(27)}║`);

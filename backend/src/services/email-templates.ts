@@ -34,7 +34,7 @@ export function inviteEmail(candidateName: string, vacancyTitle: string, company
       <p>Если у вас есть вопросы, смело отвечайте на это письмо.</p>
       <p>С уважением,<br><span class="highlight">Команда ${companyName}</span></p>
     </div>
-    <div class="footer"><p>Отправлено через SOLUTION AI Recruiter</p></div>
+    <div class="footer"><p>Отправлено через SOLUTION HUB</p></div>
   `);
 }
 
@@ -49,7 +49,7 @@ export function rejectEmail(candidateName: string, vacancyTitle: string, company
       <p>Желаем успехов в поиске работы!</p>
       <p>С уважением,<br><span class="highlight">Команда ${companyName}</span></p>
     </div>
-    <div class="footer"><p>Отправлено через SOLUTION AI Recruiter</p></div>
+    <div class="footer"><p>Отправлено через SOLUTION HUB</p></div>
   `);
 }
 
@@ -65,6 +65,6 @@ export function offerEmail(candidateName: string, vacancyTitle: string, companyN
       <p>Ждём вашего ответа! Если есть вопросы — пишите.</p>
       <p>С уважением,<br><span class="highlight">Команда ${companyName}</span></p>
     </div>
-    <div class="footer"><p>Отправлено через SOLUTION AI Recruiter</p></div>
+    <div class="footer"><p>Отправлено через SOLUTION HUB</p></div>
   `);
 }

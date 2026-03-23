@@ -149,7 +149,8 @@ export default function VacanciesPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-wider">ВАКАНСИИ</h1>
+            <h1 className="text-3xl font-bold text-white tracking-wider">ВАКАНСИИ</h1>
+            <div className="h-px w-16 mt-2 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
             {/* Stat badges bar */}
             <div className="flex items-center gap-2.5 mt-2 flex-wrap">
               <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300">

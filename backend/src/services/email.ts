@@ -42,8 +42,8 @@ export async function sendVerificationEmail(
   name: string,
   code: string,
 ): Promise<void> {
-  const fromEmail = process.env.EMAIL_USER || process.env.FROM_EMAIL || 'noreply@recrutor.ai';
-  const fromName = 'Рекрутор AI';
+  const fromEmail = process.env.EMAIL_USER || process.env.FROM_EMAIL || 'noreply@mysolution.uz';
+  const fromName = 'SOLUTION HUB';
 
   // Try Nodemailer (Gmail / SMTP)
   const transport = createTransport();
@@ -52,7 +52,7 @@ export async function sendVerificationEmail(
       await transport.sendMail({
         from: `"${fromName}" <${fromEmail}>`,
         to: email,
-        subject: 'Ваш код подтверждения — Рекрутор AI',
+        subject: 'Ваш код подтверждения — SOLUTION HUB',
         html: buildVerificationHtml(name, code),
       });
       return;
@@ -72,7 +72,7 @@ export async function sendVerificationEmail(
         body: JSON.stringify({
           from: `${fromName} <${fromEmail}>`,
           to: [email],
-          subject: 'Ваш код подтверждения — Рекрутор AI',
+          subject: 'Ваш код подтверждения — SOLUTION HUB',
           html: buildVerificationHtml(name, code),
         }),
       });
@@ -97,15 +97,15 @@ export async function sendInviteEmail(
   inviterName: string,
   orgName: string,
 ): Promise<void> {
-  const fromEmail = process.env.EMAIL_USER || process.env.FROM_EMAIL || 'noreply@recrutor.ai';
-  const fromName = 'Рекрутор AI';
+  const fromEmail = process.env.EMAIL_USER || process.env.FROM_EMAIL || 'noreply@mysolution.uz';
+  const fromName = 'SOLUTION HUB';
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
   const html = `
     <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#0d0d0d;color:#fff;border-radius:16px;">
       <div style="text-align:center;margin-bottom:32px;">
         <div style="display:inline-block;width:56px;height:56px;background:linear-gradient(135deg,#FF6A00,#FF9A3C);border-radius:14px;font-weight:900;font-size:24px;color:#000;line-height:56px;text-align:center;">R</div>
-        <h1 style="margin:12px 0 0;font-size:22px;">Рекрутор <span style="color:#FF9A3C;">AI</span></h1>
+        <h1 style="margin:12px 0 0;font-size:22px;">SOLUTION <span style="color:#FF9A3C;">HUB</span></h1>
       </div>
       <h2 style="font-size:18px;margin-bottom:8px;">${inviterName} приглашает вас!</h2>
       <p style="color:rgba(255,255,255,0.6);margin-bottom:28px;">Вы приглашены в организацию <strong style="color:#FF9A3C;">${orgName}</strong>.</p>
@@ -118,7 +118,7 @@ export async function sendInviteEmail(
   const transport = createTransport();
   if (transport) {
     try {
-      await transport.sendMail({ from: `"${fromName}" <${fromEmail}>`, to: email, subject: `Приглашение в ${orgName} — Рекрутор AI`, html });
+      await transport.sendMail({ from: `"${fromName}" <${fromEmail}>`, to: email, subject: `Приглашение в ${orgName} — SOLUTION HUB`, html });
       return;
     } catch (err) {
       console.error('[Email] Invite nodemailer error:', err);
@@ -155,7 +155,7 @@ function buildVerificationHtml(name: string, code: string): string {
         <!-- Logo -->
         <div style="text-align:center;margin-bottom:32px;">
           <div style="display:inline-block;width:60px;height:60px;background:linear-gradient(135deg,#FF6A00,#FF9A3C);border-radius:16px;font-weight:900;font-size:28px;color:#000;line-height:60px;text-align:center;box-shadow:0 8px 24px rgba(255,106,0,0.4);">R</div>
-          <h1 style="margin:12px 0 0;font-size:22px;font-weight:900;color:#fff;">Рекрутор <span style="color:#FF9A3C;">AI</span></h1>
+          <h1 style="margin:12px 0 0;font-size:22px;font-weight:900;color:#fff;">SOLUTION <span style="color:#FF9A3C;">HUB</span></h1>
         </div>
 
         <!-- Greeting -->

@@ -94,14 +94,19 @@ html {
   /* ─── CARDS ─── */
 
   .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-normal);
-    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
-    transition: all var(--t-slow);
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .card:hover {
+    border-color: rgba(232,114,28,0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   }
 
   .card::before {

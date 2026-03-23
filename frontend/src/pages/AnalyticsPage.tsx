@@ -149,8 +149,9 @@ export default function AnalyticsPage() {
         animate="animate"
       >
         {/* Header */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-wider">АНАЛИТИКА</h1>
+        <div className="mb-8 md:mb-10">
+          <h1 className="text-3xl font-bold text-white tracking-wider">АНАЛИТИКА</h1>
+          <div className="h-px w-16 mt-2 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
           <div className="flex items-center gap-3 mt-1">
             <p className="text-sm text-neutral-400">
               Общая статистика по всем вакансиям

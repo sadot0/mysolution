@@ -778,7 +778,7 @@ export default function ApplyPage() {
             R
           </div>
           <span className="text-white font-bold text-xl tracking-tight">
-            Рекрутор <span className="text-orange-400">AI</span>
+            SOLUTION <span className="text-orange-400">HUB</span>
           </span>
         </div>
 

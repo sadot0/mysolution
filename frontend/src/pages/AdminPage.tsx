@@ -141,7 +141,7 @@ function AdminContent() {
             <h1 className="text-2xl font-bold text-white tracking-wider">АДМИН-ПАНЕЛЬ</h1>
           </div>
           <p className="text-sm text-neutral-400 ml-12">
-            Управление платформой Recrutor AI
+            Управление SOLUTION HUB
           </p>
         </div>
 

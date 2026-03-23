@@ -76,7 +76,7 @@ export function formatVacancyPost(vacancy: {
   }
 
   text += `\n📝 <a href="${vacancy.apply_url}">Откликнуться</a>`;
-  text += `\n\n<i>Опубликовано через SOLUTION AI</i>`;
+  text += `\n\n<i>Опубликовано через SOLUTION</i>`;
 
   return text;
 }

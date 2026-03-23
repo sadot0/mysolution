@@ -1332,7 +1332,7 @@ router.get('/vacancy/:vacancyId/report-pdf', async (req: AuthRequest, res: Respo
 
     // Header
     doc.rect(0, 0, 595, 70).fill('#1a1a1a');
-    doc.fontSize(18).fillColor('#ffffff').text('SOLUTION AI Recruiter', 40, 22);
+    doc.fontSize(18).fillColor('#ffffff').text('SOLUTION HUB', 40, 22);
     doc.fontSize(9).fillColor('#E8721C').text(`Отчёт по вакансии: ${vacancy.title as string}`, 40, 45);
     doc.fontSize(8).fillColor('#888888').text(new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' }), 400, 45, { align: 'right' });
 
@@ -1376,7 +1376,7 @@ router.get('/vacancy/:vacancyId/report-pdf', async (req: AuthRequest, res: Respo
     for (let i = pages.start; i < pages.start + pages.count; i++) {
       doc.switchToPage(i);
       doc.fontSize(7).fillColor('#aaaaaa').text(
-        `SOLUTION AI Recruiter | Страница ${i + 1} из ${pages.count} | Конфиденциально`,
+        `SOLUTION HUB | Страница ${i + 1} из ${pages.count} | Конфиденциально`,
         40, 780, { align: 'center', width: 515 }
       );
     }

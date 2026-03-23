@@ -153,7 +153,7 @@ export default function VerifyEmailPage() {
             className="h-7 sm:h-8 mx-auto mb-2"
           />
           <p className="text-[11px] text-neutral-500 tracking-[0.2em] font-medium">
-            RECRUITER INTELLIGENCE PLATFORM
+            SOLUTION HUB
           </p>
         </motion.div>
 

@@ -257,7 +257,8 @@ export default function SettingsPage() {
       >
         {/* Header */}
         <div className="mb-5 md:mb-6">
-          <h1 className="text-2xl font-bold text-white tracking-wider">НАСТРОЙКИ</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wider">НАСТРОЙКИ</h1>
+          <div className="h-px w-16 mt-2 mb-1 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
           <p className="text-sm text-neutral-400">Управление профилем и аккаунтом</p>
         </div>
 

@@ -128,8 +128,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       {/* Logo + Token balance */}
       <div className="px-5 pt-5 pb-3">
-        <div className="flex items-center justify-between mb-1">
-          <img src="/logo-full.svg" alt="Solution" className="h-6" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src="/logo-full.svg" alt="Solution" className="h-6" />
+            <span className="text-[9px] font-bold tracking-[0.2em] text-orange-400/60 bg-orange-500/10 px-1.5 py-0.5 rounded">HUB</span>
+          </div>
           <div className="flex items-center gap-1.5">
             <NotificationBell />
           <Link to="/settings" className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-neutral-800 border border-neutral-700/50 hover:border-orange-500/30 transition-colors">
@@ -284,7 +287,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile bottom navigation bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-neutral-900 border-t border-neutral-800 md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-neutral-900/80 backdrop-blur-xl border-t border-white/[0.06] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
         {mobileBottomNav.map(({ href, label, icon: Icon }) => {
           const active = location.pathname.startsWith(href);
           return (

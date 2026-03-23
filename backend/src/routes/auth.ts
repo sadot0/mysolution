@@ -1030,7 +1030,7 @@ router.post('/2fa/setup', authenticate, async (req: AuthRequest, res: Response):
     }
 
     const secret = generateBase32Secret();
-    const otpauth_url = `otpauth://totp/RecrutorAI:${encodeURIComponent(user.email)}?secret=${secret}&issuer=RecrutorAI&digits=6&period=30`;
+    const otpauth_url = `otpauth://totp/SolutionHUB:${encodeURIComponent(user.email)}?secret=${secret}&issuer=SolutionHUB&digits=6&period=30`;
 
     // Try to store secret in DB (graceful if column doesn't exist)
     const { error: updateError } = await supabase

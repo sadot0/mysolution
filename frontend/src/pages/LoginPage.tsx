@@ -156,9 +156,8 @@ export default function LoginPage() {
   return (
     <div className="login-page-root">
       {/* ── Animated background layers ── */}
-      <div className="login-bg-mesh" />
-      <div className="login-bg-gradient" />
-      <div className="login-bg-dots" />
+      <div className="login-bg-orb-1" />
+      <div className="login-bg-orb-2" />
 
       <div className="w-full max-w-md relative z-10 px-4 sm:px-0">
         {/* ── Logo section ── */}
@@ -183,7 +182,7 @@ export default function LoginPage() {
             className="h-7 sm:h-8 mx-auto mb-2"
           />
           <p className="text-[11px] text-neutral-500 tracking-[0.2em] font-medium">
-            RECRUITER INTELLIGENCE PLATFORM
+            SOLUTION HUB
           </p>
         </motion.div>
 
@@ -438,90 +437,45 @@ export default function LoginPage() {
           background: #050505;
         }
 
-        /* ── Background: animated gradient mesh ── */
-        .login-bg-gradient {
+        /* ── Background: floating orbs ── */
+        .login-bg-orb-1 {
           position: absolute;
-          inset: 0;
+          top: -20%;
+          right: -10%;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, rgba(232,114,28,0.12) 0%, transparent 60%);
+          border-radius: 50%;
+          animation: orbFloat 18s ease-in-out infinite;
           pointer-events: none;
           z-index: 1;
         }
-        .login-bg-gradient::before {
-          content: '';
+        .login-bg-orb-2 {
           position: absolute;
-          top: 20%;
-          left: 50%;
+          bottom: -30%;
+          left: -20%;
           width: 600px;
           height: 600px;
-          transform: translate(-50%, -30%);
-          background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 65%);
-          animation: loginGradientRotate 12s ease-in-out infinite;
-        }
-        @keyframes loginGradientRotate {
-          0%, 100% { transform: translate(-50%, -30%) rotate(0deg) scale(1); }
-          33% { transform: translate(-45%, -25%) rotate(120deg) scale(1.1); }
-          66% { transform: translate(-55%, -35%) rotate(240deg) scale(0.95); }
-        }
-
-        /* ── Background: mesh overlay ── */
-        .login-bg-mesh {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
-          background:
-            radial-gradient(ellipse 80% 50% at 50% 0%, rgba(249,115,22,0.08) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 40% at 80% 80%, rgba(249,115,22,0.04) 0%, transparent 50%),
-            radial-gradient(ellipse 60% 40% at 20% 70%, rgba(249,115,22,0.04) 0%, transparent 50%);
-        }
-
-        /* ── Background: dot grid ── */
-        .login-bg-dots {
-          position: absolute;
-          inset: 0;
+          background: radial-gradient(circle, rgba(150,80,200,0.06) 0%, transparent 60%);
+          border-radius: 50%;
+          animation: orbFloat 22s ease-in-out infinite reverse;
           pointer-events: none;
           z-index: 1;
-          opacity: 0.3;
-          background-image:
-            radial-gradient(circle 1px, rgba(255,255,255,0.12) 1px, transparent 1px);
-          background-size: 32px 32px;
-          mask-image: radial-gradient(ellipse 60% 50% at 50% 45%, black 20%, transparent 70%);
-          -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 45%, black 20%, transparent 70%);
         }
-
-        /* ── Logo pulsing ring ── */
-        .login-logo-ring {
-          position: absolute;
-          inset: -12px;
-          border-radius: 50%;
-          border: 1.5px solid rgba(249,115,22,0.2);
-          animation: loginPulseRing 3s ease-in-out infinite;
-        }
-        .login-logo-ring::after {
-          content: '';
-          position: absolute;
-          inset: -8px;
-          border-radius: 50%;
-          border: 1px solid rgba(249,115,22,0.08);
-          animation: loginPulseRing 3s ease-in-out infinite 0.5s;
-        }
-        @keyframes loginPulseRing {
-          0%, 100% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(1.15); opacity: 0; }
+        @keyframes orbFloat {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-40px) scale(1.05); }
         }
 
         /* ── Card ── */
         .login-card {
           position: relative;
-          background: linear-gradient(180deg, rgba(28,28,28,0.95) 0%, rgba(23,23,23,0.98) 100%);
-          border: 1px solid rgba(64,64,64,0.5);
-          border-top-color: rgba(100,100,100,0.4);
-          border-radius: 16px;
+          background: rgba(255,255,255,0.03);
+          backdrop-filter: blur(40px);
+          border: 1px solid rgba(255,255,255,0.06);
+          border-radius: 24px;
           padding: 32px 28px;
-          backdrop-filter: blur(20px);
-          box-shadow:
-            0 0 0 1px rgba(255,255,255,0.03) inset,
-            0 20px 60px rgba(0,0,0,0.5),
-            0 0 80px rgba(249,115,22,0.03);
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 20px 60px rgba(0,0,0,0.4);
         }
         @media (min-width: 640px) {
           .login-card {
