@@ -1945,6 +1945,417 @@
       transition: none;
       will-change: transform;
     }
+
+    /* ============================================
+       TECH MARQUEE (Powered By)
+       ============================================ */
+    .tech-marquee-section {
+      min-height: auto !important;
+      padding: 32px 0;
+      position: relative;
+      z-index: 2;
+      display: block;
+      overflow: hidden;
+    }
+    .tech-marquee-strip {
+      background: var(--glass-bg);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 20px 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .tech-marquee-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.2;
+      margin-bottom: 16px;
+    }
+    .tech-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 25s linear infinite;
+    }
+    .tech-marquee-track:hover {
+      animation-play-state: paused;
+    }
+    .tech-marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 24px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      opacity: 0.35;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .tech-marquee-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 8px rgba(232,114,28,0.4);
+      flex-shrink: 0;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ============================================
+       FEATURES GRID (Возможности платформы)
+       ============================================ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .feature-card-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-card-icon svg {
+      width: 40px;
+      height: 40px;
+    }
+    .feature-card h3 {
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--white);
+      opacity: 0.35;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
+       SECURITY SECTION
+       ============================================ */
+    .security-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 64px;
+    }
+    .security-icon-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .security-shield-svg {
+      width: 200px;
+      height: 200px;
+    }
+    .security-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .security-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 16px;
+      color: var(--white);
+      opacity: 0.6;
+      font-weight: 400;
+    }
+    .security-item-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .security-layout {
+        grid-template-columns: 1fr;
+        padding: 40px 28px;
+        gap: 40px;
+      }
+      .security-shield-svg { width: 140px; height: 140px; }
+    }
+
+    /* ============================================
+       AUDIENCE SECTION (Для кого)
+       ============================================ */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .audience-card {
+      padding: 48px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      align-items: center;
+    }
+    .audience-card-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .audience-card-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+    .audience-badge {
+      display: inline-flex;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      background: var(--orange-glow);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.02em;
+    }
+    .audience-card h3 {
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .audience-card p {
+      font-size: 15px;
+      color: var(--white);
+      opacity: 0.4;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    @media (max-width: 768px) {
+      .audience-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
+       PROCESS SECTION (Процесс работы с нами)
+       ============================================ */
+    .process-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      position: relative;
+    }
+    .process-line {
+      position: absolute;
+      top: 60px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 3px;
+      background: var(--white-05);
+      border-radius: 2px;
+      z-index: 0;
+      display: none;
+    }
+    @media (min-width: 769px) {
+      .process-line { display: block; }
+    }
+    .process-line-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--orange), var(--orange-light));
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--orange-glow-strong);
+      transition: width 1.5s var(--ease-out);
+    }
+    .process-line-fill.animate {
+      width: 100%;
+    }
+    .process-step {
+      padding: 40px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .process-step-num {
+      font-family: var(--font-heading);
+      font-size: 40px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--orange), var(--orange-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .process-step h3 {
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .process-step p {
+      font-size: 14px;
+      color: var(--white);
+      opacity: 0.4;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    @media (max-width: 768px) {
+      .process-timeline { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
+       INTEGRATIONS SECTION
+       ============================================ */
+    .integrations-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .integration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+      opacity: 0.5;
+      transition: all 0.3s var(--ease-smooth);
+      position: relative;
+    }
+    .integration-badge:hover {
+      border-color: var(--glass-border-hover);
+      opacity: 0.8;
+      transform: translateY(-2px);
+    }
+    .integration-badge svg {
+      width: 20px;
+      height: 20px;
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+    .integration-soon {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      padding: 2px 8px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================
+       ROADMAP SECTION
+       ============================================ */
+    .roadmap-timeline {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 40px;
+    }
+    .roadmap-line {
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--white-05);
+      border-radius: 2px;
+    }
+    .roadmap-line-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, var(--orange), var(--orange-light));
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--orange-glow-strong);
+      transition: height 2s var(--ease-out);
+    }
+    .roadmap-line-fill.animate {
+      height: 35%;
+    }
+    .roadmap-item {
+      position: relative;
+      padding: 24px 0 48px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .roadmap-item:last-child { padding-bottom: 0; }
+    .roadmap-dot {
+      position: absolute;
+      left: -33px;
+      top: 28px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--white-15);
+      border: 2px solid var(--glass-border);
+      z-index: 1;
+    }
+    .roadmap-item.current .roadmap-dot {
+      background: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 16px rgba(232,114,28,0.5);
+    }
+    .roadmap-item.done .roadmap-dot {
+      background: var(--orange);
+      border-color: var(--orange-light);
+    }
+    .roadmap-icon {
+      font-size: 24px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .roadmap-content h3 {
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .roadmap-content p {
+      font-size: 15px;
+      color: var(--white);
+      opacity: 0.4;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .roadmap-item.current .roadmap-content h3 {
+      color: var(--orange);
+    }
+    .roadmap-item.done {
+      opacity: 0.6;
+    }
+
+    /* Stagger delays for new sections */
+    .reveal-delay-7 { transition-delay: 1.05s; }
+    .reveal-delay-8 { transition-delay: 1.2s; }
   </style>
 </head>
 
@@ -1967,6 +2378,7 @@
     <a href="#whatwedo" data-mobile-link>Продукты</a>
     <a href="#services" data-mobile-link>Услуги</a>
     <a href="#pricing" data-mobile-link>Тарифы</a>
+    <a href="#integrations" data-mobile-link>Интеграции</a>
     <a href="#contact" data-mobile-link>Контакты</a>
     <a href="/login" class="btn btn-primary">Начать</a>
   </div>
@@ -2011,6 +2423,7 @@
         <a href="#whatwedo">Продукты</a>
         <a href="#services">Услуги</a>
         <a href="#pricing">Тарифы</a>
+        <a href="#integrations">Интеграции</a>
         <a href="#contact">Контакты</a>
       </div>
 
@@ -2082,6 +2495,29 @@
       </div>
     </div>
   </section>
+
+  <!-- ============================================
+       POWERED BY — tech marquee strip
+       ============================================ -->
+  <div class="tech-marquee-section" id="techstack">
+    <div class="tech-marquee-label reveal" data-i18n="techstack.label">Работаем на базе</div>
+    <div class="tech-marquee-strip">
+      <div class="tech-marquee-track">
+        <span class="tech-marquee-item">ANTHROPIC CLAUDE <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">SUPABASE <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">REACT <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">NODE.JS <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">TYPESCRIPT <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">POSTGRESQL <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">ANTHROPIC CLAUDE <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">SUPABASE <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">REACT <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">NODE.JS <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">TYPESCRIPT <span class="tech-marquee-dot"></span></span>
+        <span class="tech-marquee-item">POSTGRESQL <span class="tech-marquee-dot"></span></span>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================================
        WHAT WE DO
@@ -2347,6 +2783,141 @@
   </section>
 
   <!-- ============================================
+       FEATURES — Возможности платформы
+       ============================================ -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="features.label">Возможности</p>
+        <h2 class="section-title" data-i18n="features.title">Возможности платформы</h2>
+        <p class="section-subtitle" data-i18n="features.subtitle">Глубокий обзор инструментов SOLUTION HUB</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-1">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="14" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <path d="M14 20 L18 24 L26 16" stroke="#E8721C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7">
+                <animate attributeName="stroke-dasharray" values="0 30;30 0" dur="2s" fill="freeze"/>
+              </path>
+              <circle cx="20" cy="20" r="16" stroke="#FF9A3C" stroke-width="0.5" fill="none" opacity="0.15">
+                <animate attributeName="r" values="14;18;14" dur="3s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f1.title">Умный анализ резюме</h3>
+          <p data-i18n="features.f1.desc">6 параметров за 30 секунд</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-2">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="8" width="8" height="24" rx="2" fill="#E8721C" opacity="0.2">
+                <animate attributeName="height" values="24;20;24" dur="3s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="16" y="12" width="8" height="20" rx="2" fill="#FF9A3C" opacity="0.2">
+                <animate attributeName="height" values="20;16;20" dur="3s" begin="0.3s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="26" y="6" width="8" height="26" rx="2" fill="#E8721C" opacity="0.2">
+                <animate attributeName="height" values="26;22;26" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+              </rect>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f2.title">Kanban доска</h3>
+          <p data-i18n="features.f2.desc">Визуальное управление пайплайном</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-3">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="8" y="14" width="24" height="16" rx="2" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.4"/>
+              <path d="M8 18 L20 24 L32 18" stroke="#E8721C" stroke-width="1" fill="none" opacity="0.3"/>
+              <circle cx="20" cy="12" r="3" fill="#FF9A3C" opacity="0.4">
+                <animate attributeName="cy" values="12;10;12" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f3.title">Массовая загрузка</h3>
+          <p data-i18n="features.f3.desc">До 100 резюме одним кликом</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-4">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="8" y="6" width="24" height="28" rx="3" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <line x1="14" y1="14" x2="26" y2="14" stroke="#FF9A3C" stroke-width="1" opacity="0.3"/>
+              <line x1="14" y1="20" x2="26" y2="20" stroke="#E8721C" stroke-width="1" opacity="0.3"/>
+              <line x1="14" y1="26" x2="22" y2="26" stroke="#FF9A3C" stroke-width="1" opacity="0.3"/>
+              <circle cx="30" cy="10" r="5" fill="#E8721C" opacity="0.3">
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f4.title">Шаблоны вакансий</h3>
+          <p data-i18n="features.f4.desc">6 готовых шаблонов</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-5">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="6" width="28" height="28" rx="3" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <line x1="6" y1="14" x2="34" y2="14" stroke="#E8721C" stroke-width="1" opacity="0.2"/>
+              <text x="12" y="26" font-family="sans-serif" font-size="10" fill="#FF9A3C" font-weight="bold" opacity="0.5">PDF
+                <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite"/>
+              </text>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f5.title">PDF отчёты</h3>
+          <p data-i18n="features.f5.desc">Для аудиторов и руководства</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-6">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="10" width="28" height="20" rx="3" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <path d="M6 14 L20 22 L34 14" stroke="#FF9A3C" stroke-width="1" fill="none" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2.5s" repeatCount="indefinite"/>
+              </path>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f6.title">Email автоматизация</h3>
+          <p data-i18n="features.f6.desc">Приглашение, отказ, оффер</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-7">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <polygon points="20,4 26,16 38,16 28,24 32,36 20,28 8,36 12,24 2,16 14,16" fill="none" stroke="#E8721C" stroke-width="1" opacity="0.3"/>
+              <polygon points="20,10 24,18 32,18 26,23 28,31 20,26 12,31 14,23 8,18 16,18" fill="#E8721C" opacity="0.15">
+                <animate attributeName="opacity" values="0.15;0.3;0.15" dur="3s" repeatCount="indefinite"/>
+              </polygon>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f7.title">Сравнение кандидатов</h3>
+          <p data-i18n="features.f7.desc">Radar chart по параметрам</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card feature-card reveal reveal-delay-8">
+          <div class="feature-card-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="12" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <path d="M14 20 L18 20 L20 16 L22 24 L24 20 L26 20" stroke="#FF9A3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5">
+                <animate attributeName="stroke-dashoffset" from="40" to="0" dur="2s" fill="freeze"/>
+              </path>
+              <circle cx="20" cy="20" r="14" stroke="#E8721C" stroke-width="0.5" fill="none" opacity="0.1">
+                <animate attributeName="r" values="14;16;14" dur="3s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <h3 data-i18n="features.f8.title">Автоправила</h3>
+          <p data-i18n="features.f8.desc">Автоматические действия по score</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
        HOW IT WORKS — timeline with animated line
        ============================================ -->
   <section id="howitworks">
@@ -2492,6 +3063,67 @@
   </section>
 
   <!-- ============================================
+       SECURITY — Безопасность
+       ============================================ -->
+  <section id="security">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="security.label">Безопасность</p>
+        <h2 class="section-title" data-i18n="security.title">Ваши данные под защитой</h2>
+      </div>
+
+      <div class="glass security-layout reveal">
+        <div class="security-icon-area">
+          <svg class="security-shield-svg" viewBox="0 0 200 200" fill="none">
+            <!-- Pulsing rings -->
+            <circle cx="100" cy="100" r="90" stroke="#E8721C" stroke-width="0.5" fill="none" opacity="0.1">
+              <animate attributeName="r" values="80;95;80" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.1;0.2;0.1" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="100" cy="100" r="70" stroke="#FF9A3C" stroke-width="0.5" fill="none" opacity="0.15">
+              <animate attributeName="r" values="65;75;65" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.15;0.25;0.15" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Shield -->
+            <path d="M100 30 L140 55 L140 110 C140 140 120 165 100 175 C80 165 60 140 60 110 L60 55 Z" 
+                  fill="rgba(232,114,28,0.08)" stroke="#E8721C" stroke-width="1.5" opacity="0.6">
+              <animate attributeName="opacity" values="0.6;0.8;0.6" dur="3s" repeatCount="indefinite"/>
+            </path>
+            <!-- Check mark -->
+            <path d="M85 105 L95 115 L118 88" stroke="#E8721C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="security-list">
+          <div class="security-item reveal reveal-delay-1">
+            <span class="security-item-icon">&#128272;</span>
+            <span data-i18n="security.i1">AES-256 шифрование данных</span>
+          </div>
+          <div class="security-item reveal reveal-delay-2">
+            <span class="security-item-icon">&#128737;&#65039;</span>
+            <span data-i18n="security.i2">Двухфакторная аутентификация</span>
+          </div>
+          <div class="security-item reveal reveal-delay-3">
+            <span class="security-item-icon">&#128274;</span>
+            <span data-i18n="security.i3">HTTPS everywhere</span>
+          </div>
+          <div class="security-item reveal reveal-delay-4">
+            <span class="security-item-icon">&#9889;</span>
+            <span data-i18n="security.i4">Rate limiting и защита от атак</span>
+          </div>
+          <div class="security-item reveal reveal-delay-5">
+            <span class="security-item-icon">&#128203;</span>
+            <span data-i18n="security.i5">Полный лог действий для аудита</span>
+          </div>
+          <div class="security-item reveal reveal-delay-6">
+            <span class="security-item-icon">&#128273;</span>
+            <span data-i18n="security.i6">JWT авторизация с автообновлением</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
        NUMBERS — Наши числа
        ============================================ -->
   <section id="numbers">
@@ -2517,6 +3149,73 @@
         <div class="number-item reveal reveal-delay-4">
           <div class="number-value" data-number-counter="3" data-number-suffix="+">0</div>
           <div class="number-label" data-i18n="numbers.n4">года опыта<br>в HR</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       AUDIENCE — Для кого SOLUTION
+       ============================================ -->
+  <section id="audience">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="audience.label">Для кого</p>
+        <h2 class="section-title" data-i18n="audience.title">Для кого SOLUTION</h2>
+        <p class="section-subtitle" data-i18n="audience.subtitle">Решения для бизнеса любого масштаба</p>
+      </div>
+
+      <div class="audience-grid">
+        <div class="glass glass-hover magnetic-card audience-card reveal reveal-delay-1">
+          <div class="audience-card-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="16" r="8" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.4"/>
+              <circle cx="24" cy="12" r="3" fill="#E8721C" opacity="0.3"/>
+              <path d="M12 40 C12 32 18 28 24 28 C30 28 36 32 36 40" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <circle cx="24" cy="24" r="2" fill="#FF9A3C" opacity="0">
+                <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <span class="audience-badge" data-i18n="audience.c1.badge">5-50 человек</span>
+          <h3 data-i18n="audience.c1.title">Малый бизнес</h3>
+          <p data-i18n="audience.c1.desc">Нет своего HR? Мы заменим целый отдел. Платформа + команда экспертов.</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card audience-card reveal reveal-delay-2">
+          <div class="audience-card-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <circle cx="16" cy="16" r="6" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <circle cx="32" cy="16" r="6" stroke="#FF9A3C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <circle cx="24" cy="28" r="6" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <line x1="20" y1="18" x2="28" y2="18" stroke="#E8721C" stroke-width="0.5" opacity="0.2"/>
+              <line x1="18" y1="22" x2="22" y2="26" stroke="#E8721C" stroke-width="0.5" opacity="0.2"/>
+              <line x1="30" y1="22" x2="26" y2="26" stroke="#FF9A3C" stroke-width="0.5" opacity="0.2"/>
+              <circle cx="24" cy="20" r="8" fill="none" stroke="#E8721C" stroke-width="0.5" opacity="0.1">
+                <animate attributeName="r" values="8;12;8" dur="4s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <span class="audience-badge" data-i18n="audience.c2.badge">50-500 человек</span>
+          <h3 data-i18n="audience.c2.title">Средний бизнес</h3>
+          <p data-i18n="audience.c2.desc">HR тонет в резюме? Автоматизируйте рутину. AI анализ + Kanban + отчёты.</p>
+        </div>
+
+        <div class="glass glass-hover magnetic-card audience-card reveal reveal-delay-3">
+          <div class="audience-card-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <rect x="8" y="18" width="32" height="22" rx="3" stroke="#E8721C" stroke-width="1.5" fill="none" opacity="0.3"/>
+              <rect x="14" y="8" width="20" height="14" rx="2" stroke="#FF9A3C" stroke-width="1" fill="none" opacity="0.2"/>
+              <line x1="24" y1="22" x2="24" y2="36" stroke="#E8721C" stroke-width="0.5" opacity="0.2"/>
+              <line x1="16" y1="28" x2="32" y2="28" stroke="#E8721C" stroke-width="0.5" opacity="0.2"/>
+              <circle cx="36" cy="12" r="4" fill="#E8721C" opacity="0.2">
+                <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+          <span class="audience-badge" data-i18n="audience.c3.badge">500+ человек</span>
+          <h3 data-i18n="audience.c3.title">Крупный бизнес</h3>
+          <p data-i18n="audience.c3.desc">Нужен аутсорсинг? Берём подбор на себя полностью. Индивидуальный подход.</p>
         </div>
       </div>
     </div>
@@ -2693,6 +3392,49 @@
   </section>
 
   <!-- ============================================
+       PROCESS — Процесс работы с нами
+       ============================================ -->
+  <section id="process">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="process.label">Процесс</p>
+        <h2 class="section-title" data-i18n="process.title">Процесс работы с нами</h2>
+        <p class="section-subtitle" data-i18n="process.subtitle">Для клиентов аутсорсинга и услуг</p>
+      </div>
+
+      <div class="process-timeline" id="processTimeline">
+        <div class="process-line">
+          <div class="process-line-fill" id="processLineFill"></div>
+        </div>
+
+        <div class="glass magnetic-card process-step reveal reveal-delay-1">
+          <div class="process-step-num">01</div>
+          <h3 data-i18n="process.s1.title">Оставьте заявку</h3>
+          <p data-i18n="process.s1.desc">Расскажите о задаче и мы свяжемся в течение дня</p>
+        </div>
+
+        <div class="glass magnetic-card process-step reveal reveal-delay-2">
+          <div class="process-step-num">02</div>
+          <h3 data-i18n="process.s2.title">Обсуждаем детали</h3>
+          <p data-i18n="process.s2.desc">Понимаем специфику, формируем требования</p>
+        </div>
+
+        <div class="glass magnetic-card process-step reveal reveal-delay-3">
+          <div class="process-step-num">03</div>
+          <h3 data-i18n="process.s3.title">Находим кандидатов</h3>
+          <p data-i18n="process.s3.desc">Наша команда + AI подбирают лучших</p>
+        </div>
+
+        <div class="glass magnetic-card process-step reveal reveal-delay-4">
+          <div class="process-step-num">04</div>
+          <h3 data-i18n="process.s4.title">Результат</h3>
+          <p data-i18n="process.s4.desc">Вы получаете отобранных специалистов</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
        FAQ
        ============================================ -->
   <section id="faq">
@@ -2760,6 +3502,110 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner" data-i18n="faq.a6">Зарегистрируйтесь на платформе — это займет минуту. Или оставьте заявку ниже — мы свяжемся в течение дня.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       INTEGRATIONS — Интеграции
+       ============================================ -->
+  <section id="integrations">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="integrations.label">Интеграции</p>
+        <h2 class="section-title" data-i18n="integrations.title">С чем мы работаем</h2>
+        <p class="section-subtitle" data-i18n="integrations.subtitle">Подключаем к вашим процессам</p>
+      </div>
+
+      <div class="integrations-grid">
+        <div class="integration-badge reveal reveal-delay-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+          <span>hh.uz</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          <span>LinkedIn</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Telegram</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Google Forms</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+          <span>Email (SMTP)</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-6">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>PDF Export</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-7">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          <span>Excel Export</span>
+        </div>
+        <div class="integration-badge reveal reveal-delay-8" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span>API</span>
+          <span class="integration-soon" data-i18n="integrations.soon">скоро</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ROADMAP — Дорожная карта
+       ============================================ -->
+  <section id="roadmap">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="roadmap.label">Дорожная карта</p>
+        <h2 class="section-title" data-i18n="roadmap.title">Что дальше</h2>
+        <p class="section-subtitle" data-i18n="roadmap.subtitle">Наши планы на 2026 год</p>
+      </div>
+
+      <div class="roadmap-timeline" id="roadmapTimeline">
+        <div class="roadmap-line">
+          <div class="roadmap-line-fill" id="roadmapLineFill"></div>
+        </div>
+
+        <div class="roadmap-item done reveal reveal-delay-1">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-icon">&#9989;</div>
+          <div class="roadmap-content">
+            <h3 data-i18n="roadmap.q1.title">Q1 2026</h3>
+            <p data-i18n="roadmap.q1.desc">MVP платформы, лендинг, первые клиенты</p>
+          </div>
+        </div>
+
+        <div class="roadmap-item current reveal reveal-delay-2">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-icon">&#128260;</div>
+          <div class="roadmap-content">
+            <h3 data-i18n="roadmap.q2.title">Q2 2026</h3>
+            <p data-i18n="roadmap.q2.desc">Оплата Click/Payme, Telegram бот, мобильная версия</p>
+          </div>
+        </div>
+
+        <div class="roadmap-item reveal reveal-delay-3">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-icon">&#128203;</div>
+          <div class="roadmap-content">
+            <h3 data-i18n="roadmap.q3.title">Q3 2026</h3>
+            <p data-i18n="roadmap.q3.desc">Обучение персонала, CRM модуль</p>
+          </div>
+        </div>
+
+        <div class="roadmap-item reveal reveal-delay-4">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-icon">&#128640;</div>
+          <div class="roadmap-content">
+            <h3 data-i18n="roadmap.q4.title">Q4 2026</h3>
+            <p data-i18n="roadmap.q4.desc">Казахстан, Кыргызстан, масштабирование</p>
           </div>
         </div>
       </div>
@@ -2864,6 +3710,8 @@
           <a href="#whatwedo" data-i18n="footer.l1">Платформа</a>
           <a href="#services" data-i18n="footer.l2">Услуги</a>
           <a href="#pricing" data-i18n="footer.l4">Тарифы</a>
+          <a href="#integrations" data-i18n="footer.l6">Интеграции</a>
+          <a href="#roadmap" data-i18n="footer.l7">Дорожная карта</a>
           <a href="#contact" data-i18n="footer.l5">Контакты</a>
         </div>
 
@@ -3410,7 +4258,76 @@
           'footer.l2': 'Xizmatlar',
           'footer.l4': 'Tariflar',
           'footer.l5': 'Kontaktlar',
-          'footer.location': 'Toshkent, O\'zbekiston.'
+          'footer.location': 'Toshkent, O\'zbekiston.',
+
+          'techstack.label': 'Asoslangan texnologiyalar',
+          'features.label': 'Imkoniyatlar',
+          'features.title': 'Platforma imkoniyatlari',
+          'features.subtitle': 'SOLUTION HUB asboblarining chuqur ko\'rishi',
+          'features.f1.title': 'Aqlli rezyume tahlili',
+          'features.f1.desc': '30 soniyada 6 mezon',
+          'features.f2.title': 'Kanban doska',
+          'features.f2.desc': 'Pipelaynni vizual boshqarish',
+          'features.f3.title': 'Ommaviy yuklash',
+          'features.f3.desc': 'Bir klik bilan 100 ta rezyume',
+          'features.f4.title': 'Vakansiya shablonlari',
+          'features.f4.desc': '6 tayyor shablon',
+          'features.f5.title': 'PDF hisobotlar',
+          'features.f5.desc': 'Auditorlar va rahbariyat uchun',
+          'features.f6.title': 'Email avtomatizatsiya',
+          'features.f6.desc': 'Taklif, rad, offer',
+          'features.f7.title': 'Nomzodlarni taqqoslash',
+          'features.f7.desc': 'Mezonlar bo\'yicha radar chart',
+          'features.f8.title': 'Avtomatik qoidalar',
+          'features.f8.desc': 'Score bo\'yicha avtomatik harakatlar',
+          'security.label': 'Xavfsizlik',
+          'security.title': 'Ma\'lumotlaringiz himoyada',
+          'security.i1': 'AES-256 ma\'lumotlar shifrlashi',
+          'security.i2': 'Ikki faktorli autentifikatsiya',
+          'security.i3': 'HTTPS everywhere',
+          'security.i4': 'Rate limiting va hujumlardan himoya',
+          'security.i5': 'Audit uchun to\'liq harakatlar jurnali',
+          'security.i6': 'Avtyangilanuvchi JWT avtorizatsiya',
+          'audience.label': 'Kim uchun',
+          'audience.title': 'SOLUTION kim uchun',
+          'audience.subtitle': 'Har qanday miqyosdagi biznes uchun yechimlar',
+          'audience.c1.badge': '5-50 kishi',
+          'audience.c1.title': 'Kichik biznes',
+          'audience.c1.desc': 'HR yo\'qmi? Butun bo\'limni almashtiramiz. Platforma + ekspertlar jamoasi.',
+          'audience.c2.badge': '50-500 kishi',
+          'audience.c2.title': 'O\'rta biznes',
+          'audience.c2.desc': 'HR rezyumelarga cho\'kmoqdami? Rutinani avtomatlashtiring. AI tahlil + Kanban + hisobotlar.',
+          'audience.c3.badge': '500+ kishi',
+          'audience.c3.title': 'Yirik biznes',
+          'audience.c3.desc': 'Autsorsing kerakmi? Tanlashni to\'liq o\'z zimmamizga olamiz. Individual yondashuv.',
+          'process.label': 'Jarayon',
+          'process.title': 'Biz bilan ishlash jarayoni',
+          'process.subtitle': 'Autsorsing va xizmat mijozlari uchun',
+          'process.s1.title': 'Ariza qoldiring',
+          'process.s1.desc': 'Vazifa haqida aytib bering va biz kun davomida bog\'lanamiz',
+          'process.s2.title': 'Tafsilotlarni muhokama qilamiz',
+          'process.s2.desc': 'Xususiyatni tushunamiz, talablarni shakllantiramiz',
+          'process.s3.title': 'Nomzodlarni topamiz',
+          'process.s3.desc': 'Jamoamiz + AI eng yaxshilarini tanlaydi',
+          'process.s4.title': 'Natija',
+          'process.s4.desc': 'Siz tanlangan mutaxassislarni olasiz',
+          'integrations.label': 'Integratsiyalar',
+          'integrations.title': 'Nimalar bilan ishlaymiz',
+          'integrations.subtitle': 'Jarayonlaringizga ulanamiz',
+          'integrations.soon': 'tez orada',
+          'roadmap.label': 'Yo\'l xaritasi',
+          'roadmap.title': 'Keyingi nima',
+          'roadmap.subtitle': '2026 yil uchun rejalar',
+          'roadmap.q1.title': 'Q1 2026',
+          'roadmap.q1.desc': 'MVP platforma, lending, birinchi mijozlar',
+          'roadmap.q2.title': 'Q2 2026',
+          'roadmap.q2.desc': 'Click/Payme to\'lov, Telegram bot, mobil versiya',
+          'roadmap.q3.title': 'Q3 2026',
+          'roadmap.q3.desc': 'Xodimlarni o\'qitish, CRM modul',
+          'roadmap.q4.title': 'Q4 2026',
+          'roadmap.q4.desc': 'Qozog\'iston, Qirg\'iziston, kengaytirish',
+          'footer.l6': 'Integratsiyalar',
+          'footer.l7': 'Yo\'l xaritasi',
         },
         en: {
           'hero.badge': 'Platform open for registration',
@@ -3562,7 +4479,76 @@
           'footer.l2': 'Services',
           'footer.l4': 'Pricing',
           'footer.l5': 'Contact',
-          'footer.location': 'Tashkent, Uzbekistan.'
+          'footer.location': 'Tashkent, Uzbekistan.',
+
+          'techstack.label': 'Powered by',
+          'features.label': 'Features',
+          'features.title': 'Platform features',
+          'features.subtitle': 'Deep dive into SOLUTION HUB tools',
+          'features.f1.title': 'Smart resume analysis',
+          'features.f1.desc': '6 parameters in 30 seconds',
+          'features.f2.title': 'Kanban board',
+          'features.f2.desc': 'Visual pipeline management',
+          'features.f3.title': 'Bulk upload',
+          'features.f3.desc': 'Up to 100 resumes in one click',
+          'features.f4.title': 'Vacancy templates',
+          'features.f4.desc': '6 ready-made templates',
+          'features.f5.title': 'PDF reports',
+          'features.f5.desc': 'For auditors and management',
+          'features.f6.title': 'Email automation',
+          'features.f6.desc': 'Invite, reject, offer',
+          'features.f7.title': 'Candidate comparison',
+          'features.f7.desc': 'Radar chart by parameters',
+          'features.f8.title': 'Auto-rules',
+          'features.f8.desc': 'Automatic actions by score',
+          'security.label': 'Security',
+          'security.title': 'Your data is protected',
+          'security.i1': 'AES-256 data encryption',
+          'security.i2': 'Two-factor authentication',
+          'security.i3': 'HTTPS everywhere',
+          'security.i4': 'Rate limiting and attack protection',
+          'security.i5': 'Full audit log of all actions',
+          'security.i6': 'JWT authorization with auto-refresh',
+          'audience.label': 'For whom',
+          'audience.title': 'Who is SOLUTION for',
+          'audience.subtitle': 'Solutions for businesses of any scale',
+          'audience.c1.badge': '5-50 people',
+          'audience.c1.title': 'Small business',
+          'audience.c1.desc': 'No HR department? We\'ll replace the entire team. Platform + expert team.',
+          'audience.c2.badge': '50-500 people',
+          'audience.c2.title': 'Medium business',
+          'audience.c2.desc': 'HR drowning in resumes? Automate the routine. AI analysis + Kanban + reports.',
+          'audience.c3.badge': '500+ people',
+          'audience.c3.title': 'Enterprise',
+          'audience.c3.desc': 'Need outsourcing? We handle recruitment end-to-end. Tailored approach.',
+          'process.label': 'Process',
+          'process.title': 'How we work together',
+          'process.subtitle': 'For outsourcing and services clients',
+          'process.s1.title': 'Submit a request',
+          'process.s1.desc': 'Tell us about the task and we\'ll reach out within a day',
+          'process.s2.title': 'Discuss details',
+          'process.s2.desc': 'Understand specifics, form requirements',
+          'process.s3.title': 'Find candidates',
+          'process.s3.desc': 'Our team + AI select the best ones',
+          'process.s4.title': 'Result',
+          'process.s4.desc': 'You get screened specialists',
+          'integrations.label': 'Integrations',
+          'integrations.title': 'What we integrate with',
+          'integrations.subtitle': 'Connected to your workflows',
+          'integrations.soon': 'soon',
+          'roadmap.label': 'Roadmap',
+          'roadmap.title': 'What\'s next',
+          'roadmap.subtitle': 'Our plans for 2026',
+          'roadmap.q1.title': 'Q1 2026',
+          'roadmap.q1.desc': 'Platform MVP, landing page, first clients',
+          'roadmap.q2.title': 'Q2 2026',
+          'roadmap.q2.desc': 'Click/Payme payments, Telegram bot, mobile version',
+          'roadmap.q3.title': 'Q3 2026',
+          'roadmap.q3.desc': 'Staff training, CRM module',
+          'roadmap.q4.title': 'Q4 2026',
+          'roadmap.q4.desc': 'Kazakhstan, Kyrgyzstan, scaling',
+          'footer.l6': 'Integrations',
+          'footer.l7': 'Roadmap',
         }
       };
 
@@ -3601,6 +4587,40 @@
           setLang(this.getAttribute('data-lang'));
         });
       });
+    })();
+
+    /* ==========================================
+       PROCESS LINE ANIMATION
+       ========================================== */
+    (function() {
+      var processLine = document.getElementById('processLineFill');
+      if (!processLine) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            processLine.classList.add('animate');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      observer.observe(document.getElementById('processTimeline'));
+    })();
+
+    /* ==========================================
+       ROADMAP LINE ANIMATION
+       ========================================== */
+    (function() {
+      var roadmapLine = document.getElementById('roadmapLineFill');
+      if (!roadmapLine) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            roadmapLine.classList.add('animate');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      observer.observe(document.getElementById('roadmapTimeline'));
     })();
   </script>
 </body>
