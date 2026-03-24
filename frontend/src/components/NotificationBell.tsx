@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Bell, CheckCheck, UserPlus, BrainCircuit, Info, X } from 'lucide-react';
 import { notificationsApi } from '../utils/api';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
 interface Notification {
   id: string;
@@ -46,15 +47,59 @@ export default function NotificationBell() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Poll unread count every 30 seconds
+  // Track previous count for flash & toast
+  const prevCountRef = useRef<number>(0);
+  const [bellFlash, setBellFlash] = useState(false);
+
+  // Poll unread count every 15 seconds (was 30)
   const { data: countData } = useQuery({
     queryKey: ['notifications-unread-count'],
     queryFn: () => notificationsApi.unreadCount().then((r) => r.data),
-    refetchInterval: 30000,
-    staleTime: 10000,
+    refetchInterval: 15000,
+    staleTime: 5000,
   });
 
   const unreadCount = countData?.count ?? 0;
+
+  // Flash bell & show toast when new notifications arrive
+  useEffect(() => {
+    if (unreadCount > prevCountRef.current && prevCountRef.current >= 0) {
+      // Only flash & toast after initial load (not on first render)
+      if (prevCountRef.current > 0 || (prevCountRef.current === 0 && unreadCount > 0 && document.visibilityState === 'visible')) {
+        // Skip toast on very first load
+        const isInitialLoad = prevCountRef.current === 0;
+        if (!isInitialLoad) {
+          setBellFlash(true);
+          setTimeout(() => setBellFlash(false), 2000);
+
+          const diff = unreadCount - prevCountRef.current;
+          const label = diff === 1 ? 'Новое уведомление' : `${diff} новых уведомлений`;
+          toast(label, {
+            icon: '\uD83D\uDD14',
+            duration: 4000,
+            style: {
+              background: '#1a1a1a',
+              color: '#fff',
+              border: '1px solid rgba(255,106,0,0.3)',
+            },
+          });
+        }
+      }
+    }
+    prevCountRef.current = unreadCount;
+  }, [unreadCount]);
+
+  // Refetch faster when tab becomes visible
+  const handleVisibility = useCallback(() => {
+    if (document.visibilityState === 'visible') {
+      queryClient.invalidateQueries({ queryKey: ['notifications-unread-count'] });
+    }
+  }, [queryClient]);
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [handleVisibility]);
 
   // Fetch full list only when dropdown is open
   const { data: listData } = useQuery({
@@ -112,9 +157,14 @@ export default function NotificationBell() {
         className="relative flex items-center justify-center w-8 h-8 rounded-md bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/30 transition-colors"
         title="Уведомления"
       >
-        <Bell size={14} className="text-white/60" />
+        <div className={clsx('transition-transform', bellFlash && 'animate-bounce')}>
+          <Bell size={14} className="text-white/60" />
+        </div>
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-[9px] font-bold text-white leading-none">
+          <span className={clsx(
+            'absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-[9px] font-bold text-white leading-none',
+            bellFlash && 'animate-pulse'
+          )}>
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}

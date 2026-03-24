@@ -58,6 +58,9 @@ import { createNotification } from './services/notify';
 
 const app = express();
 
+// ── Trust proxy (required behind nginx/reverse proxy for rate limiting) ─────
+app.set('trust proxy', 1);
+
 // ── Performance: strong ETags for conditional requests ──────────────────────
 app.set('etag', 'strong');
 const PORT = process.env.PORT || 3000;
@@ -343,6 +346,7 @@ app.post('/api/public/request-candidate-code', async (req, res): Promise<void> =
 
     const code = generateVerificationCode();
     storeCode(sanitizedEmail, code);
+    console.log(`[CandidateCode] Code generated for ${sanitizedEmail}: ${code}`);
 
     // Non-blocking: send email (or log in dev)
     sendVerificationEmail(sanitizedEmail, sanitizedEmail.split('@')[0], code).catch((err) => {

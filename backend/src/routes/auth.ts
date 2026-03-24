@@ -485,8 +485,11 @@ router.post('/google', async (req: Request, res: Response): Promise<void> => {
     try {
       let tokenInfo: Record<string, string>;
 
-      // Check if it's an authorization code (starts with "4/") or an ID token (starts with "eyJ")
-      if (credential.startsWith('4/') || credential.length < 200) {
+      // ID tokens are JWTs starting with "eyJ" and are 500+ chars. Everything else is an auth code.
+      const isIdToken = credential.startsWith('eyJ') && credential.length > 200;
+      let usedCodeExchange = false;
+      if (!isIdToken) {
+        usedCodeExchange = true;
         // It's an authorization code — exchange for tokens
         const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
           method: 'POST',
@@ -542,12 +545,14 @@ router.post('/google', async (req: Request, res: Response): Promise<void> => {
         return;
       }
 
-      // Optionally verify audience (client ID) if configured
-      const googleClientId = process.env.GOOGLE_CLIENT_ID;
-      if (googleClientId && tokenInfo.aud !== googleClientId) {
-        console.error('[Auth/Google] Audience mismatch: expected', googleClientId, 'got', tokenInfo.aud);
-        res.status(401).json({ error: 'Несоответствие аудитории Google токена' });
-        return;
+      // Verify audience only for ID tokens (code exchange already verified via client_secret)
+      if (!usedCodeExchange) {
+        const googleClientId = process.env.GOOGLE_CLIENT_ID;
+        if (googleClientId && tokenInfo.aud && tokenInfo.aud !== googleClientId) {
+          console.error('[Auth/Google] Audience mismatch: expected', googleClientId, 'got', tokenInfo.aud);
+          res.status(401).json({ error: 'Несоответствие аудитории Google токена' });
+          return;
+        }
       }
 
       googleUser = {
