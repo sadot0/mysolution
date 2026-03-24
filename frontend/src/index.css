@@ -1633,3 +1633,80 @@ html {
   border: 2px dashed rgba(232,114,28,0.2);
   border-radius: 12px;
 }
+
+/* ── MICRO-INTERACTIONS & POLISH ── */
+
+/* Smooth hover lift for interactive cards */
+.interactive-card {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s,
+              box-shadow 0.3s;
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 767px) {
+  .interactive-card:hover {
+    transform: none;
+  }
+}
+
+/* Active press feedback for all buttons */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Link hover underline animation */
+a[href]:not([class]) {
+  text-decoration: none;
+  background-image: linear-gradient(rgba(232,114,28,0.4), rgba(232,114,28,0.4));
+  background-size: 0% 1px;
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s;
+}
+a[href]:not([class]):hover {
+  background-size: 100% 1px;
+}
+
+/* Toast animations (sonner) */
+[data-sonner-toaster] {
+  --border-radius: 12px;
+}
+
+/* Subtle parallax for decorative background glow */
+@keyframes bgParallaxDrift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+  25% {
+    transform: translate(120px, 80px) scale(1.05);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(200px, 150px) scale(1);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(80px, 200px) scale(0.95);
+    opacity: 0.55;
+  }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  bottom: -300px;
+  right: -300px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(232,114,28,0.04) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: bgParallaxDrift 40s ease-in-out infinite reverse;
+}

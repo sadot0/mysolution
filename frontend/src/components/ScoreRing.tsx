@@ -48,7 +48,7 @@ export default function ScoreRing({ score, category, size = 'md' }: ScoreRingPro
         }}
       />
 
-      <svg width={outer} height={outer} className="-rotate-90" style={{ position: 'relative', zIndex: 1 }}>
+      <svg width={outer} height={outer} className="-rotate-90 relative z-[1]">
         {/* Track */}
         <circle
           cx={outer / 2}

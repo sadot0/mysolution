@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -16,6 +16,57 @@ import { pageVariants, staggerContainer, staggerItem } from '../utils/animations
 import { formatDate, getCategoryColor } from '../utils/helpers';
 import { Vacancy, Candidate } from '../types';
 
+/* ── Skeleton Components ── */
+
+function StatSkeleton() {
+  return (
+    <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 animate-pulse">
+      <div className="h-3 w-16 bg-white/[0.06] rounded mb-3" />
+      <div className="h-8 w-24 bg-white/[0.06] rounded mb-2" />
+      <div className="h-2 w-12 bg-white/[0.04] rounded" />
+    </div>
+  );
+}
+
+function CardSkeleton() {
+  return (
+    <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 animate-pulse">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-8 h-8 bg-white/[0.06] rounded-full" />
+        <div>
+          <div className="h-3 w-32 bg-white/[0.06] rounded mb-1" />
+          <div className="h-2 w-20 bg-white/[0.04] rounded" />
+        </div>
+      </div>
+      <div className="h-2 w-full bg-white/[0.04] rounded mb-2" />
+      <div className="h-2 w-3/4 bg-white/[0.04] rounded" />
+    </div>
+  );
+}
+
+/* ── Animated Number Component ── */
+
+function AnimatedNumber({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0);
+  const prevValue = useRef(0);
+
+  useEffect(() => {
+    const from = prevValue.current;
+    prevValue.current = value;
+    const duration = 1000;
+    const start = performance.now();
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      setDisplay(Math.round(from + (value - from) * eased));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [value]);
+
+  return <span className={className}>{display.toLocaleString()}</span>;
+}
+
 export default function DashboardPage() {
   usePageTitle('Главная');
   const { user } = useAuthStore();
@@ -32,12 +83,12 @@ export default function DashboardPage() {
   const firstName = user?.name?.split(' ')[0] || 'Пользователь';
 
   // Data fetching
-  const { data: vacanciesData } = useQuery({
+  const { data: vacanciesData, isLoading: isLoadingVacancies } = useQuery({
     queryKey: ['dashboard-vacancies'],
     queryFn: () => vacanciesApi.list().then(r => r.data.vacancies || []),
   });
 
-  const { data: analyticsData } = useQuery({
+  const { data: analyticsData, isLoading: isLoadingAnalytics } = useQuery({
     queryKey: ['dashboard-analytics'],
     queryFn: () => analyticsApi.overview().then(r => r.data).catch(() => null),
   });
@@ -57,10 +108,12 @@ export default function DashboardPage() {
     queryFn: () => notificationsApi.list().then(r => r.data.notifications || []).catch(() => []),
   });
 
-  const { data: candidatesData } = useQuery({
+  const { data: candidatesData, isLoading: isLoadingCandidates } = useQuery({
     queryKey: ['dashboard-candidates'],
     queryFn: () => candidatesApi.listAll({ limit: 5 }).then(r => r.data.candidates || []).catch(() => []),
   });
+
+  const isLoading = isLoadingVacancies || isLoadingAnalytics || isLoadingCandidates;
 
   const vacancies: Vacancy[] = vacanciesData || [];
   const candidates: Candidate[] = candidatesData || [];
@@ -79,6 +132,7 @@ export default function DashboardPage() {
     {
       label: 'Активные вакансии',
       value: activeVacancies.length,
+      numeric: true,
       icon: BriefcaseIcon,
       href: '/vacancies',
       color: 'text-orange-400',
@@ -87,6 +141,7 @@ export default function DashboardPage() {
     {
       label: 'Всего кандидатов',
       value: totalCandidates,
+      numeric: true,
       icon: Users,
       href: '/candidates',
       color: 'text-blue-400',
@@ -94,7 +149,8 @@ export default function DashboardPage() {
     },
     {
       label: 'Средний балл AI',
-      value: avgScore ? avgScore.toFixed(1) : '—',
+      value: avgScore ? avgScore.toFixed(1) : '\u2014',
+      numeric: false,
       icon: Sparkles,
       href: '/analytics',
       color: 'text-emerald-400',
@@ -102,7 +158,8 @@ export default function DashboardPage() {
     },
     {
       label: 'Токены',
-      value: tokenBalance.toLocaleString(),
+      value: tokenBalance,
+      numeric: true,
       icon: Coins,
       href: '/settings',
       color: 'text-yellow-400',
@@ -173,32 +230,45 @@ export default function DashboardPage() {
         </div>
 
         {/* Section 2: Stats Overview */}
-        <motion.div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
-          {stats.map((stat) => (
-            <motion.div key={stat.label} variants={staggerItem}>
-              <Link
-                to={stat.href}
-                className="block p-4 sm:p-5 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.05] transition-all group"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`p-2 rounded-xl ${stat.bg}`}>
-                    <stat.icon size={16} className={stat.color} />
+        {isLoading ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+            <StatSkeleton />
+            <StatSkeleton />
+            <StatSkeleton />
+            <StatSkeleton />
+          </div>
+        ) : (
+          <motion.div
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            {stats.map((stat) => (
+              <motion.div key={stat.label} variants={staggerItem}>
+                <Link
+                  to={stat.href}
+                  className="block p-4 sm:p-5 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.05] transition-all group interactive-card"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={`p-2 rounded-xl ${stat.bg}`}>
+                      <stat.icon size={16} className={stat.color} />
+                    </div>
+                    <ArrowRight size={14} className="text-white/25 group-hover:text-white/60 transition-colors" />
                   </div>
-                  <ArrowRight size={14} className="text-white/25 group-hover:text-white/60 transition-colors" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-xs text-white/40">{stat.label}</div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+                  <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
+                    {stat.numeric ? (
+                      <AnimatedNumber value={typeof stat.value === 'number' ? stat.value : 0} />
+                    ) : (
+                      stat.value
+                    )}
+                  </div>
+                  <div className="text-xs text-white/40">{stat.label}</div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         {/* Section 3: Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
@@ -206,7 +276,7 @@ export default function DashboardPage() {
           <div className="lg:col-span-3 space-y-4 sm:space-y-6">
             {/* Recent Vacancies */}
             <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6"
+              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
               variants={staggerItem}
               initial="initial"
               animate="animate"
@@ -225,7 +295,13 @@ export default function DashboardPage() {
                 </Link>
               </div>
 
-              {recentVacancies.length === 0 ? (
+              {isLoadingVacancies ? (
+                <div className="space-y-2">
+                  <CardSkeleton />
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </div>
+              ) : recentVacancies.length === 0 ? (
                 <div className="text-center py-8">
                   <BriefcaseIcon size={32} className="mx-auto text-white/15 mb-3" />
                   <p className="text-sm text-white/40 mb-4">Пока нет вакансий</p>
@@ -253,7 +329,7 @@ export default function DashboardPage() {
                         </p>
                         <p className="text-[11px] text-white/25 mt-0.5">
                           {formatDate(vacancy.created_at)}
-                          {vacancy.location && ` · ${vacancy.location}`}
+                          {vacancy.location && ` \u00b7 ${vacancy.location}`}
                         </p>
                       </div>
                       <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
@@ -265,7 +341,7 @@ export default function DashboardPage() {
 
             {/* Recent Candidates */}
             <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6"
+              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
               variants={staggerItem}
               initial="initial"
               animate="animate"
@@ -284,7 +360,13 @@ export default function DashboardPage() {
                 </Link>
               </div>
 
-              {recentCandidates.length === 0 ? (
+              {isLoadingCandidates ? (
+                <div className="space-y-2">
+                  <CardSkeleton />
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </div>
+              ) : recentCandidates.length === 0 ? (
                 <div className="text-center py-6">
                   <Users size={28} className="mx-auto text-white/15 mb-2" />
                   <p className="text-sm text-white/40">Кандидатов пока нет</p>
@@ -327,7 +409,7 @@ export default function DashboardPage() {
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Quick Actions */}
             <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6"
+              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
               variants={staggerItem}
               initial="initial"
               animate="animate"
@@ -357,7 +439,7 @@ export default function DashboardPage() {
 
             {/* Upcoming Interviews */}
             <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6"
+              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
               variants={staggerItem}
               initial="initial"
               animate="animate"
@@ -396,7 +478,7 @@ export default function DashboardPage() {
                           {(interview.candidate_name as string) || 'Кандидат'}
                         </p>
                         <p className="text-[11px] text-white/40">
-                          {interview.scheduled_at ? formatDate(interview.scheduled_at as string) : '—'}
+                          {interview.scheduled_at ? formatDate(interview.scheduled_at as string) : '\u2014'}
                         </p>
                       </div>
                       {interview.type ? (
@@ -412,7 +494,7 @@ export default function DashboardPage() {
 
             {/* Notifications */}
             <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6"
+              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
               variants={staggerItem}
               initial="initial"
               animate="animate"

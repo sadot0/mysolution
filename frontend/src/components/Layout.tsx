@@ -151,7 +151,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {navGroups.map((group, gi) => (
           <div key={gi} className={gi > 0 ? 'mt-4 pt-4 border-t border-white/[0.04]' : ''}>
             {group.label && (
-              <p className="px-3 mb-2 text-[10px] font-semibold text-neutral-600 tracking-[0.15em] uppercase">
+              <p className="px-3 mb-2 text-[10px] font-semibold text-white/25 tracking-[0.15em] uppercase">
                 {group.label}
               </p>
             )}
@@ -169,7 +169,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200',
                       isActive
                         ? 'bg-[rgba(232,114,28,0.15)] text-white border border-[rgba(232,114,28,0.2)]'
-                        : 'text-neutral-400 hover:text-white hover:bg-white/[0.04]'
+                        : 'text-white/60 hover:text-white hover:bg-white/[0.04]'
                     )}
                   >
                     <Icon size={16} className="shrink-0" aria-hidden="true" />
@@ -195,11 +195,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-white truncate">{user?.name}</p>
-            <p className="text-[10px] text-neutral-500 truncate">{user?.email}</p>
+            <p className="text-[10px] text-white/40 truncate">{user?.email}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="shrink-0 p-1.5 rounded-md text-neutral-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+            className="shrink-0 p-1.5 rounded-md text-white/25 hover:text-red-400 hover:bg-red-500/10 transition-colors"
             title="Выйти"
             aria-label="Выйти из аккаунта"
           >
@@ -231,7 +231,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="flex items-center justify-center w-10 h-10 rounded-lg text-neutral-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+            className="flex items-center justify-center w-10 h-10 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors"
             aria-label="Открыть меню"
             aria-expanded={mobileMenuOpen}
           >
@@ -265,7 +265,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="absolute top-4 right-3">
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg text-neutral-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+            className="flex items-center justify-center w-9 h-9 rounded-lg text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors"
             aria-label="Закрыть меню"
           >
             <X size={20} aria-hidden="true" />
@@ -297,7 +297,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               to={href}
               className={clsx(
                 'flex-1 flex flex-col items-center justify-center gap-1 py-2.5 relative transition-all duration-200 active:scale-95',
-                active ? 'text-orange-500' : 'text-neutral-500'
+                active ? 'text-orange-500' : 'text-white/40'
               )}
               aria-label={label}
               aria-current={active ? 'page' : undefined}
@@ -307,8 +307,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 'absolute top-1 w-1 h-1 rounded-full transition-all duration-300',
                 active ? 'bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)] opacity-100' : 'opacity-0'
               )} />
-              <Icon size={18} className={clsx('transition-colors duration-200', active ? 'text-orange-500' : 'text-neutral-500')} aria-hidden="true" />
-              <span className={clsx('text-[9px] font-medium tracking-wider transition-colors duration-200', active ? 'text-orange-500' : 'text-neutral-600')}>
+              <Icon size={18} className={clsx('transition-colors duration-200', active ? 'text-orange-500' : 'text-white/40')} aria-hidden="true" />
+              <span className={clsx('text-[9px] font-medium tracking-wider transition-colors duration-200', active ? 'text-orange-500' : 'text-white/25')}>
                 {label}
               </span>
             </Link>

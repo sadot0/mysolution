@@ -16,16 +16,21 @@
     <meta property="og:description" content="AI-платформа для подбора персонала. Быстрее. Точнее. Умнее.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mysolution.uz">
+    <link rel="preconnect" href="https://xzbdofrwxtwarlqajafv.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://xzbdofrwxtwarlqajafv.supabase.co">
     <link rel="preload" href="/logo-full.svg" as="image" type="image/svg+xml">
     <link rel="preload" href="/logo-icon.svg" as="image" type="image/svg+xml">
     <title>SOLUTION HUB</title>
   </head>
   <body>
     <div id="root">
-      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#050505">
-        <div style="width:40px;height:40px;border:3px solid #1a1a1a;border-top-color:#E8721C;border-radius:50%;animation:spin 0.8s linear infinite"></div>
-      </div>
-      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+      <style>
+        body{margin:0;background:#050505}
+        .sl{display:flex;align-items:center;justify-content:center;min-height:100vh}
+        .sp{width:40px;height:40px;border:3px solid #1a1a1a;border-top-color:#E8721C;border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+      </style>
+      <div class="sl"><div class="sp"></div></div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

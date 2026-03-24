@@ -57,6 +57,9 @@ import { canRequestCode, storeCode, consumeCode } from './services/candidate-ver
 import { createNotification } from './services/notify';
 
 const app = express();
+
+// ── Performance: strong ETags for conditional requests ──────────────────────
+app.set('etag', 'strong');
 const PORT = process.env.PORT || 3000;
 
 // ── Security headers ──────────────────────────────────────────────────────────

@@ -45,23 +45,19 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
 
   return (
     <div
-      className="rounded-2xl overflow-hidden"
-      style={{
-        border: '1px solid rgba(255,110,0,0.15)',
-        background: 'rgba(255,255,255,0.02)',
-      }}
+      className="rounded-2xl overflow-hidden border border-orange-500/15 bg-white/[0.02]"
     >
       {/* Header */}
       <div
-        className="flex items-center gap-3 px-4 py-3"
-        style={{ background: 'rgba(255,110,0,0.05)', borderBottom: expanded ? '1px solid rgba(255,110,0,0.10)' : 'none' }}
+        className="flex items-center gap-3 px-4 py-3 bg-orange-500/[0.05]"
+        style={{ borderBottom: expanded ? '1px solid rgba(255,110,0,0.10)' : 'none' }}
       >
         <div className="flex flex-col gap-0.5 shrink-0">
           <button
             type="button"
             disabled={index === 0}
             onClick={() => onMove('up')}
-            style={{ color: index === 0 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.4)', lineHeight: 1 }}
+            className={`leading-none ${index === 0 ? 'text-white/15' : 'text-white/40'}`}
           >
             <ChevronUp size={14} />
           </button>
@@ -69,21 +65,16 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
             type="button"
             disabled={index === total - 1}
             onClick={() => onMove('down')}
-            style={{ color: index === total - 1 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.4)', lineHeight: 1 }}
+            className={`leading-none ${index === total - 1 ? 'text-white/15' : 'text-white/40'}`}
           >
             <ChevronDown size={14} />
           </button>
         </div>
 
-        <GripVertical size={14} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+        <GripVertical size={14} className="text-white/20 shrink-0" />
 
         <span
-          className="text-xs font-bold px-2 py-0.5 rounded-lg shrink-0"
-          style={{
-            background: 'rgba(255,110,0,0.12)',
-            border: '1px solid rgba(255,110,0,0.25)',
-            color: '#fb923c',
-          }}
+          className="text-xs font-bold px-2 py-0.5 rounded-lg shrink-0 bg-orange-500/[0.12] border border-orange-500/25 text-orange-400"
         >
           #{index + 1}
         </span>
@@ -92,14 +83,14 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
           {question.label || 'Без названия'}
         </p>
 
-        <span className="text-xs shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <span className="text-xs shrink-0 text-white/30">
           {QUESTION_TYPES.find((t) => t.value === question.type)?.label}
         </span>
 
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          style={{ color: 'rgba(255,255,255,0.35)' }}
+          className="text-white/[0.35]"
         >
           {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
@@ -107,13 +98,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
         <button
           type="button"
           onClick={onDelete}
-          className="shrink-0 flex items-center justify-center rounded-lg transition-all"
-          style={{
-            width: 28, height: 28,
-            background: 'rgba(239,68,68,0.08)',
-            border: '1px solid rgba(239,68,68,0.2)',
-            color: '#f87171',
-          }}
+          className="shrink-0 flex items-center justify-center rounded-lg transition-all w-7 h-7 bg-red-500/[0.08] border border-red-500/20 text-red-400"
         >
           <Trash2 size={13} />
         </button>
@@ -153,8 +138,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
               <button
                 type="button"
                 onClick={() => onChange({ ...question, required: !question.required })}
-                className="flex items-center gap-2 text-sm transition-all"
-                style={{ color: question.required ? '#fb923c' : 'rgba(255,255,255,0.35)' }}
+                className={`flex items-center gap-2 text-sm transition-all ${question.required ? 'text-orange-400' : 'text-white/[0.35]'}`}
               >
                 <div
                   style={{
@@ -203,19 +187,14 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
                 {(question.options || []).map((opt, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <div
-                      className="flex-1 px-3 py-2 rounded-xl text-sm"
-                      style={{
-                        background: 'rgba(0,0,0,0.3)',
-                        border: '1px solid rgba(255,255,255,0.07)',
-                        color: 'rgba(255,255,255,0.7)',
-                      }}
+                      className="flex-1 px-3 py-2 rounded-xl text-sm bg-black/30 border border-white/[0.07] text-white/70"
                     >
                       {opt}
                     </div>
                     <button
                       type="button"
                       onClick={() => removeOption(i)}
-                      style={{ color: 'rgba(239,68,68,0.6)' }}
+                      className="text-red-500/60"
                     >
                       <Trash2 size={13} />
                     </button>
@@ -234,8 +213,7 @@ function QuestionItem({ question, index, total, onChange, onDelete, onMove }: Qu
                 <button
                   type="button"
                   onClick={addOption}
-                  className="btn-secondary shrink-0"
-                  style={{ padding: '0 14px' }}
+                  className="btn-secondary shrink-0 !px-3.5 !py-0"
                 >
                   <Plus size={14} />
                 </button>
@@ -288,15 +266,11 @@ export default function QuestionBuilder({ questions, onChange, onSave, saving }:
       <div className="space-y-3 mb-5">
         {questions.length === 0 ? (
           <div
-            className="text-center py-12 rounded-2xl"
-            style={{
-              border: '2px dashed rgba(255,110,0,0.12)',
-              background: 'rgba(255,255,255,0.01)',
-            }}
+            className="text-center py-12 rounded-2xl border-2 border-dashed border-orange-500/[0.12] bg-white/[0.01]"
           >
-            <Plus size={28} className="mx-auto mb-3" style={{ color: 'rgba(255,110,0,0.3)' }} />
+            <Plus size={28} className="mx-auto mb-3 text-orange-500/30" />
             <p className="text-sm font-semibold text-white mb-1">Нет кастомных вопросов</p>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <p className="text-xs text-white/30">
               Добавьте вопросы, которые увидят кандидаты при отклике
             </p>
           </div>
@@ -318,7 +292,7 @@ export default function QuestionBuilder({ questions, onChange, onSave, saving }:
       <div className="flex gap-3 flex-wrap">
         <div className="relative">
           <select
-            className="select-premium pr-10"
+            className="select-premium pr-10 min-w-[180px]"
             defaultValue=""
             onChange={(e) => {
               if (e.target.value) {
@@ -326,7 +300,6 @@ export default function QuestionBuilder({ questions, onChange, onSave, saving }:
                 e.target.value = '';
               }
             }}
-            style={{ minWidth: 180 }}
           >
             <option value="" disabled>+ Добавить вопрос</option>
             {QUESTION_TYPES.map((t) => (

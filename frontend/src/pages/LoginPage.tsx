@@ -206,7 +206,7 @@ export default function LoginPage() {
             alt="Solution"
             className="h-7 sm:h-8 mx-auto mb-2"
           />
-          <p className="text-[11px] text-neutral-500 tracking-[0.2em] font-medium">
+          <p className="text-[11px] text-white/40 tracking-[0.2em] font-medium">
             SOLUTION HUB
           </p>
         </motion.div>
@@ -219,7 +219,7 @@ export default function LoginPage() {
           animate="visible"
         >
           {/* Tab switcher with sliding indicator */}
-          <div className="relative flex mb-7 p-1 bg-neutral-800/80 border border-neutral-700/60 rounded-xl">
+          <div className="relative flex mb-7 p-1 bg-white/[0.04] border border-white/[0.06] rounded-xl">
             {/* Sliding indicator */}
             <motion.div
               className="absolute top-1 bottom-1 rounded-lg bg-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.3)]"
@@ -237,7 +237,7 @@ export default function LoginPage() {
                 className={`relative z-10 flex-1 py-2.5 text-sm font-semibold rounded-lg transition-colors tracking-wider ${
                   mode === m
                     ? 'text-white'
-                    : 'text-neutral-400 hover:text-neutral-200'
+                    : 'text-white/60 hover:text-white/80'
                 }`}
                 onClick={() => setMode(m)}
                 disabled={loading}
@@ -266,7 +266,7 @@ export default function LoginPage() {
                   >
                     <label className="login-label">Имя</label>
                     <div className="relative">
-                      <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                      <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                       <input
                         type="text"
                         className="login-input pl-11"
@@ -287,10 +287,10 @@ export default function LoginPage() {
                   >
                     <label className="login-label">
                       Название компании{' '}
-                      <span className="text-neutral-600 font-normal">(необязательно)</span>
+                      <span className="text-white/25 font-normal">(необязательно)</span>
                     </label>
                     <div className="relative">
-                      <Building2 size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                      <Building2 size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                       <input
                         type="text"
                         className="login-input pl-11"
@@ -315,7 +315,7 @@ export default function LoginPage() {
             >
               <label className="login-label">Email</label>
               <div className="relative">
-                <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                 <input
                   type="email"
                   className="login-input pl-11"
@@ -337,7 +337,7 @@ export default function LoginPage() {
             >
               <label className="login-label">Пароль</label>
               <div className="relative">
-                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                 <input
                   type="password"
                   className="login-input pl-11"
@@ -353,7 +353,7 @@ export default function LoginPage() {
                 <div className="mt-2 text-right">
                   <Link
                     to="/forgot-password"
-                    className="text-xs text-neutral-500 hover:text-orange-400 transition-colors"
+                    className="text-xs text-white/40 hover:text-orange-400 transition-colors"
                   >
                     Забыли пароль?
                   </Link>
@@ -386,9 +386,9 @@ export default function LoginPage() {
           </form>
 
           <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-600 to-transparent" />
-            <span className="text-[11px] text-neutral-500 tracking-[0.15em] font-medium">ИЛИ</span>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-600 to-transparent" />
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+            <span className="text-[11px] text-white/40 tracking-[0.15em] font-medium">ИЛИ</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
           </div>
 
           <button
@@ -437,15 +437,15 @@ export default function LoginPage() {
 
         {/* ── Footer ── */}
         <motion.div
-          className="flex items-center justify-center gap-2 mt-6 text-[11px] text-neutral-600"
+          className="flex items-center justify-center gap-2 mt-6 text-[11px] text-white/25"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.4 }}
         >
-          <Shield size={12} className="text-neutral-500" />
+          <Shield size={12} className="text-white/40" />
           <span>Защищено шифрованием</span>
-          <span className="text-neutral-700 mx-1">|</span>
-          <span className="text-neutral-500 font-medium">v2.1</span>
+          <span className="text-white/15 mx-1">|</span>
+          <span className="text-white/40 font-medium">v2.1</span>
         </motion.div>
       </div>
 
