@@ -1710,3 +1710,20 @@ body::before {
   z-index: 0;
   animation: bgParallaxDrift 40s ease-in-out infinite reverse;
 }
+
+/* Page loading bar */
+.page-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #E8721C, transparent);
+  z-index: 9999;
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingBar {
+  0% { width: 0; left: 0; }
+  50% { width: 60%; left: 20%; }
+  100% { width: 0; left: 100%; }
+}

@@ -23,6 +23,27 @@ body{margin:0;padding:0;background:${DARK_BG};font-family:-apple-system,BlinkMac
 </div></body></html>`;
 }
 
+export function welcomeEmail(userName: string): string {
+  return baseTemplate(`
+    <div class="header"><h1>SOLUTION</h1></div>
+    <div class="body">
+      <p>Добро пожаловать в <span class="highlight">SOLUTION HUB</span>, ${userName}! 🎉</p>
+      <p>Мы рады видеть вас на нашей платформе. Вот что вы можете сделать прямо сейчас:</p>
+      <div style="margin: 24px 0;">
+        <p style="margin-bottom: 12px;">✅ <strong>100 бесплатных токенов</strong> уже на вашем балансе</p>
+        <p style="margin-bottom: 12px;">📋 <strong>Создайте первую вакансию</strong> — выберите из 6 шаблонов</p>
+        <p style="margin-bottom: 12px;">🧠 <strong>AI проанализирует кандидатов</strong> за 30 секунд</p>
+      </div>
+      <p style="text-align:center;margin:24px 0">
+        <a href="https://mysolution.uz/dashboard" class="btn">Начать работу</a>
+      </p>
+      <p>Если у вас есть вопросы — мы всегда на связи через раздел Поддержка.</p>
+      <p>С уважением,<br><span class="highlight">Команда SOLUTION</span></p>
+    </div>
+    <div class="footer"><p>SOLUTION HUB • mysolution.uz</p></div>
+  `);
+}
+
 export function inviteEmail(candidateName: string, vacancyTitle: string, companyName: string, interviewDate?: string, interviewLink?: string): string {
   return baseTemplate(`
     <div class="header"><h1>SOLUTION</h1></div>

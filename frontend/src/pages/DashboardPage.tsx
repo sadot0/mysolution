@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   BriefcaseIcon, Users, BarChart3, Plus, ArrowRight, Clock,
   TrendingUp, Coins, Calendar, ChevronRight, Sparkles,
-  FileText, UserCheck, AlertCircle, Settings
+  FileText, UserCheck, AlertCircle, Settings, Info, Zap
 } from 'lucide-react';
 import Layout from '../components/Layout';
 import Onboarding from '../components/Onboarding';
@@ -127,6 +127,8 @@ export default function DashboardPage() {
   const avgScore = analyticsData?.avg_score ?? 0;
   const tokenBalance = balanceData?.balance ?? user?.token_balance ?? 0;
 
+  const hasNoData = vacancies.length === 0;
+
   // Stats cards data
   const stats = [
     {
@@ -198,7 +200,9 @@ export default function DashboardPage() {
               Добро пожаловать, {firstName}!
             </h1>
             <p className="text-sm text-white/60 mt-1">
-              Вот что происходит в вашем хабе.
+              {hasNoData && !isLoading
+                ? 'Давайте настроим ваш рекрутинговый хаб.'
+                : 'Вот что происходит в вашем хабе.'}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -229,311 +233,394 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Section 2: Stats Overview */}
-        {isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-            <StatSkeleton />
-            <StatSkeleton />
-            <StatSkeleton />
-            <StatSkeleton />
+        {/* Token Balance Card — always visible */}
+        <div className="mb-6">
+          <div className="bg-gradient-to-br from-[rgba(232,114,28,0.08)] to-transparent border border-[rgba(232,114,28,0.12)] rounded-2xl p-5 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[rgba(232,114,28,0.15)] flex items-center justify-center">
+              <Coins size={22} className="text-orange-400" />
+            </div>
+            <div>
+              <p className="text-xs text-white/40 mb-0.5">Ваш баланс</p>
+              <AnimatedNumber value={tokenBalance} className="text-2xl font-bold text-orange-400 font-mono" />
+              <p className="text-xs text-white/25">токенов</p>
+            </div>
           </div>
-        ) : (
+        </div>
+
+        {/* Empty State: Getting Started */}
+        {!isLoading && hasNoData ? (
           <motion.div
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
-            variants={staggerContainer}
+            variants={staggerItem}
             initial="initial"
             animate="animate"
           >
-            {stats.map((stat) => (
-              <motion.div key={stat.label} variants={staggerItem}>
-                <Link
-                  to={stat.href}
-                  className="block p-4 sm:p-5 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.05] transition-all group interactive-card"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className={`p-2 rounded-xl ${stat.bg}`}>
-                      <stat.icon size={16} className={stat.color} />
-                    </div>
-                    <ArrowRight size={14} className="text-white/25 group-hover:text-white/60 transition-colors" />
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
-                    {stat.numeric ? (
-                      <AnimatedNumber value={typeof stat.value === 'number' ? stat.value : 0} />
-                    ) : (
-                      stat.value
-                    )}
-                  </div>
-                  <div className="text-xs text-white/40">{stat.label}</div>
-                </Link>
-              </motion.div>
-            ))}
+            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 md:p-12 text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-[rgba(232,114,28,0.1)] border border-[rgba(232,114,28,0.15)] mb-6">
+                <Sparkles size={32} className="text-orange-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-3">Начните работу с SOLUTION HUB</h2>
+              <p className="text-white/40 max-w-md mx-auto mb-8">
+                Создайте первую вакансию и получите AI-анализ кандидатов за 30 секунд
+              </p>
+
+              {/* 3 step cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
+                <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-5 text-left">
+                  <div className="text-2xl font-bold text-orange-400 mb-2">1</div>
+                  <h3 className="text-sm font-semibold text-white mb-1">Создайте вакансию</h3>
+                  <p className="text-xs text-white/40">Выберите из 6 шаблонов или создайте свою</p>
+                </div>
+                <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-5 text-left">
+                  <div className="text-2xl font-bold text-orange-400 mb-2">2</div>
+                  <h3 className="text-sm font-semibold text-white mb-1">Получите кандидатов</h3>
+                  <p className="text-xs text-white/40">Поделитесь ссылкой или загрузите резюме</p>
+                </div>
+                <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-5 text-left">
+                  <div className="text-2xl font-bold text-orange-400 mb-2">3</div>
+                  <h3 className="text-sm font-semibold text-white mb-1">AI найдёт лучших</h3>
+                  <p className="text-xs text-white/40">Анализ по 6 параметрам за 30 секунд</p>
+                </div>
+              </div>
+
+              <Link to="/vacancies" state={{ showCreate: true }} className="btn-primary inline-flex items-center gap-2 px-6 py-3">
+                <Plus size={16} />
+                Создать первую вакансию
+              </Link>
+
+              <div className="mt-6 flex items-center justify-center gap-4 text-xs text-white/25">
+                <span className="flex items-center gap-1"><Coins size={12} /> 100 бесплатных токенов</span>
+                <span>&bull;</span>
+                <span>Без кредитной карты</span>
+              </div>
+            </div>
+
+            {/* Quick tips for new users */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+              <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 flex items-start gap-3">
+                <Info size={16} className="text-white/30 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-medium text-white/60">Совет</p>
+                  <p className="text-xs text-white/30">Используйте шаблоны вакансий — AI подготовит идеальную анкету автоматически</p>
+                </div>
+              </div>
+              <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 flex items-start gap-3">
+                <Zap size={16} className="text-white/30 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-medium text-white/60">Быстрый старт</p>
+                  <p className="text-xs text-white/30">Массовая загрузка — отправьте до 100 резюме одним кликом</p>
+                </div>
+              </div>
+            </div>
           </motion.div>
-        )}
-
-        {/* Section 3: Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
-          {/* LEFT COLUMN (3/5 = 60%) */}
-          <div className="lg:col-span-3 space-y-4 sm:space-y-6">
-            {/* Recent Vacancies */}
-            <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
-              variants={staggerItem}
-              initial="initial"
-              animate="animate"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                  <BriefcaseIcon size={16} className="text-orange-400" />
-                  Последние вакансии
-                </h2>
-                <Link
-                  to="/vacancies"
-                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
-                >
-                  Все вакансии
-                  <ChevronRight size={12} />
-                </Link>
+        ) : (
+          <>
+            {/* Section 2: Stats Overview */}
+            {isLoading ? (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+                <StatSkeleton />
+                <StatSkeleton />
+                <StatSkeleton />
+                <StatSkeleton />
               </div>
-
-              {isLoadingVacancies ? (
-                <div className="space-y-2">
-                  <CardSkeleton />
-                  <CardSkeleton />
-                  <CardSkeleton />
-                </div>
-              ) : recentVacancies.length === 0 ? (
-                <div className="text-center py-8">
-                  <BriefcaseIcon size={32} className="mx-auto text-white/15 mb-3" />
-                  <p className="text-sm text-white/40 mb-4">Пока нет вакансий</p>
-                  <Link
-                    to="/vacancies"
-                    state={{ showCreate: true }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-orange-500/20 transition-all"
-                  >
-                    <Plus size={14} />
-                    Создайте первую вакансию
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {recentVacancies.map((vacancy) => (
+            ) : (
+              <motion.div
+                className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+              >
+                {stats.map((stat) => (
+                  <motion.div key={stat.label} variants={staggerItem}>
                     <Link
-                      key={vacancy.id}
-                      to={`/vacancies/${vacancy.id}`}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all group"
+                      to={stat.href}
+                      className="block p-4 sm:p-5 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.05] transition-all group interactive-card"
                     >
-                      <div className={`w-2 h-2 rounded-full shrink-0 ${getVacancyStatusDot(vacancy.status)}`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
-                          {vacancy.title}
-                        </p>
-                        <p className="text-[11px] text-white/25 mt-0.5">
-                          {formatDate(vacancy.created_at)}
-                          {vacancy.location && ` \u00b7 ${vacancy.location}`}
-                        </p>
-                      </div>
-                      <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Recent Candidates */}
-            <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
-              variants={staggerItem}
-              initial="initial"
-              animate="animate"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                  <Users size={16} className="text-blue-400" />
-                  Недавние кандидаты
-                </h2>
-                <Link
-                  to="/candidates"
-                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
-                >
-                  Все кандидаты
-                  <ChevronRight size={12} />
-                </Link>
-              </div>
-
-              {isLoadingCandidates ? (
-                <div className="space-y-2">
-                  <CardSkeleton />
-                  <CardSkeleton />
-                  <CardSkeleton />
-                </div>
-              ) : recentCandidates.length === 0 ? (
-                <div className="text-center py-6">
-                  <Users size={28} className="mx-auto text-white/15 mb-2" />
-                  <p className="text-sm text-white/40">Кандидатов пока нет</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {recentCandidates.map((candidate) => (
-                    <Link
-                      key={candidate.id}
-                      to={`/candidates/${candidate.id}`}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all group"
-                    >
-                      <div className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/20">
-                        <span className="text-xs font-bold text-blue-400">
-                          {candidate.full_name?.charAt(0)?.toUpperCase() || '?'}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
-                          {candidate.full_name}
-                        </p>
-                        <p className="text-[11px] text-white/25 mt-0.5">
-                          {formatDate(candidate.submitted_at)}
-                        </p>
-                      </div>
-                      {candidate.ai_analysis && (
-                        <div className={`text-xs font-bold ${getCategoryColor(candidate.ai_analysis.category)}`}>
-                          {candidate.ai_analysis.overall_score}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className={`p-2 rounded-xl ${stat.bg}`}>
+                          <stat.icon size={16} className={stat.color} />
                         </div>
-                      )}
-                      <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
+                        <ArrowRight size={14} className="text-white/25 group-hover:text-white/60 transition-colors" />
+                      </div>
+                      <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
+                        {stat.numeric ? (
+                          <AnimatedNumber value={typeof stat.value === 'number' ? stat.value : 0} />
+                        ) : (
+                          stat.value
+                        )}
+                      </div>
+                      <div className="text-xs text-white/40">{stat.label}</div>
                     </Link>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </div>
-
-          {/* RIGHT COLUMN (2/5 = 40%) */}
-          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-            {/* Quick Actions */}
-            <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
-              variants={staggerItem}
-              initial="initial"
-              animate="animate"
-            >
-              <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
-                <TrendingUp size={16} className="text-orange-400" />
-                Быстрые действия
-              </h2>
-              <div className="grid grid-cols-2 gap-2">
-                {quickActions.map((action) => (
-                  <Link
-                    key={action.label}
-                    to={action.href}
-                    state={action.state}
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/20 hover:bg-white/[0.05] transition-all text-center group"
-                  >
-                    <div className="p-2 rounded-lg bg-white/[0.04] group-hover:bg-orange-500/10 transition-colors">
-                      <action.icon size={16} className="text-white/60 group-hover:text-orange-400 transition-colors" />
-                    </div>
-                    <span className="text-[11px] font-medium text-white/60 group-hover:text-white transition-colors">
-                      {action.label}
-                    </span>
-                  </Link>
+                  </motion.div>
                 ))}
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
 
-            {/* Upcoming Interviews */}
-            <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
-              variants={staggerItem}
-              initial="initial"
-              animate="animate"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                  <Calendar size={16} className="text-purple-400" />
-                  Ближайшие интервью
-                </h2>
-                <Link
-                  to="/interviews"
-                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
+            {/* Section 3: Main Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
+              {/* LEFT COLUMN (3/5 = 60%) */}
+              <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+                {/* Recent Vacancies */}
+                <motion.div
+                  className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
+                  variants={staggerItem}
+                  initial="initial"
+                  animate="animate"
                 >
-                  Все интервью
-                  <ChevronRight size={12} />
-                </Link>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold text-white flex items-center gap-2">
+                      <BriefcaseIcon size={16} className="text-orange-400" />
+                      Последние вакансии
+                    </h2>
+                    <Link
+                      to="/vacancies"
+                      className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
+                    >
+                      Все вакансии
+                      <ChevronRight size={12} />
+                    </Link>
+                  </div>
+
+                  {isLoadingVacancies ? (
+                    <div className="space-y-2">
+                      <CardSkeleton />
+                      <CardSkeleton />
+                      <CardSkeleton />
+                    </div>
+                  ) : recentVacancies.length === 0 ? (
+                    <div className="text-center py-8">
+                      <BriefcaseIcon size={32} className="mx-auto text-white/15 mb-3" />
+                      <p className="text-sm text-white/40 mb-4">Пока нет вакансий</p>
+                      <Link
+                        to="/vacancies"
+                        state={{ showCreate: true }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-medium hover:shadow-lg hover:shadow-orange-500/20 transition-all"
+                      >
+                        <Plus size={14} />
+                        Создайте первую вакансию
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {recentVacancies.map((vacancy) => (
+                        <Link
+                          key={vacancy.id}
+                          to={`/vacancies/${vacancy.id}`}
+                          className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all group"
+                        >
+                          <div className={`w-2 h-2 rounded-full shrink-0 ${getVacancyStatusDot(vacancy.status)}`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
+                              {vacancy.title}
+                            </p>
+                            <p className="text-[11px] text-white/25 mt-0.5">
+                              {formatDate(vacancy.created_at)}
+                              {vacancy.location && ` \u00b7 ${vacancy.location}`}
+                            </p>
+                          </div>
+                          <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+
+                {/* Recent Candidates */}
+                <motion.div
+                  className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
+                  variants={staggerItem}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold text-white flex items-center gap-2">
+                      <Users size={16} className="text-blue-400" />
+                      Недавние кандидаты
+                    </h2>
+                    <Link
+                      to="/candidates"
+                      className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
+                    >
+                      Все кандидаты
+                      <ChevronRight size={12} />
+                    </Link>
+                  </div>
+
+                  {isLoadingCandidates ? (
+                    <div className="space-y-2">
+                      <CardSkeleton />
+                      <CardSkeleton />
+                      <CardSkeleton />
+                    </div>
+                  ) : recentCandidates.length === 0 ? (
+                    <div className="text-center py-6">
+                      <Users size={28} className="mx-auto text-white/15 mb-2" />
+                      <p className="text-sm text-white/40">Кандидатов пока нет</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {recentCandidates.map((candidate) => (
+                        <Link
+                          key={candidate.id}
+                          to={`/candidates/${candidate.id}`}
+                          className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all group"
+                        >
+                          <div className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/20">
+                            <span className="text-xs font-bold text-blue-400">
+                              {candidate.full_name?.charAt(0)?.toUpperCase() || '?'}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
+                              {candidate.full_name}
+                            </p>
+                            <p className="text-[11px] text-white/25 mt-0.5">
+                              {formatDate(candidate.submitted_at)}
+                            </p>
+                          </div>
+                          {candidate.ai_analysis && (
+                            <div className={`text-xs font-bold ${getCategoryColor(candidate.ai_analysis.category)}`}>
+                              {candidate.ai_analysis.overall_score}
+                            </div>
+                          )}
+                          <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
               </div>
 
-              {upcoming.length === 0 ? (
-                <div className="text-center py-5">
-                  <Calendar size={24} className="mx-auto text-white/15 mb-2" />
-                  <p className="text-xs text-white/40">Нет запланированных</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {upcoming.map((interview: Record<string, unknown>, idx: number) => (
-                    <div
-                      key={(interview.id as string) || idx}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
-                    >
-                      <div className="shrink-0 p-2 rounded-lg bg-purple-500/10">
-                        <Clock size={14} className="text-purple-400" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate">
-                          {(interview.candidate_name as string) || 'Кандидат'}
-                        </p>
-                        <p className="text-[11px] text-white/40">
-                          {interview.scheduled_at ? formatDate(interview.scheduled_at as string) : '\u2014'}
-                        </p>
-                      </div>
-                      {interview.type ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 font-medium">
-                          {String(interview.type)}
+              {/* RIGHT COLUMN (2/5 = 40%) */}
+              <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+                {/* Quick Actions */}
+                <motion.div
+                  className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
+                  variants={staggerItem}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+                    <TrendingUp size={16} className="text-orange-400" />
+                    Быстрые действия
+                  </h2>
+                  <div className="grid grid-cols-2 gap-2">
+                    {quickActions.map((action) => (
+                      <Link
+                        key={action.label}
+                        to={action.href}
+                        state={action.state}
+                        className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/20 hover:bg-white/[0.05] transition-all text-center group"
+                      >
+                        <div className="p-2 rounded-lg bg-white/[0.04] group-hover:bg-orange-500/10 transition-colors">
+                          <action.icon size={16} className="text-white/60 group-hover:text-orange-400 transition-colors" />
+                        </div>
+                        <span className="text-[11px] font-medium text-white/60 group-hover:text-white transition-colors">
+                          {action.label}
                         </span>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
 
-            {/* Notifications */}
-            <motion.div
-              className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
-              variants={staggerItem}
-              initial="initial"
-              animate="animate"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-white flex items-center gap-2">
-                  <AlertCircle size={16} className="text-yellow-400" />
-                  Уведомления
-                </h2>
-              </div>
-
-              {notifications.length === 0 ? (
-                <div className="text-center py-5">
-                  <UserCheck size={24} className="mx-auto text-white/15 mb-2" />
-                  <p className="text-xs text-white/40">Новых уведомлений нет</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {notifications.map((notif: Record<string, unknown>, idx: number) => (
-                    <div
-                      key={(notif.id as string) || idx}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+                {/* Upcoming Interviews */}
+                <motion.div
+                  className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
+                  variants={staggerItem}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold text-white flex items-center gap-2">
+                      <Calendar size={16} className="text-purple-400" />
+                      Ближайшие интервью
+                    </h2>
+                    <Link
+                      to="/interviews"
+                      className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
                     >
-                      <div className="shrink-0 mt-0.5 w-2 h-2 rounded-full bg-orange-400" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-white/80 line-clamp-2">
-                          {(notif.message as string) || (notif.title as string) || 'Уведомление'}
-                        </p>
-                        <p className="text-[10px] text-white/25 mt-1">
-                          {notif.created_at ? formatDate(notif.created_at as string) : ''}
-                        </p>
-                      </div>
+                      Все интервью
+                      <ChevronRight size={12} />
+                    </Link>
+                  </div>
+
+                  {upcoming.length === 0 ? (
+                    <div className="text-center py-5">
+                      <Calendar size={24} className="mx-auto text-white/15 mb-2" />
+                      <p className="text-xs text-white/40">Нет запланированных</p>
                     </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </div>
-        </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {upcoming.map((interview: Record<string, unknown>, idx: number) => (
+                        <div
+                          key={(interview.id as string) || idx}
+                          className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+                        >
+                          <div className="shrink-0 p-2 rounded-lg bg-purple-500/10">
+                            <Clock size={14} className="text-purple-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate">
+                              {(interview.candidate_name as string) || 'Кандидат'}
+                            </p>
+                            <p className="text-[11px] text-white/40">
+                              {interview.scheduled_at ? formatDate(interview.scheduled_at as string) : '\u2014'}
+                            </p>
+                          </div>
+                          {interview.type ? (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 font-medium">
+                              {String(interview.type)}
+                            </span>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+
+                {/* Notifications */}
+                <motion.div
+                  className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 sm:p-6 interactive-card"
+                  variants={staggerItem}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base font-semibold text-white flex items-center gap-2">
+                      <AlertCircle size={16} className="text-yellow-400" />
+                      Уведомления
+                    </h2>
+                  </div>
+
+                  {notifications.length === 0 ? (
+                    <div className="text-center py-5">
+                      <UserCheck size={24} className="mx-auto text-white/15 mb-2" />
+                      <p className="text-xs text-white/40">Новых уведомлений нет</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {notifications.map((notif: Record<string, unknown>, idx: number) => (
+                        <div
+                          key={(notif.id as string) || idx}
+                          className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+                        >
+                          <div className="shrink-0 mt-0.5 w-2 h-2 rounded-full bg-orange-400" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-white/80 line-clamp-2">
+                              {(notif.message as string) || (notif.title as string) || 'Уведомление'}
+                            </p>
+                            <p className="text-[10px] text-white/25 mt-1">
+                              {notif.created_at ? formatDate(notif.created_at as string) : ''}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              </div>
+            </div>
+          </>
+        )}
       </motion.div>
 
       <AnimatePresence>

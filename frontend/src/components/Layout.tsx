@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { BriefcaseIcon, BarChart3, LogOutIcon, Users, Settings, Menu, X, HelpCircle, ShieldAlert, Building2, GraduationCap, Coins, Calendar, Database, ClipboardCheck, FileText, UsersRound, LayoutDashboard } from 'lucide-react';
+import { BriefcaseIcon, BarChart3, LogOutIcon, Users, Settings, Menu, X, HelpCircle, ShieldAlert, Building2, GraduationCap, Coins, Calendar, Database, ClipboardCheck, FileText, UsersRound, LayoutDashboard, Search } from 'lucide-react';
+import GlobalSearch from './GlobalSearch';
 import { useAuthStore } from '../utils/auth-store';
 import clsx from 'clsx';
 import NotificationBell from './NotificationBell';
@@ -25,10 +26,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLElement>(null);
 
   useKeyboardShortcuts();
   useSessionTimeout();
+
+  // Listen for Cmd+K to open search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
 
   // Focus trap for mobile menu
   const handleMobileMenuKeyDown = useCallback((e: KeyboardEvent) => {
@@ -144,6 +158,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Link>
           </div>
         </div>
+      </div>
+
+      {/* Search button */}
+      <div className="px-3 mb-1">
+        <button
+          onClick={() => setSearchOpen(true)}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-white/30 text-sm hover:bg-white/[0.04] hover:text-white/50 transition-all"
+        >
+          <Search size={14} />
+          <span className="flex-1 text-left">Поиск...</span>
+          <kbd className="hidden sm:inline text-[10px] bg-white/[0.06] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+        </button>
       </div>
 
       {/* Grouped Nav */}
@@ -315,6 +341,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           );
         })}
       </nav>
+      <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <ScrollToTop />
     </div>
   );

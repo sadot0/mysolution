@@ -563,6 +563,37 @@ app.post(
         console.error('[Public/Apply] Notification error:', notifyErr);
       }
 
+      // Send email notification to vacancy owner
+      try {
+        const { data: owner } = await supabase
+          .from('users')
+          .select('email, name')
+          .eq('id', vacancy.created_by)
+          .single();
+
+        if (owner?.email) {
+          const emailHtml = `<div style="font-family:sans-serif;background:#0a0a0a;color:#fff;padding:32px;">
+            <h2 style="color:#E8721C;">Новый кандидат!</h2>
+            <p>На вакансию <strong>${vacancy.title}</strong> подал заявку:</p>
+            <p>👤 <strong>${sanitizedName}</strong></p>
+            ${sanitizedEmail ? '<p>📧 ' + sanitizedEmail + '</p>' : ''}
+            <p><a href="https://mysolution.uz/vacancies/${vacancy.id}" style="color:#E8721C;">Открыть в SOLUTION HUB</a></p>
+          </div>`;
+
+          const nodemailer = await import('nodemailer');
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+          });
+          transporter.sendMail({
+            from: process.env.FROM_EMAIL || process.env.EMAIL_USER,
+            to: owner.email,
+            subject: `Новый кандидат: ${sanitizedName} — ${vacancy.title}`,
+            html: emailHtml,
+          }).catch(() => {});
+        }
+      } catch {}
+
       res.status(201).json({
         success: true,
         message: 'Заявка успешно отправлена!',

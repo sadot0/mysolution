@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { supabase } from '../config/supabase';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { generateVerificationCode, sendVerificationEmail } from '../services/email';
+import { welcomeEmail } from '../services/email-templates';
 
 const router = Router();
 
@@ -295,6 +296,19 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       console.error('[Auth] Email send failed:', err?.message);
       console.log(`[Auth] Verification code for ${sanitizedEmail}: ${code}`);
     });
+
+    // Send welcome email (non-blocking)
+    const nodemailer = await import('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+    });
+    transporter.sendMail({
+      from: process.env.FROM_EMAIL || process.env.EMAIL_USER,
+      to: sanitizedEmail,
+      subject: 'Добро пожаловать в SOLUTION HUB! 🎉',
+      html: welcomeEmail(sanitizedName),
+    }).catch(err => console.error('[Auth/Register] Welcome email failed:', err?.message));
 
     const token = jwt.sign(
       { userId: user.id, email: user.email, orgId, role: (user as Record<string, unknown>).role || 'user' },
