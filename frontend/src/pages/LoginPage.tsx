@@ -155,9 +155,9 @@ export default function LoginPage() {
 
   return (
     <div className="login-page-root">
-      {/* ── Animated background layers ── */}
-      <div className="login-bg-orb-1" />
-      <div className="login-bg-orb-2" />
+      {/* ── Morphing gradient blobs ── */}
+      <div className="login-orb-1" />
+      <div className="login-orb-2" />
 
       <div className="w-full max-w-md relative z-10 px-4 sm:px-0">
         {/* ── Logo section ── */}
@@ -437,34 +437,37 @@ export default function LoginPage() {
           background: #050505;
         }
 
-        /* ── Background: floating orbs ── */
-        .login-bg-orb-1 {
+        /* ── Background: morphing gradient blobs ── */
+        .login-orb-1 {
           position: absolute;
           top: -20%;
           right: -10%;
           width: 500px;
           height: 500px;
-          background: radial-gradient(circle, rgba(232,114,28,0.12) 0%, transparent 60%);
-          border-radius: 50%;
-          animation: orbFloat 18s ease-in-out infinite;
+          background: radial-gradient(circle, rgba(232,114,28,0.1) 0%, transparent 60%);
+          border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+          animation: morphBlob 18s ease-in-out infinite;
           pointer-events: none;
+          filter: blur(40px);
           z-index: 1;
         }
-        .login-bg-orb-2 {
+        .login-orb-2 {
           position: absolute;
           bottom: -30%;
-          left: -20%;
+          left: -15%;
           width: 600px;
           height: 600px;
-          background: radial-gradient(circle, rgba(150,80,200,0.06) 0%, transparent 60%);
-          border-radius: 50%;
-          animation: orbFloat 22s ease-in-out infinite reverse;
+          background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 60%);
+          border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+          animation: morphBlob 22s ease-in-out infinite reverse;
           pointer-events: none;
+          filter: blur(60px);
           z-index: 1;
         }
-        @keyframes orbFloat {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-40px) scale(1.05); }
+        @keyframes morphBlob {
+          0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(0,0); }
+          33% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; transform: translate(20px,-15px); }
+          66% { border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%; transform: translate(-15px,10px); }
         }
 
         /* ── Card ── */
@@ -472,14 +475,15 @@ export default function LoginPage() {
           position: relative;
           background: rgba(255,255,255,0.03);
           backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
           border: 1px solid rgba(255,255,255,0.06);
           border-radius: 24px;
           padding: 32px 28px;
-          box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 20px 60px rgba(0,0,0,0.4);
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 24px 80px rgba(0,0,0,0.4);
         }
         @media (min-width: 640px) {
           .login-card {
-            padding: 36px 36px;
+            padding: 36px;
           }
         }
 
@@ -497,21 +501,21 @@ export default function LoginPage() {
           width: 100%;
           height: 46px;
           padding: 0 14px 0 44px;
-          background: rgba(23,23,23,0.8);
-          border: 1px solid rgba(64,64,64,0.6);
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.06);
           border-radius: 10px;
           color: #fff;
           font-size: 14px;
-          transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+          transition: all 0.3s;
         }
         .login-input::placeholder {
           color: #525252;
         }
         .login-input:focus {
           outline: none;
-          border-color: rgba(249,115,22,0.6);
-          box-shadow: 0 0 0 3px rgba(249,115,22,0.1), 0 0 20px rgba(249,115,22,0.05);
-          background: rgba(28,28,28,0.9);
+          border-color: rgba(232,114,28,0.4);
+          box-shadow: 0 0 0 3px rgba(232,114,28,0.08);
+          background: rgba(255,255,255,0.05);
         }
         .login-input:disabled {
           opacity: 0.5;
@@ -529,7 +533,7 @@ export default function LoginPage() {
           width: 100%;
           padding: 14px 24px;
           margin-top: 8px;
-          background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+          background: linear-gradient(135deg, #E8721C, #FF9A3C);
           color: #fff;
           font-weight: 600;
           font-size: 14px;
@@ -537,11 +541,11 @@ export default function LoginPage() {
           border-radius: 12px;
           cursor: pointer;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
-          box-shadow: 0 4px 15px rgba(249,115,22,0.3), 0 0 0 1px rgba(249,115,22,0.1) inset;
+          box-shadow: 0 2px 16px rgba(232,114,28,0.3);
         }
         .login-submit-btn:hover:not(:disabled) {
           transform: translateY(-1px);
-          box-shadow: 0 6px 25px rgba(249,115,22,0.4), 0 0 0 1px rgba(249,115,22,0.2) inset;
+          box-shadow: 0 6px 25px rgba(232,114,28,0.4);
         }
         .login-submit-btn:active:not(:disabled) {
           transform: translateY(0);
@@ -582,8 +586,8 @@ export default function LoginPage() {
           gap: 12px;
           width: 100%;
           padding: 13px 16px;
-          background: rgba(23,23,23,0.6);
-          border: 1px solid rgba(64,64,64,0.5);
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.06);
           border-radius: 12px;
           color: #d4d4d4;
           font-size: 14px;
@@ -592,8 +596,8 @@ export default function LoginPage() {
           transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
         .login-google-btn:hover {
-          background: rgba(38,38,38,0.8);
-          border-color: rgba(82,82,82,0.6);
+          background: rgba(255,255,255,0.06);
+          border-color: rgba(255,255,255,0.1);
           color: #fff;
         }
       `}</style>

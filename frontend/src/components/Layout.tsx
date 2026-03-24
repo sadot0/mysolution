@@ -135,7 +135,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex items-center gap-1.5">
             <NotificationBell />
-          <Link to="/settings" className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-neutral-800 border border-neutral-700/50 hover:border-orange-500/30 transition-colors">
+          <Link to="/settings" className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] hover:border-orange-500/30 transition-colors">
             <Coins size={11} className="text-orange-400" />
             <span className="text-[11px] font-bold font-mono text-orange-400">
               {user?.token_balance?.toLocaleString() ?? '\u2014'}
@@ -148,7 +148,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Grouped Nav */}
       <nav className="flex-1 px-3 py-2 overflow-y-auto" aria-label="Основная навигация">
         {navGroups.map((group, gi) => (
-          <div key={gi} className={gi > 0 ? 'mt-4 pt-4 border-t border-neutral-800' : ''}>
+          <div key={gi} className={gi > 0 ? 'mt-4 pt-4 border-t border-white/[0.04]' : ''}>
             {group.label && (
               <p className="px-3 mb-2 text-[10px] font-semibold text-neutral-600 tracking-[0.15em] uppercase">
                 {group.label}
@@ -167,8 +167,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className={clsx(
                       'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200',
                       isActive
-                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
-                        : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+                        ? 'bg-[rgba(232,114,28,0.15)] text-white border border-[rgba(232,114,28,0.2)]'
+                        : 'text-neutral-400 hover:text-white hover:bg-white/[0.04]'
                     )}
                   >
                     <Icon size={16} className="shrink-0" aria-hidden="true" />
@@ -187,8 +187,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* User */}
-      <div className="px-3 py-3 border-t border-neutral-800">
-        <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-neutral-800/50 transition-colors">
+      <div className="px-3 py-3 border-t border-white/[0.04]">
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-white/[0.04] transition-colors">
           <div className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white font-bold text-xs" aria-hidden="true">
             {user?.name?.charAt(0)?.toUpperCase() || '?'}
           </div>
@@ -217,12 +217,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </a>
 
       {/* Mobile top bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 bg-neutral-900 border-b border-neutral-700 md:hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 bg-black/80 backdrop-blur-xl border-b border-white/[0.04] md:hidden">
         <img src="/logo-full.svg" alt="Solution" className="h-5" />
         <div className="flex items-center gap-2">
           <NotificationBell />
           {/* Token badge (mobile) */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-neutral-800/80 border border-neutral-700/50 rounded-full">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/[0.04] border border-white/[0.06] rounded-full">
             <Coins size={12} className="text-orange-400" aria-hidden="true" />
             <span className="text-xs font-bold font-mono text-orange-400">
               {user?.token_balance?.toLocaleString() ?? '\u2014'}
@@ -230,7 +230,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="flex items-center justify-center w-10 h-10 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+            className="flex items-center justify-center w-10 h-10 rounded-lg text-neutral-400 hover:text-white hover:bg-white/[0.04] transition-colors"
             aria-label="Открыть меню"
             aria-expanded={mobileMenuOpen}
           >
@@ -256,7 +256,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         aria-modal="true"
         aria-label="Навигационное меню"
         className={clsx(
-          'fixed top-0 left-0 z-[70] flex flex-col w-[272px] h-screen bg-neutral-900 border-r border-neutral-700 overflow-y-auto transition-transform duration-300 ease-in-out md:hidden',
+          'fixed top-0 left-0 z-[70] flex flex-col w-[272px] h-screen bg-[rgba(10,10,10,0.95)] backdrop-blur-2xl border-r border-white/[0.04] overflow-y-auto transition-transform duration-300 ease-in-out md:hidden',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -264,7 +264,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="absolute top-4 right-3">
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+            className="flex items-center justify-center w-9 h-9 rounded-lg text-neutral-400 hover:text-white hover:bg-white/[0.04] transition-colors"
             aria-label="Закрыть меню"
           >
             <X size={20} aria-hidden="true" />
@@ -274,7 +274,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Desktop / tablet sidebar */}
-      <aside className="hidden md:flex flex-col shrink-0 w-[220px] lg:w-[272px] bg-neutral-900 border-r border-neutral-700 fixed h-screen overflow-y-auto transition-all duration-300 ease-in-out" aria-label="Боковая панель">
+      <aside className="hidden md:flex flex-col shrink-0 w-[220px] lg:w-[272px] bg-[rgba(10,10,10,0.8)] backdrop-blur-xl border-r border-white/[0.04] fixed h-screen overflow-y-auto transition-all duration-300 ease-in-out" aria-label="Боковая панель">
         {sidebarContent()}
       </aside>
 
@@ -287,7 +287,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile bottom navigation bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-neutral-900/80 backdrop-blur-xl border-t border-white/[0.06] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-black/80 backdrop-blur-xl border-t border-white/[0.04] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
         {mobileBottomNav.map(({ href, label, icon: Icon }) => {
           const active = location.pathname.startsWith(href);
           return (
