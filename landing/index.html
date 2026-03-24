@@ -68,6 +68,68 @@
       overflow-x: hidden;
       font-weight: 400;
       font-size: 16px;
+      position: relative;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Living background layer */
+    .living-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .living-bg .bg-spot {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.07;
+    }
+    .living-bg .bg-spot-1 {
+      width: 800px; height: 800px;
+      background: #E8721C;
+      top: -200px; left: -200px;
+      animation: bgSpotDrift1 30s ease-in-out infinite;
+    }
+    .living-bg .bg-spot-2 {
+      width: 600px; height: 600px;
+      background: #8B5CF6;
+      bottom: -100px; right: -100px;
+      animation: bgSpotDrift2 25s ease-in-out infinite;
+    }
+    .living-bg .bg-spot-3 {
+      width: 500px; height: 500px;
+      background: #0EA5E9;
+      top: 50%; left: 50%;
+      animation: bgSpotDrift3 35s ease-in-out infinite;
+    }
+
+    @keyframes bgSpotDrift1 {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(200px, 100px); }
+      66% { transform: translate(-100px, 200px); }
+    }
+    @keyframes bgSpotDrift2 {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(-150px, -100px); }
+      66% { transform: translate(100px, -150px); }
+    }
+    @keyframes bgSpotDrift3 {
+      0%, 100% { transform: translate(-50%, -50%); }
+      33% { transform: translate(-30%, -60%); }
+      66% { transform: translate(-70%, -40%); }
     }
 
     ::selection {
@@ -184,9 +246,10 @@
     section {
       padding: 140px 0;
       position: relative;
-      min-height: 80vh;
+      min-height: 90vh;
       display: flex;
       align-items: center;
+      z-index: 2;
     }
 
     section > .container {
@@ -815,6 +878,69 @@
       align-self: flex-start;
     }
 
+    /* Mini dashboard illustration */
+    .mini-dashboard {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 16/10;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      display: flex;
+      overflow: hidden;
+      margin: 2rem auto 0;
+    }
+    .dash-sidebar {
+      width: 40px;
+      background: rgba(255,255,255,0.02);
+      border-right: 1px solid rgba(255,255,255,0.04);
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dash-dot {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      background: rgba(232,114,28,0.2);
+      opacity: 0;
+      animation: dashDotIn 0.5s var(--delay, 0s) forwards;
+    }
+    @keyframes dashDotIn {
+      to { opacity: 1; }
+    }
+    .dash-content {
+      flex: 1;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dash-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(232,114,28,0.15);
+      width: 0;
+      animation: dashBarGrow 0.8s var(--delay, 0s) cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes dashBarGrow {
+      to { width: var(--w, 50%); }
+    }
+    .dash-ring {
+      width: 80px;
+      margin: auto;
+    }
+    .dash-ring svg { display: inline; }
+
+    /* People connect illustration */
+    .people-connect {
+      width: 100%;
+      max-width: 240px;
+      margin: 2rem auto 0;
+    }
+    .people-connect svg { display: inline; }
+
     /* ============================================
        PRODUCTS (Bento Grid) — warm tint bg
        ============================================ */
@@ -863,6 +989,7 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 4px;
+      position: relative;
     }
 
     .product-card-icon svg {
@@ -915,6 +1042,15 @@
       font-weight: 500;
       width: fit-content;
     }
+
+    /* Animated product icons */
+    .product-anim-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .product-anim-icon svg { display: inline; }
 
     @media (max-width: 768px) {
       .products-grid {
@@ -989,6 +1125,17 @@
       background-clip: text;
       line-height: 1;
       margin-bottom: 8px;
+      transition: transform 0.4s var(--ease-out), text-shadow 0.4s;
+    }
+
+    .step-number.pulse-active {
+      animation: stepNumberPulse 1s ease-out;
+    }
+
+    @keyframes stepNumberPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
     }
 
     .step-card h3 {
@@ -1079,6 +1226,14 @@
       color: var(--orange);
     }
 
+    /* Animated why icons */
+    .why-anim-icon {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+    .why-anim-icon svg { display: inline; width: 40px; height: 40px; }
+
     .why-card h3 {
       font-size: 22px;
       letter-spacing: -0.01em;
@@ -1095,6 +1250,160 @@
     @media (max-width: 768px) {
       .why-grid {
         grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       NUMBERS SECTION
+       ============================================ */
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+
+    .number-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .number-value {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--orange), var(--orange-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+
+    .number-value.glow-active {
+      animation: numberGlow 1.5s ease-out;
+    }
+
+    @keyframes numberGlow {
+      0% { filter: drop-shadow(0 0 0px rgba(232,114,28,0)); }
+      50% { filter: drop-shadow(0 0 30px rgba(232,114,28,0.6)); }
+      100% { filter: drop-shadow(0 0 0px rgba(232,114,28,0)); }
+    }
+
+    .number-label {
+      font-size: 15px;
+      color: var(--white);
+      opacity: 0.4;
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .numbers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 48px 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .numbers-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ============================================
+       COMPARISON SECTION
+       ============================================ */
+    .comparison-wrapper {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      align-items: stretch;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .comparison-side {
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .comparison-side h3 {
+      font-size: 24px;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .comparison-side.traditional {
+      opacity: 0.5;
+    }
+
+    .comparison-side.traditional h3 {
+      color: var(--white-50);
+    }
+
+    .comparison-side.modern h3 {
+      color: var(--orange);
+    }
+
+    .comparison-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .comparison-item .ci-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .comparison-divider {
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--orange), transparent);
+      position: relative;
+      animation: dividerPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes dividerPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .comparison-divider::after {
+      content: 'VS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg);
+      padding: 12px 8px;
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .comparison-divider {
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      }
+      .comparison-divider::after {
+        padding: 8px 12px;
       }
     }
 
@@ -1472,6 +1781,8 @@
     .footer {
       padding: 64px 0 32px;
       border-top: 1px solid var(--glass-border);
+      position: relative;
+      z-index: 2;
     }
 
     .footer-content {
@@ -1562,6 +1873,7 @@
       position: relative;
       overflow: hidden;
       background: radial-gradient(ellipse at center, rgba(232, 114, 28, 0.06) 0%, transparent 60%);
+      z-index: 2;
     }
 
     .cta-content {
@@ -1637,6 +1949,13 @@
 </head>
 
 <body>
+  <!-- Living background -->
+  <div class="living-bg">
+    <div class="bg-spot bg-spot-1"></div>
+    <div class="bg-spot bg-spot-2"></div>
+    <div class="bg-spot bg-spot-3"></div>
+  </div>
+
   <!-- Scroll Progress -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -1794,6 +2113,28 @@
               <span data-i18n="whatwedo.platform.f3">Обучение (скоро)</span>
             </div>
           </div>
+          <!-- Mini dashboard illustration -->
+          <div class="mini-dashboard">
+            <div class="dash-sidebar">
+              <div class="dash-dot" style="--delay:0.2s"></div>
+              <div class="dash-dot" style="--delay:0.4s"></div>
+              <div class="dash-dot" style="--delay:0.6s"></div>
+            </div>
+            <div class="dash-content">
+              <div class="dash-bar" style="--w:80%;--delay:0.3s"></div>
+              <div class="dash-bar" style="--w:60%;--delay:0.5s"></div>
+              <div class="dash-bar" style="--w:90%;--delay:0.7s"></div>
+              <div class="dash-ring">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#E8721C" stroke-width="6" stroke-dasharray="251" stroke-dashoffset="251" stroke-linecap="round">
+                    <animate attributeName="stroke-dashoffset" from="251" to="60" dur="2s" fill="freeze" begin="0.5s"/>
+                  </circle>
+                  <text x="50" y="55" text-anchor="middle" fill="white" font-size="18" font-weight="bold">91</text>
+                </svg>
+              </div>
+            </div>
+          </div>
           <a href="/login" class="btn btn-primary btn-sm" data-i18n="whatwedo.platform.cta">Попробовать бесплатно</a>
         </div>
 
@@ -1814,6 +2155,38 @@
               <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>
               <span data-i18n="whatwedo.services.f3">IT Рекрутинг</span>
             </div>
+          </div>
+          <!-- People connect illustration -->
+          <div class="people-connect">
+            <svg viewBox="0 0 200 120" fill="none">
+              <!-- Person 1 -->
+              <circle cx="40" cy="50" r="16" stroke="#E8721C" stroke-width="1.5" opacity="0.6">
+                <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="40" cy="42" r="6" fill="#E8721C" opacity="0.4"/>
+              <!-- Person 2 -->
+              <circle cx="100" cy="30" r="16" stroke="#FF9A3C" stroke-width="1.5" opacity="0.6">
+                <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="100" cy="22" r="6" fill="#FF9A3C" opacity="0.4"/>
+              <!-- Person 3 -->
+              <circle cx="160" cy="50" r="16" stroke="#E8721C" stroke-width="1.5" opacity="0.6">
+                <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="1s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="160" cy="42" r="6" fill="#E8721C" opacity="0.4"/>
+              <!-- Connection lines -->
+              <line x1="56" y1="50" x2="84" y2="30" stroke="#E8721C" stroke-width="1" stroke-dasharray="4 4" opacity="0.3">
+                <animate attributeName="stroke-dashoffset" from="0" to="-8" dur="2s" repeatCount="indefinite"/>
+              </line>
+              <line x1="116" y1="30" x2="144" y2="50" stroke="#FF9A3C" stroke-width="1" stroke-dasharray="4 4" opacity="0.3">
+                <animate attributeName="stroke-dashoffset" from="0" to="-8" dur="2s" repeatCount="indefinite"/>
+              </line>
+              <!-- Central glow -->
+              <circle cx="100" cy="70" r="8" fill="#E8721C" opacity="0.1">
+                <animate attributeName="r" values="8;14;8" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.1;0.2;0.1" dur="4s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
           </div>
           <a href="#contact" class="btn btn-secondary btn-sm" data-i18n="whatwedo.services.cta">Оставить заявку</a>
         </div>
@@ -1836,10 +2209,28 @@
       </div>
 
       <div class="products-grid">
-        <!-- Large card -->
+        <!-- Large card: Recruiter -->
         <div class="glass glass-hover glass-reflection magnetic-card product-card large reveal reveal-delay-1">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <!-- Animated brain icon -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="12" stroke="#E8721C" stroke-width="1" opacity="0.3"/>
+              <circle cx="14" cy="16" r="3" fill="#E8721C" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="26" cy="16" r="3" fill="#FF9A3C" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="20" cy="26" r="3" fill="#E8721C" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+              </circle>
+              <line x1="14" y1="16" x2="26" y2="16" stroke="#E8721C" stroke-width="0.5" opacity="0.3"/>
+              <line x1="14" y1="16" x2="20" y2="26" stroke="#E8721C" stroke-width="0.5" opacity="0.3"/>
+              <line x1="26" y1="16" x2="20" y2="26" stroke="#FF9A3C" stroke-width="0.5" opacity="0.3"/>
+            </svg>
           </div>
           <h3 data-i18n="products.recruiter.title">Умный рекрутер</h3>
           <p data-i18n="products.recruiter.desc">Анализ резюме за 30 секунд. Оценка по 6 параметрам. Kanban-доска для управления кандидатами. Массовая загрузка. Шаблоны вакансий. Все, чтобы закрывать позиции быстрее.</p>
@@ -1850,6 +2241,17 @@
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           </div>
+          <!-- Animated magnifying glass -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="18" cy="18" r="10" stroke="#E8721C" stroke-width="1.5" opacity="0.4"/>
+              <line x1="26" y1="26" x2="34" y2="34" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <line x1="10" y1="18" x2="26" y2="18" stroke="#FF9A3C" stroke-width="1" opacity="0.5">
+                <animate attributeName="y1" values="12;24;12" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="12;24;12" dur="3s" repeatCount="indefinite"/>
+              </line>
+            </svg>
+          </div>
           <h3 data-i18n="products.audit.title">Аудит и отчеты</h3>
           <p data-i18n="products.audit.desc">PDF-отчеты, данные для аудиторов, полная прозрачность решений по каждому кандидату.</p>
         </div>
@@ -1857,6 +2259,19 @@
         <div class="glass glass-hover glass-reflection magnetic-card product-card medium reveal reveal-delay-3">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <!-- Animated handshake -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <path d="M8 22 L16 18 L20 20 L24 18 L32 22" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <circle cx="20" cy="20" r="4" fill="none" stroke="#FF9A3C" stroke-width="1" opacity="0.2">
+                <animate attributeName="r" values="4;8;4" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.2;0.05;0.2" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="20" cy="20" r="2" fill="#E8721C" opacity="0.5">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
           </div>
           <h3 data-i18n="products.outsource.title">Аутсорсинг подбора</h3>
           <p data-i18n="products.outsource.desc">Берем рекрутинг на себя полностью. От поиска до выхода кандидата на работу. Вы получаете результат.</p>
@@ -1867,6 +2282,24 @@
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
+          <!-- Animated chart -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="24" width="6" height="0" fill="#E8721C" opacity="0.4" rx="1">
+                <animate attributeName="height" values="0;12;0" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="y" values="24;12;24" dur="3s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="17" y="24" width="6" height="0" fill="#FF9A3C" opacity="0.4" rx="1">
+                <animate attributeName="height" values="0;18;0" dur="3s" begin="0.3s" repeatCount="indefinite"/>
+                <animate attributeName="y" values="24;6;24" dur="3s" begin="0.3s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="28" y="24" width="6" height="0" fill="#E8721C" opacity="0.4" rx="1">
+                <animate attributeName="height" values="0;8;0" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+                <animate attributeName="y" values="24;16;24" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+              </rect>
+              <line x1="4" y1="28" x2="36" y2="28" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            </svg>
+          </div>
           <h3 data-i18n="products.consulting.title">HR Консалтинг</h3>
           <p data-i18n="products.consulting.desc">Индивидуальные решения для вашего бизнеса.</p>
         </div>
@@ -1875,6 +2308,15 @@
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           </div>
+          <!-- Animated code brackets -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <text x="8" y="26" font-family="monospace" font-size="18" fill="#E8721C" opacity="0.5">
+                &lt;/&gt;
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+              </text>
+            </svg>
+          </div>
           <h3 data-i18n="products.it.title">IT Рекрутинг</h3>
           <p data-i18n="products.it.desc">Технические таланты для вашей команды.</p>
         </div>
@@ -1882,6 +2324,19 @@
         <div class="glass glass-hover glass-reflection magnetic-card product-card reveal reveal-delay-6">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          </div>
+          <!-- Animated graduation cap -->
+          <div class="product-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <polygon points="20,10 4,18 20,26 36,18" fill="none" stroke="#E8721C" stroke-width="1" opacity="0.5"/>
+              <line x1="20" y1="26" x2="20" y2="32" stroke="#E8721C" stroke-width="1" opacity="0.3"/>
+              <circle cx="30" cy="14" r="2" fill="#FF9A3C" opacity="0">
+                <animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="32" cy="12" r="1" fill="#E8721C" opacity="0">
+                <animate attributeName="opacity" values="0;0.6;0" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
           </div>
           <h3 data-i18n="products.training.title">Обучение</h3>
           <p data-i18n="products.training.desc">Развитие команды.</p>
@@ -1907,17 +2362,17 @@
         </div>
         <div class="steps-grid">
           <div class="glass magnetic-card step-card reveal reveal-delay-1">
-            <div class="step-number">01</div>
+            <div class="step-number" data-step-pulse>01</div>
             <h3 data-i18n="how.step1.title">Зарегистрируйтесь</h3>
             <p data-i18n="how.step1.desc">Создайте аккаунт и получите бесплатные кредиты для начала работы</p>
           </div>
           <div class="glass magnetic-card step-card reveal reveal-delay-2">
-            <div class="step-number">02</div>
+            <div class="step-number" data-step-pulse>02</div>
             <h3 data-i18n="how.step2.title">Разместите вакансию</h3>
             <p data-i18n="how.step2.desc">Выберите шаблон или опишите позицию — система настроит все за вас</p>
           </div>
           <div class="glass magnetic-card step-card reveal reveal-delay-3">
-            <div class="step-number">03</div>
+            <div class="step-number" data-step-pulse>03</div>
             <h3 data-i18n="how.step3.title">Получите результат</h3>
             <p data-i18n="how.step3.desc">Лучшие кандидаты отобраны и ранжированы. Вам остается выбрать.</p>
           </div>
@@ -1954,6 +2409,18 @@
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
           </div>
+          <!-- Two orbiting circles -->
+          <div class="why-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="10" stroke="rgba(255,255,255,0.06)" stroke-width="1" fill="none"/>
+              <circle cx="20" cy="10" r="3" fill="#E8721C" opacity="0.6">
+                <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="6s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="20" cy="30" r="3" fill="#FF9A3C" opacity="0.6">
+                <animateTransform attributeName="transform" type="rotate" from="180 20 20" to="540 20 20" dur="6s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
           <h3 data-i18n="why.c1.title">Два подхода</h3>
           <p data-i18n="why.c1.desc">Платформа для самостоятельной работы и команда экспертов для тех, кто хочет делегировать. Выбирайте то, что подходит.</p>
         </div>
@@ -1961,6 +2428,17 @@
         <div class="glass glass-hover glass-reflection magnetic-card why-card reveal reveal-delay-2">
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <!-- Star with twinkle -->
+          <div class="why-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <polygon points="20,6 23,16 34,16 25,22 28,32 20,26 12,32 15,22 6,16 17,16" fill="#E8721C" opacity="0.3">
+                <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+              </polygon>
+              <circle cx="30" cy="8" r="1.5" fill="#FF9A3C" opacity="0">
+                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
           </div>
           <h3 data-i18n="why.c2.title">Экспертиза</h3>
           <p data-i18n="why.c2.desc">3+ года опыта в банковском секторе и крупных компаниях. Мы знаем рынок и понимаем, кого вы ищете.</p>
@@ -1970,6 +2448,20 @@
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
+          <!-- Gear rotating -->
+          <div class="why-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <g opacity="0.4">
+                <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="12s" repeatCount="indefinite"/>
+                <circle cx="20" cy="20" r="8" stroke="#E8721C" stroke-width="1.5" fill="none"/>
+                <circle cx="20" cy="20" r="3" fill="#E8721C" opacity="0.5"/>
+                <rect x="18.5" y="8" width="3" height="5" rx="1" fill="#E8721C"/>
+                <rect x="18.5" y="27" width="3" height="5" rx="1" fill="#E8721C"/>
+                <rect x="8" y="18.5" width="5" height="3" rx="1" fill="#E8721C"/>
+                <rect x="27" y="18.5" width="5" height="3" rx="1" fill="#E8721C"/>
+              </g>
+            </svg>
+          </div>
           <h3 data-i18n="why.c3.title">Технологии</h3>
           <p data-i18n="why.c3.desc">Умный анализ резюме, автоматизация рутины, экономия времени. Технологии работают на вас, а не наоборот.</p>
         </div>
@@ -1978,8 +2470,53 @@
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
+          <!-- Puzzle pieces connecting -->
+          <div class="why-anim-icon">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect x="6" y="6" width="12" height="12" rx="2" fill="#E8721C" opacity="0.3">
+                <animate attributeName="x" values="6;8;6" dur="4s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="22" y="22" width="12" height="12" rx="2" fill="#FF9A3C" opacity="0.3">
+                <animate attributeName="x" values="22;20;22" dur="4s" repeatCount="indefinite"/>
+              </rect>
+              <circle cx="20" cy="20" r="3" fill="none" stroke="#E8721C" stroke-width="1" opacity="0.4">
+                <animate attributeName="r" values="3;5;3" dur="4s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
           <h3 data-i18n="why.c4.title">Индивидуальный подход</h3>
           <p data-i18n="why.c4.desc">Не шаблоны, а решения под конкретный бизнес. Каждый проект — уникален, и мы это учитываем.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       NUMBERS — Наши числа
+       ============================================ -->
+  <section id="numbers">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="numbers.label">В цифрах</p>
+        <h2 class="section-title" data-i18n="numbers.title">Наши числа</h2>
+      </div>
+
+      <div class="numbers-grid">
+        <div class="number-item reveal reveal-delay-1">
+          <div class="number-value" data-number-counter="30" data-number-suffix=" сек">0</div>
+          <div class="number-label" data-i18n="numbers.n1">AI анализ<br>резюме</div>
+        </div>
+        <div class="number-item reveal reveal-delay-2">
+          <div class="number-value" data-number-counter="6">0</div>
+          <div class="number-label" data-i18n="numbers.n2">параметров<br>оценки</div>
+        </div>
+        <div class="number-item reveal reveal-delay-3">
+          <div class="number-value" data-number-counter="12" data-number-suffix="+ млн">0</div>
+          <div class="number-label" data-i18n="numbers.n3">сум аутсорсинг<br>за сотрудника</div>
+        </div>
+        <div class="number-item reveal reveal-delay-4">
+          <div class="number-value" data-number-counter="3" data-number-suffix="+">0</div>
+          <div class="number-label" data-i18n="numbers.n4">года опыта<br>в HR</div>
         </div>
       </div>
     </div>
@@ -2095,6 +2632,62 @@
 
       <div class="glass pricing-outsource reveal">
         <p><span data-i18n="pricing.outsource.text">Аутсорсинг подбора — </span><span class="highlight" data-i18n="pricing.outsource.price">от 12 000 000 сум за сотрудника</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       COMPARISON — Как мы отличаемся
+       ============================================ -->
+  <section id="comparison">
+    <div class="container">
+      <div class="section-header center reveal">
+        <p class="section-label" data-i18n="comparison.label">Сравнение</p>
+        <h2 class="section-title" data-i18n="comparison.title">Как мы отличаемся</h2>
+      </div>
+
+      <div class="comparison-wrapper glass reveal">
+        <div class="comparison-side traditional">
+          <h3 data-i18n="comparison.trad.title">Традиционный подход</h3>
+          <div class="comparison-item">
+            <span class="ci-icon">&#10060;</span>
+            <span data-i18n="comparison.trad.i1">Недели на просмотр резюме</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#10060;</span>
+            <span data-i18n="comparison.trad.i2">Субъективные решения</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#10060;</span>
+            <span data-i18n="comparison.trad.i3">Дорого ($500+ за вакансию)</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#10060;</span>
+            <span data-i18n="comparison.trad.i4">Нет данных для аудита</span>
+          </div>
+        </div>
+
+        <div class="comparison-divider"></div>
+
+        <div class="comparison-side modern">
+          <h3>SOLUTION</h3>
+          <div class="comparison-item">
+            <span class="ci-icon">&#9989;</span>
+            <span data-i18n="comparison.sol.i1">30 секунд на анализ</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#9989;</span>
+            <span data-i18n="comparison.sol.i2">Объективная AI-оценка</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#9989;</span>
+            <span data-i18n="comparison.sol.i3">От 0 сум (бесплатные кредиты)</span>
+          </div>
+          <div class="comparison-item">
+            <span class="ci-icon">&#9989;</span>
+            <span data-i18n="comparison.sol.i4">Полная прозрачность</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2450,7 +3043,7 @@
     })();
 
     /* ==========================================
-       SMOOTH NUMBER COUNTER with easing
+       SMOOTH NUMBER COUNTER with easing (hero stats)
        ========================================== */
     (function() {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -2495,6 +3088,77 @@
 
       document.querySelectorAll('[data-counter]').forEach(function(el) {
         counterObserver.observe(el);
+      });
+    })();
+
+    /* ==========================================
+       BIG NUMBER COUNTERS (Numbers section)
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('[data-number-counter]').forEach(function(el) {
+          el.textContent = el.getAttribute('data-number-counter') + (el.getAttribute('data-number-suffix') || '');
+        });
+        return;
+      }
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function animateBigCounter(el) {
+        var target = parseInt(el.getAttribute('data-number-counter'));
+        var suffix = el.getAttribute('data-number-suffix') || '';
+        var duration = 2500;
+        var start = performance.now();
+
+        function update(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeOutExpo(progress);
+          var current = Math.round(eased * target);
+          el.textContent = current + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.classList.add('glow-active');
+          }
+        }
+
+        requestAnimationFrame(update);
+      }
+
+      var bigCounterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateBigCounter(entry.target);
+            bigCounterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('[data-number-counter]').forEach(function(el) {
+        bigCounterObserver.observe(el);
+      });
+    })();
+
+    /* ==========================================
+       STEP NUMBER PULSE on visibility
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var stepObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('pulse-active');
+            stepObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('[data-step-pulse]').forEach(function(el) {
+        stepObserver.observe(el);
       });
     })();
 
@@ -2665,6 +3329,12 @@
           'why.c3.desc': 'Aqlli rezyume tahlili, rutinani avtomatlashtirish, vaqtni tejash. Texnologiyalar siz uchun ishlaydi.',
           'why.c4.title': 'Individual yondashuv',
           'why.c4.desc': 'Shablonlar emas, balki muayyan biznes uchun yechimlar. Har bir loyiha noyob.',
+          'numbers.label': 'Raqamlarda',
+          'numbers.title': 'Bizning raqamlar',
+          'numbers.n1': 'AI rezyume<br>tahlili',
+          'numbers.n2': 'baholash<br>mezonlari',
+          'numbers.n3': 'so\'m autsorsing<br>xodim uchun',
+          'numbers.n4': 'yil HR<br>tajriba',
           'pricing.label': 'Tariflar',
           'pricing.title': 'Oddiy tariflar',
           'pricing.subtitle': 'Bepul boshlang. Tayyor bo\'lganingizda kengaytiring.',
@@ -2697,6 +3367,17 @@
           'pricing.note': 'Aniq tariflar shakllanmoqda. Ro\'yxatdan o\'ting — birinchi kreditlar bepul.',
           'pricing.outsource.text': 'Tanlash autsorsing — ',
           'pricing.outsource.price': '12 000 000 so\'mdan xodim uchun',
+          'comparison.label': 'Taqqoslash',
+          'comparison.title': 'Qanday farqlanamiz',
+          'comparison.trad.title': 'An\'anaviy yondashuv',
+          'comparison.trad.i1': 'Rezyumeni ko\'rib chiqish uchun haftalab',
+          'comparison.trad.i2': 'Sub\'ektiv qarorlar',
+          'comparison.trad.i3': 'Qimmat ($500+ vakansiya uchun)',
+          'comparison.trad.i4': 'Audit uchun ma\'lumot yo\'q',
+          'comparison.sol.i1': 'Tahlil uchun 30 soniya',
+          'comparison.sol.i2': 'Ob\'ektiv AI baholash',
+          'comparison.sol.i3': '0 so\'mdan (bepul kreditlar)',
+          'comparison.sol.i4': 'To\'liq shaffoflik',
           'faq.label': 'Savollar',
           'faq.title': 'Tez-tez so\'raladigan savollar',
           'faq.q1': 'SOLUTION nima?',
@@ -2800,6 +3481,12 @@
           'why.c3.desc': 'Smart resume analysis, routine automation, time savings. Technology works for you, not the other way around.',
           'why.c4.title': 'Individual approach',
           'why.c4.desc': 'Not templates, but solutions tailored to your specific business. Every project is unique.',
+          'numbers.label': 'In numbers',
+          'numbers.title': 'Our numbers',
+          'numbers.n1': 'AI resume<br>analysis',
+          'numbers.n2': 'scoring<br>parameters',
+          'numbers.n3': 'UZS outsourcing<br>per hire',
+          'numbers.n4': 'years of HR<br>experience',
           'pricing.label': 'Pricing',
           'pricing.title': 'Simple pricing',
           'pricing.subtitle': 'Start for free. Scale when you\'re ready.',
@@ -2832,6 +3519,17 @@
           'pricing.note': 'Pricing is being finalized. Sign up — first credits are free.',
           'pricing.outsource.text': 'Recruitment outsourcing — ',
           'pricing.outsource.price': 'from 12,000,000 UZS per hire',
+          'comparison.label': 'Comparison',
+          'comparison.title': 'How we differ',
+          'comparison.trad.title': 'Traditional approach',
+          'comparison.trad.i1': 'Weeks to review resumes',
+          'comparison.trad.i2': 'Subjective decisions',
+          'comparison.trad.i3': 'Expensive ($500+ per vacancy)',
+          'comparison.trad.i4': 'No data for audit',
+          'comparison.sol.i1': '30 seconds to analyze',
+          'comparison.sol.i2': 'Objective AI scoring',
+          'comparison.sol.i3': 'From 0 UZS (free credits)',
+          'comparison.sol.i4': 'Full transparency',
           'faq.label': 'Questions',
           'faq.title': 'FAQ',
           'faq.q1': 'What is SOLUTION?',
@@ -2871,7 +3569,7 @@
       // Store original RU text
       var ruTexts = {};
       document.querySelectorAll('[data-i18n]').forEach(function(el) {
-        ruTexts[el.getAttribute('data-i18n')] = el.textContent;
+        ruTexts[el.getAttribute('data-i18n')] = el.innerHTML;
       });
 
       var currentLang = 'ru';
@@ -2888,9 +3586,9 @@
         document.querySelectorAll('[data-i18n]').forEach(function(el) {
           var key = el.getAttribute('data-i18n');
           if (lang === 'ru') {
-            el.textContent = ruTexts[key] || el.textContent;
+            el.innerHTML = ruTexts[key] || el.innerHTML;
           } else if (translations[lang] && translations[lang][key]) {
-            el.textContent = translations[lang][key];
+            el.innerHTML = translations[lang][key];
           }
         });
 
