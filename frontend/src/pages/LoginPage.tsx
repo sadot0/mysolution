@@ -52,16 +52,41 @@ export default function LoginPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // LinkedIn OAuth callback handler
+  // OAuth callback handler (Google or LinkedIn)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
+    const scope = params.get('scope') || '';
     if (code) {
-      handleLinkedInCallback(code);
       window.history.replaceState({}, '', '/login');
+      // LinkedIn scope contains "r_liteprofile" or "r_emailaddress", Google contains "email" and "openid"
+      if (scope.includes('r_liteprofile') || scope.includes('r_emailaddress') || scope.includes('linkedin')) {
+        handleLinkedInCallback(code);
+      } else {
+        handleGoogleCodeCallback(code);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleGoogleCodeCallback = async (code: string) => {
+    setLoading(true);
+    try {
+      // Exchange code for ID token via backend
+      const res = await authApi.googleLogin(code);
+      const { token: newToken, user, organization } = res.data;
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      if (organization) localStorage.setItem('organization', JSON.stringify(organization));
+      setAuth(newToken, user, (organization as Organization) || null);
+      toast.success(`Добро пожаловать, ${user.name}!`);
+      window.location.href = '/vacancies';
+    } catch {
+      toast.error('Ошибка входа через Google');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLinkedInCallback = async (code: string) => {
     setLoading(true);
@@ -370,13 +395,13 @@ export default function LoginPage() {
             type="button"
             className="login-google-btn"
             onClick={() => {
-              if (import.meta.env.VITE_GOOGLE_CLIENT_ID) {
-                toast('Перенаправление на Google...', { icon: '🔄' });
+              const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+              if (clientId) {
+                const redirectUri = encodeURIComponent(window.location.origin + '/login');
+                const scope = encodeURIComponent('email profile openid');
+                window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&prompt=select_account`;
               } else {
-                toast('Google вход будет доступен после настройки. Используйте email.', {
-                  icon: 'ℹ️',
-                  duration: 4000,
-                });
+                toast('Google вход будет доступен после настройки.', { icon: 'ℹ️', duration: 4000 });
               }
             }}
           >

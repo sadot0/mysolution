@@ -1339,15 +1339,23 @@
     }
 
     .comparison-side.traditional {
-      opacity: 0.5;
+      opacity: 0.45;
+      background: rgba(255,255,255,0.01);
+      filter: saturate(0.4) brightness(0.85);
     }
 
     .comparison-side.traditional h3 {
       color: var(--white-50);
     }
 
+    .comparison-side.modern {
+      background: rgba(232,114,28,0.03);
+      box-shadow: inset 0 0 60px rgba(232,114,28,0.04);
+    }
+
     .comparison-side.modern h3 {
       color: var(--orange);
+      text-shadow: 0 0 30px rgba(232,114,28,0.3);
     }
 
     .comparison-item {
@@ -1363,33 +1371,25 @@
       flex-shrink: 0;
       font-size: 18px;
       line-height: 1.4;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .comparison-item .ci-icon svg {
+      display: inline-block;
     }
 
     .comparison-divider {
-      width: 2px;
-      background: linear-gradient(180deg, transparent, var(--orange), transparent);
+      width: 3px;
+      background: linear-gradient(180deg, transparent 5%, var(--orange) 30%, var(--orange-light) 50%, var(--orange) 70%, transparent 95%);
       position: relative;
-      animation: dividerPulse 3s ease-in-out infinite;
+      box-shadow: 0 0 12px rgba(232,114,28,0.3), 0 0 30px rgba(232,114,28,0.1);
+      animation: dividerGlow 3s ease-in-out infinite;
     }
 
-    @keyframes dividerPulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.8; }
-    }
-
-    .comparison-divider::after {
-      content: 'VS';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--bg);
-      padding: 12px 8px;
-      font-family: var(--font-heading);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--orange);
-      letter-spacing: 0.1em;
+    @keyframes dividerGlow {
+      0%, 100% { box-shadow: 0 0 12px rgba(232,114,28,0.2), 0 0 30px rgba(232,114,28,0.05); }
+      50% { box-shadow: 0 0 20px rgba(232,114,28,0.5), 0 0 50px rgba(232,114,28,0.15); }
     }
 
     @media (max-width: 768px) {
@@ -1399,11 +1399,8 @@
       }
       .comparison-divider {
         width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--orange), transparent);
-      }
-      .comparison-divider::after {
-        padding: 8px 12px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent 5%, var(--orange) 30%, var(--orange-light) 50%, var(--orange) 70%, transparent 95%);
       }
     }
 
@@ -2091,6 +2088,12 @@
     .security-item-icon {
       font-size: 20px;
       flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .security-item-icon svg {
+      display: inline-block;
     }
     @media (max-width: 768px) {
       .security-layout {
@@ -2333,6 +2336,12 @@
       font-size: 24px;
       line-height: 1;
       flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .roadmap-icon svg {
+      display: inline-block;
     }
     .roadmap-content h3 {
       font-size: 18px;
@@ -3074,48 +3083,47 @@
 
       <div class="glass security-layout reveal">
         <div class="security-icon-area">
-          <svg class="security-shield-svg" viewBox="0 0 200 200" fill="none">
-            <!-- Pulsing rings -->
-            <circle cx="100" cy="100" r="90" stroke="#E8721C" stroke-width="0.5" fill="none" opacity="0.1">
-              <animate attributeName="r" values="80;95;80" dur="4s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.1;0.2;0.1" dur="4s" repeatCount="indefinite"/>
-            </circle>
-            <circle cx="100" cy="100" r="70" stroke="#FF9A3C" stroke-width="0.5" fill="none" opacity="0.15">
-              <animate attributeName="r" values="65;75;65" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.15;0.25;0.15" dur="3s" repeatCount="indefinite"/>
-            </circle>
-            <!-- Shield -->
-            <path d="M100 30 L140 55 L140 110 C140 140 120 165 100 175 C80 165 60 140 60 110 L60 55 Z" 
-                  fill="rgba(232,114,28,0.08)" stroke="#E8721C" stroke-width="1.5" opacity="0.6">
-              <animate attributeName="opacity" values="0.6;0.8;0.6" dur="3s" repeatCount="indefinite"/>
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+            <path d="M60 10L100 30v25c0 26.25-17.5 48.7-40 55-22.5-6.3-40-28.75-40-55V30L60 10z"
+              stroke="#E8721C" stroke-width="2" fill="rgba(232,114,28,0.05)">
             </path>
-            <!-- Check mark -->
-            <path d="M85 105 L95 115 L118 88" stroke="#E8721C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+            <path d="M45 58l10 10 20-20" stroke="#E8721C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.5s" fill="freeze"/>
+            </path>
+            <!-- Pulse rings -->
+            <circle cx="60" cy="55" r="35" stroke="#E8721C" fill="none" opacity="0.1" stroke-width="1">
+              <animate attributeName="r" values="35;50;35" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.1;0;0.1" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="60" cy="55" r="45" stroke="#E8721C" fill="none" opacity="0.05" stroke-width="1">
+              <animate attributeName="r" values="45;60;45" dur="4s" begin="1s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.05;0;0.05" dur="4s" begin="1s" repeatCount="indefinite"/>
+            </circle>
           </svg>
         </div>
         <div class="security-list">
           <div class="security-item reveal reveal-delay-1">
-            <span class="security-item-icon">&#128272;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/><circle cx="12" cy="16" r="1" fill="#E8721C"/></svg></span>
             <span data-i18n="security.i1">AES-256 шифрование данных</span>
           </div>
           <div class="security-item reveal reveal-delay-2">
-            <span class="security-item-icon">&#128737;&#65039;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round"><path d="M12 2l7 4v5c0 5.25-3.5 9.74-7 11-3.5-1.26-7-5.75-7-11V6l7-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
             <span data-i18n="security.i2">Двухфакторная аутентификация</span>
           </div>
           <div class="security-item reveal reveal-delay-3">
-            <span class="security-item-icon">&#128274;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 6-4 9s1.5 6 4 9c2.5-3 4-6 4-9s-1.5-6-4-9"/><path d="M3 12h18"/><rect x="9" y="14" width="6" height="5" rx="1"/><path d="M10.5 14v-1.5a1.5 1.5 0 013 0V14"/></svg></span>
             <span data-i18n="security.i3">HTTPS everywhere</span>
           </div>
           <div class="security-item reveal reveal-delay-4">
-            <span class="security-item-icon">&#9889;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
             <span data-i18n="security.i4">Rate limiting и защита от атак</span>
           </div>
           <div class="security-item reveal reveal-delay-5">
-            <span class="security-item-icon">&#128203;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2h6v3H9z"/><path d="M9 10h6M9 14h4"/></svg></span>
             <span data-i18n="security.i5">Полный лог действий для аудита</span>
           </div>
           <div class="security-item reveal reveal-delay-6">
-            <span class="security-item-icon">&#128273;</span>
+            <span class="security-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M11.5 11.5L17 6"/><path d="M15 8l2-2 2 2"/></svg></span>
             <span data-i18n="security.i6">JWT авторизация с автообновлением</span>
           </div>
         </div>
@@ -3349,19 +3357,19 @@
         <div class="comparison-side traditional">
           <h3 data-i18n="comparison.trad.title">Традиционный подход</h3>
           <div class="comparison-item">
-            <span class="ci-icon">&#10060;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#ef4444" stroke-width="1.5" opacity="0.3"/><path d="M7 7l6 6M13 7l-6 6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <span data-i18n="comparison.trad.i1">Недели на просмотр резюме</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#10060;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#ef4444" stroke-width="1.5" opacity="0.3"/><path d="M7 7l6 6M13 7l-6 6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <span data-i18n="comparison.trad.i2">Субъективные решения</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#10060;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#ef4444" stroke-width="1.5" opacity="0.3"/><path d="M7 7l6 6M13 7l-6 6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <span data-i18n="comparison.trad.i3">Дорого ($500+ за вакансию)</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#10060;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#ef4444" stroke-width="1.5" opacity="0.3"/><path d="M7 7l6 6M13 7l-6 6" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <span data-i18n="comparison.trad.i4">Нет данных для аудита</span>
           </div>
         </div>
@@ -3371,19 +3379,19 @@
         <div class="comparison-side modern">
           <h3>SOLUTION</h3>
           <div class="comparison-item">
-            <span class="ci-icon">&#9989;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#E8721C" stroke-width="1.5" opacity="0.4"/><path d="M6.5 10l2.5 2.5 5-5" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.6s" fill="freeze"/></path></svg></span>
             <span data-i18n="comparison.sol.i1">30 секунд на анализ</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#9989;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#E8721C" stroke-width="1.5" opacity="0.4"/><path d="M6.5 10l2.5 2.5 5-5" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.6s" fill="freeze"/></path></svg></span>
             <span data-i18n="comparison.sol.i2">Объективная AI-оценка</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#9989;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#E8721C" stroke-width="1.5" opacity="0.4"/><path d="M6.5 10l2.5 2.5 5-5" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.6s" fill="freeze"/></path></svg></span>
             <span data-i18n="comparison.sol.i3">От 0 сум (бесплатные кредиты)</span>
           </div>
           <div class="comparison-item">
-            <span class="ci-icon">&#9989;</span>
+            <span class="ci-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#E8721C" stroke-width="1.5" opacity="0.4"/><path d="M6.5 10l2.5 2.5 5-5" stroke="#E8721C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.6s" fill="freeze"/></path></svg></span>
             <span data-i18n="comparison.sol.i4">Полная прозрачность</span>
           </div>
         </div>
@@ -3575,7 +3583,7 @@
 
         <div class="roadmap-item done reveal reveal-delay-1">
           <div class="roadmap-dot"></div>
-          <div class="roadmap-icon">&#9989;</div>
+          <div class="roadmap-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" fill="rgba(232,114,28,0.15)" stroke="#E8721C" stroke-width="1.5"/><path d="M9 14l3.5 3.5 6.5-6.5" stroke="#E8721C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="roadmap-content">
             <h3 data-i18n="roadmap.q1.title">Q1 2026</h3>
             <p data-i18n="roadmap.q1.desc">MVP платформы, лендинг, первые клиенты</p>
@@ -3584,7 +3592,7 @@
 
         <div class="roadmap-item current reveal reveal-delay-2">
           <div class="roadmap-dot"></div>
-          <div class="roadmap-icon">&#128260;</div>
+          <div class="roadmap-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" fill="rgba(232,114,28,0.15)" stroke="#E8721C" stroke-width="1.5"/><path d="M10 14a4 4 0 018 0" stroke="#E8721C" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="2s" repeatCount="indefinite"/></path></svg></div>
           <div class="roadmap-content">
             <h3 data-i18n="roadmap.q2.title">Q2 2026</h3>
             <p data-i18n="roadmap.q2.desc">Оплата Click/Payme, Telegram бот, мобильная версия</p>
@@ -3593,7 +3601,7 @@
 
         <div class="roadmap-item reveal reveal-delay-3">
           <div class="roadmap-dot"></div>
-          <div class="roadmap-icon">&#128203;</div>
+          <div class="roadmap-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/><rect x="10" y="9" width="8" height="10" rx="1" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><path d="M12 13h4M12 16h2" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-linecap="round"/></svg></div>
           <div class="roadmap-content">
             <h3 data-i18n="roadmap.q3.title">Q3 2026</h3>
             <p data-i18n="roadmap.q3.desc">Обучение персонала, CRM модуль</p>
@@ -3602,7 +3610,7 @@
 
         <div class="roadmap-item reveal reveal-delay-4">
           <div class="roadmap-dot"></div>
-          <div class="roadmap-icon">&#128640;</div>
+          <div class="roadmap-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/><path d="M14 8l3 5h-6l3-5z" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 13v5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
           <div class="roadmap-content">
             <h3 data-i18n="roadmap.q4.title">Q4 2026</h3>
             <p data-i18n="roadmap.q4.desc">Казахстан, Кыргызстан, масштабирование</p>

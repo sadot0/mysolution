@@ -466,19 +466,62 @@ router.post('/google', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Verify the Google ID token
+    // Verify the Google token (supports both ID token and authorization code)
     let googleUser: { email: string; name: string; picture?: string };
     try {
-      const tokenInfoRes = await fetch(
-        `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`,
-      );
+      let tokenInfo: Record<string, string>;
 
-      if (!tokenInfoRes.ok) {
-        res.status(401).json({ error: 'Недействительный Google токен' });
-        return;
+      // Check if it's an authorization code (starts with "4/") or an ID token (starts with "eyJ")
+      if (credential.startsWith('4/') || credential.length < 200) {
+        // It's an authorization code — exchange for tokens
+        const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            code: credential,
+            client_id: process.env.GOOGLE_CLIENT_ID || '',
+            client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
+            redirect_uri: `${process.env.FRONTEND_URL || 'https://mysolution.uz'}/login`,
+            grant_type: 'authorization_code',
+          }),
+        });
+
+        if (!tokenRes.ok) {
+          const errText = await tokenRes.text();
+          console.error('[Auth/Google] Code exchange failed:', errText);
+          res.status(401).json({ error: 'Не удалось обменять код Google' });
+          return;
+        }
+
+        const tokens = await tokenRes.json() as { id_token?: string; access_token?: string };
+
+        if (tokens.id_token) {
+          // Decode ID token
+          const idTokenRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${tokens.id_token}`);
+          tokenInfo = await idTokenRes.json() as Record<string, string>;
+        } else if (tokens.access_token) {
+          // Use access token to get user info
+          const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+            headers: { Authorization: `Bearer ${tokens.access_token}` },
+          });
+          tokenInfo = await userInfoRes.json() as Record<string, string>;
+        } else {
+          res.status(401).json({ error: 'Google не вернул токен' });
+          return;
+        }
+      } else {
+        // It's an ID token — verify directly
+        const tokenInfoRes = await fetch(
+          `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`,
+        );
+
+        if (!tokenInfoRes.ok) {
+          res.status(401).json({ error: 'Недействительный Google токен' });
+          return;
+        }
+
+        tokenInfo = await tokenInfoRes.json() as Record<string, string>;
       }
-
-      const tokenInfo = (await tokenInfoRes.json()) as Record<string, string>;
 
       if (!tokenInfo.email) {
         res.status(401).json({ error: 'Google токен не содержит email' });
