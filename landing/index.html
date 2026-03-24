@@ -24,6 +24,8 @@
     :root {
       --bg: #050505;
       --bg-elevated: #0a0a0a;
+      --text: #ffffff;
+      --accent-bright: #FF9A3C;
       --orange: #E8721C;
       --orange-light: #FF9A3C;
       --orange-glow: rgba(232, 114, 28, 0.15);
@@ -143,25 +145,28 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--orange);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      opacity: 0.9;
     }
 
     .section-title {
       font-size: clamp(32px, 5vw, 56px);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       letter-spacing: -0.02em;
     }
 
     .section-subtitle {
       font-size: clamp(16px, 2vw, 20px);
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       max-width: 600px;
-      line-height: 1.6;
+      line-height: 1.7;
       font-weight: 300;
+      letter-spacing: 0.01em;
     }
 
     .section-header {
-      margin-bottom: 64px;
+      margin-bottom: 80px;
     }
 
     .section-header.center {
@@ -174,17 +179,71 @@
     }
 
     /* ============================================
-       SECTIONS SPACING
+       SECTIONS SPACING — full-page feel
        ============================================ */
     section {
-      padding: 120px 0;
+      padding: 140px 0;
       position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+
+    section > .container {
+      width: 100%;
     }
 
     @media (max-width: 768px) {
       section {
-        padding: 80px 0;
+        padding: 100px 0;
+        min-height: auto;
       }
+    }
+
+    /* ============================================
+       MORPHING GRADIENT BLOBS
+       ============================================ */
+    .morph-blob {
+      position: absolute;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      filter: blur(60px);
+      opacity: 0.15;
+      animation: morphBlob 15s ease-in-out infinite;
+      pointer-events: none;
+      will-change: transform, border-radius;
+    }
+
+    .morph-blob.blob-orange {
+      background: radial-gradient(circle, rgba(232, 114, 28, 0.6), rgba(255, 154, 60, 0.3), transparent 70%);
+    }
+
+    .morph-blob.blob-purple {
+      background: radial-gradient(circle, rgba(120, 80, 200, 0.5), rgba(160, 100, 240, 0.2), transparent 70%);
+    }
+
+    .morph-blob.blob-blue {
+      background: radial-gradient(circle, rgba(60, 120, 220, 0.5), rgba(80, 160, 255, 0.2), transparent 70%);
+    }
+
+    @keyframes morphBlob {
+      0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(0, 0) rotate(0deg); }
+      25% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; transform: translate(30px, -20px) rotate(90deg); }
+      50% { border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%; transform: translate(-20px, 20px) rotate(180deg); }
+      75% { border-radius: 30% 70% 60% 40% / 50% 70% 30% 60%; transform: translate(10px, -30px) rotate(270deg); }
+    }
+
+    @keyframes morphBlob2 {
+      0%, 100% { border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%; transform: translate(0, 0) rotate(0deg); }
+      25% { border-radius: 30% 70% 60% 40% / 50% 70% 30% 60%; transform: translate(-25px, 15px) rotate(90deg); }
+      50% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(20px, -25px) rotate(180deg); }
+      75% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; transform: translate(-10px, 20px) rotate(270deg); }
+    }
+
+    @keyframes morphBlob3 {
+      0%, 100% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; transform: translate(0, 0) rotate(0deg); }
+      25% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(15px, 25px) rotate(90deg); }
+      50% { border-radius: 30% 70% 60% 40% / 50% 70% 30% 60%; transform: translate(-30px, -10px) rotate(180deg); }
+      75% { border-radius: 50% 50% 30% 70% / 60% 40% 70% 30%; transform: translate(20px, -15px) rotate(270deg); }
     }
 
     /* ============================================
@@ -216,9 +275,31 @@
     }
 
     .glass-hover:hover {
-      transform: translateY(-6px);
       border-color: var(--glass-border-hover);
       box-shadow: 0 24px 80px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--glass-border-hover);
+    }
+
+    /* Glass card light reflection */
+    .glass-reflection {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-reflection::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: left 0.8s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .glass-reflection:hover::after {
+      left: 100%;
     }
 
     /* ============================================
@@ -277,54 +358,73 @@
       font-size: 16px;
     }
 
-    /* ============================================
-       GRADIENT ORBS (Decorative)
-       ============================================ */
-    .orb {
+    /* Interactive CTA button glow */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-glow::before {
+      content: '';
       position: absolute;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 60%);
       border-radius: 50%;
-      filter: blur(120px);
       pointer-events: none;
-      will-change: transform;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      left: var(--glow-x, 50%);
+      top: var(--glow-y, 50%);
     }
 
-    .orb-orange {
-      background: radial-gradient(circle, rgba(232, 114, 28, 0.3), transparent 70%);
-    }
-
-    .orb-purple {
-      background: radial-gradient(circle, rgba(120, 80, 200, 0.15), transparent 70%);
-    }
-
-    .orb-blue {
-      background: radial-gradient(circle, rgba(60, 120, 220, 0.12), transparent 70%);
-    }
-
-    @keyframes orbFloat1 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -40px) scale(1.05); }
-      66% { transform: translate(-20px, 20px) scale(0.95); }
-    }
-
-    @keyframes orbFloat2 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(-40px, 30px) scale(0.95); }
-      66% { transform: translate(20px, -20px) scale(1.05); }
-    }
-
-    @keyframes orbFloat3 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(25px, 25px) scale(1.03); }
+    .btn-glow:hover::before {
+      opacity: 1;
     }
 
     /* ============================================
-       REVEAL ANIMATIONS
+       SHIMMER TEXT
+       ============================================ */
+    .shimmer-text {
+      background: linear-gradient(
+        90deg,
+        var(--text) 0%,
+        var(--text) 35%,
+        var(--accent-bright) 50%,
+        var(--text) 65%,
+        var(--text) 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerText 5s ease-in-out infinite;
+    }
+
+    @keyframes shimmerText {
+      0%, 100% { background-position: 200% center; }
+      50% { background-position: 0% center; }
+    }
+
+    /* ============================================
+       FLOATING PARTICLES
+       ============================================ */
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-110vh) translateX(30px); opacity: 0; }
+    }
+
+    /* ============================================
+       REVEAL ANIMATIONS — glass unfrosting
        ============================================ */
     .reveal {
       opacity: 0;
-      transform: translateY(30px) scale(0.97);
-      filter: blur(4px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out), filter 0.8s var(--ease-out);
+      transform: translateY(40px) scale(0.97);
+      filter: blur(6px);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .reveal.visible {
@@ -347,7 +447,8 @@
         filter: none;
         transition: none;
       }
-      .orb { animation: none !important; }
+      .morph-blob { animation: none !important; }
+      .shimmer-text { animation: none !important; -webkit-text-fill-color: var(--white); }
       .scroll-progress { transition: none; }
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
@@ -410,13 +511,14 @@
     .navbar-links a {
       font-size: 14px;
       font-weight: 400;
-      color: var(--white-50);
-      transition: color 0.3s var(--ease-smooth);
+      color: var(--white);
+      opacity: 0.4;
+      transition: opacity 0.3s var(--ease-smooth);
       letter-spacing: 0.01em;
     }
 
     .navbar-links a:hover {
-      color: var(--white-90);
+      opacity: 0.9;
     }
 
     .navbar-cta {
@@ -512,36 +614,12 @@
       overflow: hidden;
     }
 
-    .hero .orb-1 {
-      width: 600px;
-      height: 600px;
-      top: -10%;
-      right: -5%;
-      animation: orbFloat1 18s ease-in-out infinite;
-    }
-
-    .hero .orb-2 {
-      width: 500px;
-      height: 500px;
-      bottom: -15%;
-      left: -10%;
-      animation: orbFloat2 22s ease-in-out infinite;
-    }
-
-    .hero .orb-3 {
-      width: 400px;
-      height: 400px;
-      top: 20%;
-      left: 30%;
-      animation: orbFloat3 16s ease-in-out infinite;
-    }
-
     .hero-content {
       text-align: center;
-      max-width: 820px;
+      max-width: 900px;
       margin: 0 auto;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .hero-badge {
@@ -556,8 +634,9 @@
       border-radius: var(--radius-full);
       font-size: 13px;
       font-weight: 500;
-      color: var(--white-50);
-      margin-bottom: 32px;
+      color: var(--white);
+      opacity: 0.6;
+      margin-bottom: 40px;
       letter-spacing: 0.02em;
     }
 
@@ -575,10 +654,10 @@
     }
 
     .hero h1 {
-      font-size: clamp(40px, 7vw, 76px);
+      font-size: clamp(2.5rem, 7vw, 5rem);
       letter-spacing: -0.03em;
       line-height: 1.05;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       color: var(--white);
     }
 
@@ -591,9 +670,10 @@
 
     .hero-subtitle {
       font-size: clamp(16px, 2.2vw, 20px);
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       max-width: 620px;
-      margin: 0 auto 40px;
+      margin: 0 auto 48px;
       line-height: 1.7;
       font-weight: 300;
     }
@@ -609,13 +689,48 @@
 
     .hero-note {
       font-size: 13px;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       letter-spacing: 0.01em;
     }
 
     .hero-note span {
       margin: 0 8px;
+    }
+
+    .hero-note span:nth-child(2) {
       opacity: 0.4;
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 64px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-number {
+      font-family: var(--font-heading);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--white);
+      opacity: 0.35;
+      font-weight: 300;
+      letter-spacing: 0.02em;
     }
 
     /* ============================================
@@ -656,7 +771,8 @@
 
     .whatwedo-card p {
       font-size: 16px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.7;
       font-weight: 300;
     }
@@ -673,7 +789,8 @@
       align-items: center;
       gap: 12px;
       font-size: 14px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.5;
     }
 
     .whatwedo-feature .icon {
@@ -699,8 +816,12 @@
     }
 
     /* ============================================
-       PRODUCTS (Bento Grid)
+       PRODUCTS (Bento Grid) — warm tint bg
        ============================================ */
+    #services {
+      background: linear-gradient(180deg, transparent 0%, rgba(232, 114, 28, 0.02) 30%, rgba(232, 114, 28, 0.03) 50%, rgba(232, 114, 28, 0.02) 70%, transparent 100%);
+    }
+
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -771,7 +892,8 @@
 
     .product-card p {
       font-size: 15px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.7;
       font-weight: 300;
     }
@@ -788,7 +910,8 @@
       background: var(--white-05);
       border: 1px solid var(--glass-border);
       font-size: 12px;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       font-weight: 500;
       width: fit-content;
     }
@@ -804,7 +927,7 @@
     }
 
     /* ============================================
-       HOW IT WORKS
+       HOW IT WORKS — with animated timeline
        ============================================ */
     .steps-container {
       position: relative;
@@ -817,6 +940,34 @@
       position: relative;
     }
 
+    /* Connecting line between steps */
+    .steps-line-container {
+      position: absolute;
+      top: 80px;
+      left: 16.67%;
+      right: 16.67%;
+      height: 3px;
+      background: var(--white-05);
+      border-radius: 2px;
+      z-index: 0;
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .steps-line-container {
+        display: block;
+      }
+    }
+
+    .steps-line-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--orange), var(--orange-light));
+      border-radius: 2px;
+      transition: width 0.3s linear;
+      box-shadow: 0 0 10px var(--orange-glow-strong);
+    }
+
     .step-card {
       padding: 40px 32px;
       text-align: center;
@@ -824,6 +975,8 @@
       flex-direction: column;
       align-items: center;
       gap: 16px;
+      position: relative;
+      z-index: 1;
     }
 
     .step-number {
@@ -845,7 +998,8 @@
 
     .step-card p {
       font-size: 15px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.6;
       font-weight: 300;
     }
@@ -857,7 +1011,8 @@
 
     .steps-alt-label {
       font-size: 14px;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       margin-bottom: 16px;
     }
 
@@ -875,11 +1030,13 @@
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-full);
       font-size: 14px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
     }
 
     .steps-alt-arrow {
-      color: var(--white-15);
+      color: var(--white);
+      opacity: 0.12;
       font-size: 18px;
     }
 
@@ -929,76 +1086,14 @@
 
     .why-card p {
       font-size: 15px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.7;
       font-weight: 300;
     }
 
     @media (max-width: 768px) {
       .why-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* ============================================
-       TEAM
-       ============================================ */
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .team-card {
-      padding: 48px 36px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .team-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--orange-glow), var(--white-05));
-      border: 1px solid var(--glass-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
-
-    .team-avatar-initial {
-      font-family: var(--font-heading);
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--orange);
-    }
-
-    .team-card h3 {
-      font-size: 20px;
-      letter-spacing: -0.01em;
-    }
-
-    .team-card .team-role {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--orange);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .team-card p {
-      font-size: 15px;
-      color: var(--white-50);
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    @media (max-width: 768px) {
-      .team-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1060,7 +1155,8 @@
     .pricing-price span {
       font-size: 14px;
       font-weight: 400;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
     }
 
     .pricing-features {
@@ -1075,7 +1171,8 @@
       align-items: center;
       gap: 10px;
       font-size: 14px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
     }
 
     .pricing-feature svg {
@@ -1093,7 +1190,8 @@
     .pricing-note {
       text-align: center;
       font-size: 14px;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       margin-top: 16px;
       line-height: 1.7;
     }
@@ -1106,12 +1204,14 @@
 
     .pricing-outsource p {
       font-size: 17px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
     }
 
     .pricing-outsource .highlight {
       color: var(--orange);
       font-weight: 600;
+      opacity: 1;
     }
 
     @media (max-width: 1024px) {
@@ -1159,29 +1259,32 @@
       font-family: var(--font-body);
       font-size: 16px;
       font-weight: 500;
-      color: var(--white-70);
+      color: var(--white);
+      opacity: 0.6;
       text-align: left;
-      transition: color 0.3s;
+      transition: opacity 0.3s;
       cursor: pointer;
       background: none;
       border: none;
     }
 
     .faq-question:hover {
-      color: var(--white-90);
+      opacity: 0.9;
     }
 
     .faq-question svg {
       width: 18px;
       height: 18px;
       flex-shrink: 0;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       transition: transform 0.4s var(--ease-out), color 0.3s;
     }
 
     .faq-item.open .faq-question svg {
       transform: rotate(45deg);
       color: var(--orange);
+      opacity: 1;
     }
 
     .faq-answer {
@@ -1193,14 +1296,19 @@
     .faq-answer-inner {
       padding: 0 28px 24px;
       font-size: 15px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.7;
       font-weight: 300;
     }
 
     /* ============================================
-       CONTACT
+       CONTACT — warm gradient background
        ============================================ */
+    #contact {
+      background: linear-gradient(180deg, transparent 0%, rgba(232, 114, 28, 0.03) 30%, rgba(232, 114, 28, 0.05) 50%, rgba(232, 114, 28, 0.03) 70%, transparent 100%);
+    }
+
     .contact-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1221,7 +1329,8 @@
 
     .contact-info p {
       font-size: 17px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       line-height: 1.7;
       font-weight: 300;
     }
@@ -1241,13 +1350,14 @@
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-full);
       font-size: 14px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       transition: all 0.3s var(--ease-smooth);
     }
 
     .contact-social a:hover {
       border-color: var(--white-15);
-      color: var(--white-90);
+      opacity: 0.9;
     }
 
     .contact-social a svg {
@@ -1280,7 +1390,8 @@
     .form-field label {
       font-size: 13px;
       font-weight: 500;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       letter-spacing: 0.02em;
     }
 
@@ -1341,7 +1452,8 @@
     }
 
     .form-success p {
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       font-size: 15px;
     }
 
@@ -1384,7 +1496,8 @@
 
     .footer-brand p {
       font-size: 14px;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
     }
 
     .footer-links {
@@ -1395,12 +1508,13 @@
 
     .footer-links a {
       font-size: 14px;
-      color: var(--white-30);
-      transition: color 0.3s;
+      color: var(--white);
+      opacity: 0.25;
+      transition: opacity 0.3s;
     }
 
     .footer-links a:hover {
-      color: var(--white-70);
+      opacity: 0.6;
     }
 
     .footer-social a {
@@ -1408,12 +1522,14 @@
       align-items: center;
       gap: 8px;
       font-size: 14px;
-      color: var(--white-30);
-      transition: color 0.3s;
+      color: var(--white);
+      opacity: 0.25;
+      transition: color 0.3s, opacity 0.3s;
     }
 
     .footer-social a:hover {
       color: var(--orange);
+      opacity: 1;
     }
 
     .footer-social a svg {
@@ -1433,38 +1549,24 @@
 
     .footer-bottom p {
       font-size: 13px;
-      color: var(--white-15);
+      color: var(--white);
+      opacity: 0.12;
     }
 
     /* ============================================
-       CTA SECTION
+       CTA SECTION — dramatic gradient
        ============================================ */
     .cta-section {
-      padding: 120px 0;
+      padding: 140px 0;
       text-align: center;
       position: relative;
       overflow: hidden;
-    }
-
-    .cta-section .orb-1 {
-      width: 500px;
-      height: 500px;
-      top: -20%;
-      left: 10%;
-      animation: orbFloat1 20s ease-in-out infinite;
-    }
-
-    .cta-section .orb-2 {
-      width: 400px;
-      height: 400px;
-      bottom: -20%;
-      right: 10%;
-      animation: orbFloat2 24s ease-in-out infinite;
+      background: radial-gradient(ellipse at center, rgba(232, 114, 28, 0.06) 0%, transparent 60%);
     }
 
     .cta-content {
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .cta-content h2 {
@@ -1475,7 +1577,8 @@
 
     .cta-content p {
       font-size: 18px;
-      color: var(--white-50);
+      color: var(--white);
+      opacity: 0.4;
       margin-bottom: 40px;
       font-weight: 300;
     }
@@ -1505,7 +1608,8 @@
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 500;
-      color: var(--white-30);
+      color: var(--white);
+      opacity: 0.25;
       border-radius: var(--radius-full);
       transition: all 0.3s var(--ease-smooth);
       cursor: pointer;
@@ -1515,11 +1619,19 @@
 
     .lang-btn.active {
       background: var(--white-08);
-      color: var(--white-70);
+      opacity: 0.6;
     }
 
     .lang-btn:hover:not(.active) {
-      color: var(--white-50);
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       MAGNETIC CARD transition reset
+       ============================================ */
+    .magnetic-card {
+      transition: none;
+      will-change: transform;
     }
   </style>
 </head>
@@ -1535,7 +1647,6 @@
     </button>
     <a href="#whatwedo" data-mobile-link>Продукты</a>
     <a href="#services" data-mobile-link>Услуги</a>
-    <a href="#team" data-mobile-link>Команда</a>
     <a href="#pricing" data-mobile-link>Тарифы</a>
     <a href="#contact" data-mobile-link>Контакты</a>
     <a href="/login" class="btn btn-primary">Начать</a>
@@ -1580,7 +1691,6 @@
       <div class="navbar-links">
         <a href="#whatwedo">Продукты</a>
         <a href="#services">Услуги</a>
-        <a href="#team">Команда</a>
         <a href="#pricing">Тарифы</a>
         <a href="#contact">Контакты</a>
       </div>
@@ -1604,9 +1714,10 @@
        HERO
        ============================================ -->
   <section class="hero" id="hero">
-    <div class="orb orb-orange orb-1"></div>
-    <div class="orb orb-purple orb-2"></div>
-    <div class="orb orb-blue orb-3"></div>
+    <!-- Morphing blobs -->
+    <div class="morph-blob blob-orange" style="width:600px;height:600px;top:-10%;right:-5%;animation-name:morphBlob;animation-duration:15s;"></div>
+    <div class="morph-blob blob-purple" style="width:500px;height:500px;bottom:-15%;left:-10%;animation-name:morphBlob2;animation-duration:20s;"></div>
+    <div class="morph-blob blob-blue" style="width:400px;height:400px;top:20%;left:30%;animation-name:morphBlob3;animation-duration:18s;"></div>
 
     <div class="container">
       <div class="hero-content">
@@ -1615,7 +1726,7 @@
           <span data-i18n="hero.badge">Платформа открыта для регистрации</span>
         </div>
 
-        <h1 class="reveal reveal-delay-1">
+        <h1 class="reveal reveal-delay-1 shimmer-text">
           <span data-i18n="hero.title.1">Находим </span><span class="accent" data-i18n="hero.title.2">решения</span><br>
           <span data-i18n="hero.title.3">для вашего бизнеса</span>
         </h1>
@@ -1625,7 +1736,7 @@
         </p>
 
         <div class="hero-ctas reveal reveal-delay-3">
-          <a href="/login" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Начать бесплатно</a>
+          <a href="/login" class="btn btn-primary btn-lg btn-glow" data-i18n="hero.cta1">Начать бесплатно</a>
           <a href="#contact" class="btn btn-secondary btn-lg" data-i18n="hero.cta2">Оставить заявку</a>
         </div>
 
@@ -1634,6 +1745,21 @@
           <span>&bull;</span>
           <span data-i18n="hero.note2">Без кредитной карты</span>
         </p>
+
+        <div class="hero-stats reveal reveal-delay-5">
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-counter="30">0</div>
+            <div class="hero-stat-label" data-i18n="hero.stat1">секунд на анализ</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-counter="6">0</div>
+            <div class="hero-stat-label" data-i18n="hero.stat2">параметров оценки</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number" data-counter="3" data-suffix="+">0</div>
+            <div class="hero-stat-label" data-i18n="hero.stat3">лет экспертизы</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1650,7 +1776,7 @@
       </div>
 
       <div class="whatwedo-grid">
-        <div class="glass glass-hover whatwedo-card reveal reveal-delay-1">
+        <div class="glass glass-hover glass-reflection magnetic-card whatwedo-card reveal reveal-delay-1">
           <p class="whatwedo-card-label" data-i18n="whatwedo.platform.label">Платформа</p>
           <h3 data-i18n="whatwedo.platform.title">SOLUTION HUB</h3>
           <p data-i18n="whatwedo.platform.desc">Зарегистрируйтесь и пользуйтесь инструментами самостоятельно. Анализ резюме, аудит, аналитика — все в одном месте.</p>
@@ -1671,7 +1797,7 @@
           <a href="/login" class="btn btn-primary btn-sm" data-i18n="whatwedo.platform.cta">Попробовать бесплатно</a>
         </div>
 
-        <div class="glass glass-hover whatwedo-card reveal reveal-delay-2">
+        <div class="glass glass-hover glass-reflection magnetic-card whatwedo-card reveal reveal-delay-2">
           <p class="whatwedo-card-label" data-i18n="whatwedo.services.label">Услуги</p>
           <h3 data-i18n="whatwedo.services.title">Команда экспертов</h3>
           <p data-i18n="whatwedo.services.desc">Доверьте подбор нам. Наша команда найдет идеальных кандидатов, выстроит процессы, проведет аудит.</p>
@@ -1696,9 +1822,12 @@
   </section>
 
   <!-- ============================================
-       PRODUCTS
+       PRODUCTS — warm tint background
        ============================================ -->
   <section id="services">
+    <!-- Morphing blob for products -->
+    <div class="morph-blob blob-orange" style="width:500px;height:500px;top:10%;right:-10%;animation-name:morphBlob2;animation-duration:22s;opacity:0.1;"></div>
+
     <div class="container">
       <div class="section-header center reveal">
         <p class="section-label" data-i18n="products.label">Инструменты</p>
@@ -1708,7 +1837,7 @@
 
       <div class="products-grid">
         <!-- Large card -->
-        <div class="glass glass-hover product-card large reveal reveal-delay-1">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card large reveal reveal-delay-1">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
@@ -1717,7 +1846,7 @@
         </div>
 
         <!-- Medium cards -->
-        <div class="glass glass-hover product-card medium reveal reveal-delay-2">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card medium reveal reveal-delay-2">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           </div>
@@ -1725,7 +1854,7 @@
           <p data-i18n="products.audit.desc">PDF-отчеты, данные для аудиторов, полная прозрачность решений по каждому кандидату.</p>
         </div>
 
-        <div class="glass glass-hover product-card medium reveal reveal-delay-3">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card medium reveal reveal-delay-3">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
@@ -1734,7 +1863,7 @@
         </div>
 
         <!-- Small cards -->
-        <div class="glass glass-hover product-card reveal reveal-delay-4">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card reveal reveal-delay-4">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
@@ -1742,7 +1871,7 @@
           <p data-i18n="products.consulting.desc">Индивидуальные решения для вашего бизнеса.</p>
         </div>
 
-        <div class="glass glass-hover product-card reveal reveal-delay-5">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card reveal reveal-delay-5">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           </div>
@@ -1750,7 +1879,7 @@
           <p data-i18n="products.it.desc">Технические таланты для вашей команды.</p>
         </div>
 
-        <div class="glass glass-hover product-card reveal reveal-delay-6">
+        <div class="glass glass-hover glass-reflection magnetic-card product-card reveal reveal-delay-6">
           <div class="product-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
           </div>
@@ -1763,7 +1892,7 @@
   </section>
 
   <!-- ============================================
-       HOW IT WORKS
+       HOW IT WORKS — timeline with animated line
        ============================================ -->
   <section id="howitworks">
     <div class="container">
@@ -1773,18 +1902,21 @@
       </div>
 
       <div class="steps-container">
+        <div class="steps-line-container">
+          <div class="steps-line-fill" id="stepsLineFill"></div>
+        </div>
         <div class="steps-grid">
-          <div class="glass step-card reveal reveal-delay-1">
+          <div class="glass magnetic-card step-card reveal reveal-delay-1">
             <div class="step-number">01</div>
             <h3 data-i18n="how.step1.title">Зарегистрируйтесь</h3>
             <p data-i18n="how.step1.desc">Создайте аккаунт и получите бесплатные кредиты для начала работы</p>
           </div>
-          <div class="glass step-card reveal reveal-delay-2">
+          <div class="glass magnetic-card step-card reveal reveal-delay-2">
             <div class="step-number">02</div>
             <h3 data-i18n="how.step2.title">Разместите вакансию</h3>
             <p data-i18n="how.step2.desc">Выберите шаблон или опишите позицию — система настроит все за вас</p>
           </div>
-          <div class="glass step-card reveal reveal-delay-3">
+          <div class="glass magnetic-card step-card reveal reveal-delay-3">
             <div class="step-number">03</div>
             <h3 data-i18n="how.step3.title">Получите результат</h3>
             <p data-i18n="how.step3.desc">Лучшие кандидаты отобраны и ранжированы. Вам остается выбрать.</p>
@@ -1818,7 +1950,7 @@
       </div>
 
       <div class="why-grid">
-        <div class="glass glass-hover why-card reveal reveal-delay-1">
+        <div class="glass glass-hover glass-reflection magnetic-card why-card reveal reveal-delay-1">
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
           </div>
@@ -1826,7 +1958,7 @@
           <p data-i18n="why.c1.desc">Платформа для самостоятельной работы и команда экспертов для тех, кто хочет делегировать. Выбирайте то, что подходит.</p>
         </div>
 
-        <div class="glass glass-hover why-card reveal reveal-delay-2">
+        <div class="glass glass-hover glass-reflection magnetic-card why-card reveal reveal-delay-2">
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
@@ -1834,7 +1966,7 @@
           <p data-i18n="why.c2.desc">3+ года опыта в банковском секторе и крупных компаниях. Мы знаем рынок и понимаем, кого вы ищете.</p>
         </div>
 
-        <div class="glass glass-hover why-card reveal reveal-delay-3">
+        <div class="glass glass-hover glass-reflection magnetic-card why-card reveal reveal-delay-3">
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
@@ -1842,54 +1974,12 @@
           <p data-i18n="why.c3.desc">Умный анализ резюме, автоматизация рутины, экономия времени. Технологии работают на вас, а не наоборот.</p>
         </div>
 
-        <div class="glass glass-hover why-card reveal reveal-delay-4">
+        <div class="glass glass-hover glass-reflection magnetic-card why-card reveal reveal-delay-4">
           <div class="why-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
           <h3 data-i18n="why.c4.title">Индивидуальный подход</h3>
           <p data-i18n="why.c4.desc">Не шаблоны, а решения под конкретный бизнес. Каждый проект — уникален, и мы это учитываем.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       TEAM
-       ============================================ -->
-  <section id="team">
-    <div class="container">
-      <div class="section-header center reveal">
-        <p class="section-label" data-i18n="team.label">Люди</p>
-        <h2 class="section-title" data-i18n="team.title">Команда</h2>
-        <p class="section-subtitle" data-i18n="team.subtitle">Три человека. Одна миссия.</p>
-      </div>
-
-      <div class="team-grid">
-        <div class="glass glass-hover team-card reveal reveal-delay-1">
-          <div class="team-avatar">
-            <span class="team-avatar-initial">М</span>
-          </div>
-          <h3>Вохидов Мирзабек</h3>
-          <p class="team-role" data-i18n="team.m.role">Основатель</p>
-          <p data-i18n="team.m.desc">Технологии, продукт и стратегия SOLUTION.</p>
-        </div>
-
-        <div class="glass glass-hover team-card reveal reveal-delay-2">
-          <div class="team-avatar">
-            <span class="team-avatar-initial">С</span>
-          </div>
-          <h3>Вохидова Ситора</h3>
-          <p class="team-role" data-i18n="team.s.role">Со-основатель</p>
-          <p data-i18n="team.s.desc">3+ года HR-директор в банке. Контракты с крупным бизнесом.</p>
-        </div>
-
-        <div class="glass glass-hover team-card reveal reveal-delay-3">
-          <div class="team-avatar">
-            <span class="team-avatar-initial">М</span>
-          </div>
-          <h3>Абдуллаева Матлюба</h3>
-          <p class="team-role" data-i18n="team.a.role">Со-основатель</p>
-          <p data-i18n="team.a.desc">HR-операции и консалтинг. Каждый кейс под личным контролем.</p>
         </div>
       </div>
     </div>
@@ -1908,7 +1998,7 @@
 
       <div class="pricing-grid">
         <!-- Free -->
-        <div class="glass pricing-card reveal reveal-delay-1">
+        <div class="glass magnetic-card pricing-card reveal reveal-delay-1">
           <h3 data-i18n="pricing.free.name">Бесплатно</h3>
           <div class="pricing-price">0 <span data-i18n="pricing.currency">сум</span></div>
           <div class="pricing-features">
@@ -1929,7 +2019,7 @@
         </div>
 
         <!-- Starter -->
-        <div class="glass pricing-card reveal reveal-delay-2">
+        <div class="glass magnetic-card pricing-card reveal reveal-delay-2">
           <h3 data-i18n="pricing.starter.name">Стартер</h3>
           <div class="pricing-price">300K <span data-i18n="pricing.permonth">сум/мес</span></div>
           <div class="pricing-features">
@@ -1950,7 +2040,7 @@
         </div>
 
         <!-- Business (Popular) -->
-        <div class="glass pricing-card popular reveal reveal-delay-3">
+        <div class="glass magnetic-card pricing-card popular reveal reveal-delay-3">
           <div class="pricing-popular-badge" data-i18n="pricing.business.badge">Популярный</div>
           <h3 data-i18n="pricing.business.name">Бизнес</h3>
           <div class="pricing-price">1M <span data-i18n="pricing.permonth">сум/мес</span></div>
@@ -1976,7 +2066,7 @@
         </div>
 
         <!-- Enterprise -->
-        <div class="glass pricing-card reveal reveal-delay-4">
+        <div class="glass magnetic-card pricing-card reveal reveal-delay-4">
           <h3 data-i18n="pricing.enterprise.name">Enterprise</h3>
           <div class="pricing-price" data-i18n="pricing.enterprise.price">Индивидуально</div>
           <div class="pricing-features">
@@ -2084,7 +2174,7 @@
   </section>
 
   <!-- ============================================
-       CONTACT
+       CONTACT — warm gradient background
        ============================================ -->
   <section id="contact">
     <div class="container">
@@ -2126,7 +2216,7 @@
               <label data-i18n="contact.form.message">Сообщение</label>
               <textarea name="message" placeholder="Расскажите о задаче..." rows="4"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Отправить заявку</button>
+            <button type="submit" class="btn btn-primary btn-glow" data-i18n="contact.form.submit">Отправить заявку</button>
           </form>
           <div class="form-success" id="formSuccess">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -2139,17 +2229,20 @@
   </section>
 
   <!-- ============================================
-       CTA
+       CTA — dramatic gradient
        ============================================ -->
   <section class="cta-section">
-    <div class="orb orb-orange orb-1"></div>
-    <div class="orb orb-purple orb-2"></div>
+    <!-- Morphing blobs for CTA -->
+    <div class="morph-blob blob-orange" style="width:500px;height:500px;top:-20%;left:10%;animation-name:morphBlob;animation-duration:20s;"></div>
+    <div class="morph-blob blob-purple" style="width:400px;height:400px;bottom:-20%;right:10%;animation-name:morphBlob2;animation-duration:24s;"></div>
+    <div class="morph-blob blob-blue" style="width:350px;height:350px;top:30%;right:30%;animation-name:morphBlob3;animation-duration:17s;opacity:0.1;"></div>
+
     <div class="container">
       <div class="cta-content reveal">
         <h2 data-i18n="cta.title">Готовы начать?</h2>
         <p data-i18n="cta.subtitle">Присоединяйтесь к компаниям, которые уже нашли свое решение</p>
         <div class="cta-buttons">
-          <a href="/login" class="btn btn-primary btn-lg" data-i18n="cta.cta1">Начать бесплатно</a>
+          <a href="/login" class="btn btn-primary btn-lg btn-glow" data-i18n="cta.cta1">Начать бесплатно</a>
           <a href="#contact" class="btn btn-secondary btn-lg" data-i18n="cta.cta2">Оставить заявку</a>
         </div>
       </div>
@@ -2177,7 +2270,6 @@
         <div class="footer-links">
           <a href="#whatwedo" data-i18n="footer.l1">Платформа</a>
           <a href="#services" data-i18n="footer.l2">Услуги</a>
-          <a href="#team" data-i18n="footer.l3">Команда</a>
           <a href="#pricing" data-i18n="footer.l4">Тарифы</a>
           <a href="#contact" data-i18n="footer.l5">Контакты</a>
         </div>
@@ -2287,6 +2379,157 @@
     })();
 
     /* ==========================================
+       FLOATING PARTICLES
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var particleContainer = document.createElement('div');
+      particleContainer.className = 'floating-particles';
+      particleContainer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden';
+      document.body.appendChild(particleContainer);
+
+      // Create dynamic keyframes for particles with random X drift
+      var styleSheet = document.createElement('style');
+      var keyframes = '';
+      for (var i = 0; i < 20; i++) {
+        var xDrift = Math.round(Math.random() * 100 - 50);
+        keyframes += '@keyframes particleFloat' + i + ' { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-110vh) translateX(' + xDrift + 'px); opacity: 0; } } ';
+      }
+      styleSheet.textContent = keyframes;
+      document.head.appendChild(styleSheet);
+
+      for (var i = 0; i < 20; i++) {
+        var p = document.createElement('div');
+        var size = Math.random() * 3 + 1;
+        var left = Math.random() * 100;
+        var delay = Math.random() * 20;
+        var duration = 15 + Math.random() * 20;
+        p.style.cssText = 'position:absolute;width:' + size + 'px;height:' + size + 'px;background:rgba(232,114,28,' + (0.1 + Math.random() * 0.2) + ');border-radius:50%;left:' + left + '%;bottom:-10px;animation:particleFloat' + i + ' ' + duration + 's ' + delay + 's linear infinite;';
+        particleContainer.appendChild(p);
+      }
+    })();
+
+    /* ==========================================
+       MAGNETIC HOVER EFFECT ON CARDS
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if ('ontouchstart' in window) return; // Skip on touch devices
+
+      document.querySelectorAll('.magnetic-card').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+          var y = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
+          card.style.transform = 'perspective(800px) rotateY(' + x + 'deg) rotateX(' + (-y) + 'deg) translateZ(10px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+          card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateZ(0)';
+          setTimeout(function() { card.style.transition = 'none'; }, 600);
+        });
+      });
+    })();
+
+    /* ==========================================
+       INTERACTIVE CTA BUTTON GLOW
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      document.querySelectorAll('.btn-glow').forEach(function(btn) {
+        btn.addEventListener('mousemove', function(e) {
+          var rect = btn.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          btn.style.setProperty('--glow-x', x + 'px');
+          btn.style.setProperty('--glow-y', y + 'px');
+        });
+      });
+    })();
+
+    /* ==========================================
+       SMOOTH NUMBER COUNTER with easing
+       ========================================== */
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('[data-counter]').forEach(function(el) {
+          el.textContent = el.getAttribute('data-counter') + (el.getAttribute('data-suffix') || '');
+        });
+        return;
+      }
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      }
+
+      function animateCounter(el) {
+        var target = parseInt(el.getAttribute('data-counter'));
+        var suffix = el.getAttribute('data-suffix') || '';
+        var duration = 2000;
+        var start = performance.now();
+
+        function update(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeOutExpo(progress);
+          var current = Math.round(eased * target);
+          el.textContent = current + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+
+        requestAnimationFrame(update);
+      }
+
+      var counterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('[data-counter]').forEach(function(el) {
+        counterObserver.observe(el);
+      });
+    })();
+
+    /* ==========================================
+       SCROLL-TRIGGERED STEPS LINE FILL
+       ========================================== */
+    (function() {
+      var lineFill = document.getElementById('stepsLineFill');
+      var stepsSection = document.getElementById('howitworks');
+      if (!lineFill || !stepsSection) return;
+
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            var rect = stepsSection.getBoundingClientRect();
+            var sectionTop = rect.top;
+            var sectionHeight = rect.height;
+            var windowHeight = window.innerHeight;
+
+            // Calculate progress through the section
+            var progress = 0;
+            if (sectionTop < windowHeight * 0.6) {
+              progress = Math.min(1, (windowHeight * 0.6 - sectionTop) / (sectionHeight * 0.6));
+            }
+
+            lineFill.style.width = (progress * 100) + '%';
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    })();
+
+    /* ==========================================
        FAQ ACCORDION
        ========================================== */
     (function() {
@@ -2363,6 +2606,9 @@
           'hero.cta2': 'Ariza qoldirish',
           'hero.note1': 'Ro\'yxatda bepul kreditlar',
           'hero.note2': 'Kredit kartasiz',
+          'hero.stat1': 'soniya tahlil uchun',
+          'hero.stat2': 'baholash mezonlari',
+          'hero.stat3': 'yil tajriba',
           'whatwedo.label': 'Natijaga ikki yo\'l',
           'whatwedo.title': 'Nima qilamiz',
           'whatwedo.subtitle': 'Mustaqil ishlash uchun platforma yoki ekspertlar jamoasi — o\'zingizga mosini tanlang',
@@ -2419,15 +2665,6 @@
           'why.c3.desc': 'Aqlli rezyume tahlili, rutinani avtomatlashtirish, vaqtni tejash. Texnologiyalar siz uchun ishlaydi.',
           'why.c4.title': 'Individual yondashuv',
           'why.c4.desc': 'Shablonlar emas, balki muayyan biznes uchun yechimlar. Har bir loyiha noyob.',
-          'team.label': 'Odamlar',
-          'team.title': 'Jamoa',
-          'team.subtitle': 'Uch kishi. Bitta missiya.',
-          'team.m.role': 'Asoschisi',
-          'team.m.desc': 'SOLUTION texnologiyalari, mahsuloti va strategiyasi.',
-          'team.s.role': 'Hammuassis',
-          'team.s.desc': 'Bankda 3+ yil HR-direktor. Yirik biznes bilan shartnomalar.',
-          'team.a.role': 'Hammuassis',
-          'team.a.desc': 'HR-operatsiyalar va konsalting. Har bir keys shaxsiy nazorat ostida.',
           'pricing.label': 'Tariflar',
           'pricing.title': 'Oddiy tariflar',
           'pricing.subtitle': 'Bepul boshlang. Tayyor bo\'lganingizda kengaytiring.',
@@ -2490,7 +2727,6 @@
           'footer.tagline': 'Biznes uchun yechimlar habi',
           'footer.l1': 'Platforma',
           'footer.l2': 'Xizmatlar',
-          'footer.l3': 'Jamoa',
           'footer.l4': 'Tariflar',
           'footer.l5': 'Kontaktlar',
           'footer.location': 'Toshkent, O\'zbekiston.'
@@ -2505,6 +2741,9 @@
           'hero.cta2': 'Request a call',
           'hero.note1': 'Free credits on signup',
           'hero.note2': 'No credit card required',
+          'hero.stat1': 'seconds to analyze',
+          'hero.stat2': 'scoring parameters',
+          'hero.stat3': 'years of expertise',
           'whatwedo.label': 'Two paths to results',
           'whatwedo.title': 'What we do',
           'whatwedo.subtitle': 'A platform for self-service or a team of experts — choose what suits you',
@@ -2561,15 +2800,6 @@
           'why.c3.desc': 'Smart resume analysis, routine automation, time savings. Technology works for you, not the other way around.',
           'why.c4.title': 'Individual approach',
           'why.c4.desc': 'Not templates, but solutions tailored to your specific business. Every project is unique.',
-          'team.label': 'People',
-          'team.title': 'Team',
-          'team.subtitle': 'Three people. One mission.',
-          'team.m.role': 'Founder',
-          'team.m.desc': 'Technology, product and strategy at SOLUTION.',
-          'team.s.role': 'Co-founder',
-          'team.s.desc': '3+ years HR Director at a bank. Enterprise contracts.',
-          'team.a.role': 'Co-founder',
-          'team.a.desc': 'HR operations and consulting. Every case under personal control.',
           'pricing.label': 'Pricing',
           'pricing.title': 'Simple pricing',
           'pricing.subtitle': 'Start for free. Scale when you\'re ready.',
@@ -2632,7 +2862,6 @@
           'footer.tagline': 'Business solutions hub',
           'footer.l1': 'Platform',
           'footer.l2': 'Services',
-          'footer.l3': 'Team',
           'footer.l4': 'Pricing',
           'footer.l5': 'Contact',
           'footer.location': 'Tashkent, Uzbekistan.'
