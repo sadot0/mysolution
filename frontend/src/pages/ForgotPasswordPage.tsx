@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
             alt="Solution"
             className="h-7 sm:h-8 mx-auto mb-2"
           />
-          <p className="text-[11px] text-neutral-500 tracking-[0.2em] font-medium">
+          <p className="text-[11px] text-white/40 tracking-[0.2em] font-medium">
             СБРОС ПАРОЛЯ
           </p>
         </motion.div>
@@ -146,7 +146,7 @@ export default function ForgotPasswordPage() {
                 initial="hidden"
                 animate="visible"
               >
-                <p className="text-neutral-400 text-sm mb-5">
+                <p className="text-white/60 text-sm mb-5">
                   Введите email, привязанный к вашему аккаунту. Мы отправим 6-значный код для сброса пароля.
                 </p>
               </motion.div>
@@ -159,7 +159,7 @@ export default function ForgotPasswordPage() {
               >
                 <label className="login-label">Email</label>
                 <div className="relative">
-                  <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                  <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                   <input
                     type="email"
                     className="login-input pl-11"
@@ -205,7 +205,7 @@ export default function ForgotPasswordPage() {
                 initial="hidden"
                 animate="visible"
               >
-                <p className="text-neutral-400 text-sm mb-5">
+                <p className="text-white/60 text-sm mb-5">
                   Код отправлен на <span className="text-orange-400 font-medium">{email}</span>. Введите его ниже вместе с новым паролем.
                 </p>
               </motion.div>
@@ -218,7 +218,7 @@ export default function ForgotPasswordPage() {
               >
                 <label className="login-label">Код сброса</label>
                 <div className="relative">
-                  <KeyRound size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                  <KeyRound size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                   <input
                     type="text"
                     className="login-input pl-11 tracking-[0.3em] text-center font-mono text-lg"
@@ -241,7 +241,7 @@ export default function ForgotPasswordPage() {
               >
                 <label className="login-label">Новый пароль</label>
                 <div className="relative">
-                  <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                  <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                   <input
                     type="password"
                     className="login-input pl-11"
@@ -263,7 +263,7 @@ export default function ForgotPasswordPage() {
               >
                 <label className="login-label">Подтвердите пароль</label>
                 <div className="relative">
-                  <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+                  <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                   <input
                     type="password"
                     className="login-input pl-11"
@@ -308,7 +308,7 @@ export default function ForgotPasswordPage() {
               >
                 <button
                   type="button"
-                  className="w-full text-center text-sm text-neutral-500 hover:text-neutral-300 transition-colors mt-2"
+                  className="w-full text-center text-sm text-white/40 hover:text-white/80 transition-colors mt-2"
                   onClick={() => {
                     setStep('email');
                     setCode('');
@@ -331,7 +331,7 @@ export default function ForgotPasswordPage() {
             >
               <CheckCircle2 size={48} className="mx-auto mb-4 text-green-500" />
               <h3 className="text-lg font-semibold text-white mb-2">Пароль изменён!</h3>
-              <p className="text-neutral-400 text-sm mb-6">
+              <p className="text-white/60 text-sm mb-6">
                 Вы будете перенаправлены на страницу входа через несколько секунд.
               </p>
               <Link
@@ -345,10 +345,10 @@ export default function ForgotPasswordPage() {
           )}
 
           {step !== 'success' && (
-            <div className="mt-5 pt-4 border-t border-neutral-800">
+            <div className="mt-5 pt-4 border-t border-white/[0.04]">
               <Link
                 to="/login"
-                className="flex items-center justify-center gap-2 text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
+                className="flex items-center justify-center gap-2 text-sm text-white/40 hover:text-white/80 transition-colors"
               >
                 <ArrowLeft size={14} />
                 Вернуться к входу
@@ -364,8 +364,8 @@ export default function ForgotPasswordPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.4 }}
         >
-          <div className="flex items-center gap-2 text-[11px] text-neutral-600">
-            <Shield size={12} className="text-neutral-500" />
+          <div className="flex items-center gap-2 text-[11px] text-white/25">
+            <Shield size={12} className="text-white/40" />
             <span>Защищено шифрованием</span>
           </div>
           <div className="text-center text-white/20 text-xs">

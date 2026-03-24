@@ -346,7 +346,7 @@ export default function VacancyPage() {
         <div className="flex items-center gap-2 text-xs text-white/40 mb-4">
           <Link to="/vacancies" className="hover:text-orange-400 transition-colors">Вакансии</Link>
           <span>/</span>
-          <span className="text-neutral-300">{vacancy?.title || '...'}</span>
+          <span className="text-white/80">{vacancy?.title || '...'}</span>
         </div>
 
         {/* Header */}
@@ -463,7 +463,7 @@ export default function VacancyPage() {
                 {showPublishDropdown && (
                   <div className="absolute right-0 top-full mt-2 w-64 bg-white/[0.03] border border-white/[0.06] rounded-xl shadow-xl z-50 backdrop-blur-xl py-1 overflow-hidden">
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300 cursor-default"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/80 cursor-default"
                       onClick={(e) => e.preventDefault()}
                     >
                       <span className="flex items-center gap-2">
@@ -487,7 +487,7 @@ export default function VacancyPage() {
                       </a>
                     ) : (
                       <button
-                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-200"
+                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/90"
                         onClick={() => { setShowHHModal(true); setShowPublishDropdown(false); }}
                       >
                         <span className="flex items-center gap-2">
@@ -498,7 +498,7 @@ export default function VacancyPage() {
                       </button>
                     )}
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300 cursor-default"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/80 cursor-default"
                       onClick={(e) => e.preventDefault()}
                     >
                       <span className="flex items-center gap-2">
@@ -508,7 +508,7 @@ export default function VacancyPage() {
                       <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">Скоро</span>
                     </button>
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-200"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/90"
                       onClick={() => { setShowTelegramModal(true); setShowPublishDropdown(false); }}
                     >
                       <span className="flex items-center gap-2">
@@ -562,7 +562,7 @@ export default function VacancyPage() {
                       Excel (все кандидаты)
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/80"
                       onClick={async () => {
                         setShowExportDropdown(false);
                         toast.loading('Генерация PDF...', { id: 'pdf' });
@@ -583,7 +583,7 @@ export default function VacancyPage() {
                       PDF отчёт (все кандидаты)
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white/80"
                       onClick={async () => {
                         setShowExportDropdown(false);
                         try {
@@ -1117,14 +1117,14 @@ function CandidateCard({
         <div className="flex-1 min-w-0 pl-7">
           <p className="font-bold text-white truncate mb-1">{candidate.full_name}</p>
           <div className="flex items-center gap-1 mb-0.5">
-            <Mail size={11} className="text-neutral-700 shrink-0" />
+            <Mail size={11} className="text-white/15 shrink-0" />
             <p className="text-xs truncate text-white/40">
               {candidate.email}
             </p>
           </div>
           {candidate.phone && (
             <div className="flex items-center gap-1">
-              <Phone size={11} className="text-neutral-700 shrink-0" />
+              <Phone size={11} className="text-white/15 shrink-0" />
               <p className="text-xs text-white/40">
                 {candidate.phone}
               </p>
@@ -1139,7 +1139,7 @@ function CandidateCard({
           </div>
         ) : (
           <div className="score-placeholder">
-            <span className="text-neutral-700 text-xs">&mdash;</span>
+            <span className="text-white/15 text-xs">&mdash;</span>
           </div>
         )}
       </div>
@@ -1169,12 +1169,12 @@ function CandidateCard({
         className="flex items-center gap-2 mt-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-1 text-xs text-neutral-700">
+        <div className="flex items-center gap-1 text-xs text-white/15">
           <Calendar size={11} />
           {formatDate(candidate.submitted_at)}
         </div>
         {candidate.resume_text && (
-          <div className="flex items-center gap-1 text-xs ml-1 text-neutral-700">
+          <div className="flex items-center gap-1 text-xs ml-1 text-white/15">
             <FileText size={11} />
             <span>Резюме</span>
           </div>
@@ -1420,7 +1420,7 @@ function EditVacancyModal({
               onChange={(e) => setForm({ ...form, remote: e.target.checked })}
               className="w-4 h-4 rounded border-white/[0.06] bg-white/[0.03] text-orange-500 focus:ring-orange-500"
             />
-            <label htmlFor="edit-remote" className="text-sm text-neutral-300 cursor-pointer">
+            <label htmlFor="edit-remote" className="text-sm text-white/80 cursor-pointer">
               Удалённая работа
             </label>
           </div>
@@ -1548,7 +1548,7 @@ function BulkUploadModal({ vacancyId, onClose, onSuccess }: { vacancyId: string;
                   <div className="max-h-32 overflow-y-auto space-y-1">
                     {files.map((f, i) => (
                       <div key={i} className="flex items-center justify-between text-xs p-2 bg-white/[0.02] rounded">
-                        <span className="text-neutral-300 truncate">{f.name}</span>
+                        <span className="text-white/80 truncate">{f.name}</span>
                         <span className="text-white/40 shrink-0 ml-2">{(f.size / 1024).toFixed(0)}KB</span>
                       </div>
                     ))}

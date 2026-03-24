@@ -390,7 +390,7 @@ export default function TeamPage() {
                   </p>
                   <p className="text-[11px] text-white/60">Управление вакансиями и кандидатами</p>
                 </div>
-                <div className="p-3 rounded-lg bg-neutral-500/5 border border-neutral-600/20">
+                <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.06]">
                   <p className="text-xs font-bold text-white/60 mb-1">
                     <Eye size={10} className="inline mr-1" />
                     Участник

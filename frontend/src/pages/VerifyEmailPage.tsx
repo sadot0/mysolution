@@ -152,7 +152,7 @@ export default function VerifyEmailPage() {
             alt="Solution"
             className="h-7 sm:h-8 mx-auto mb-2"
           />
-          <p className="text-[11px] text-neutral-500 tracking-[0.2em] font-medium">
+          <p className="text-[11px] text-white/40 tracking-[0.2em] font-medium">
             SOLUTION HUB
           </p>
         </motion.div>
@@ -195,7 +195,7 @@ export default function VerifyEmailPage() {
                 Email подтверждён!
               </motion.h2>
               <motion.p
-                className="text-sm text-neutral-500"
+                className="text-sm text-white/40"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -214,7 +214,7 @@ export default function VerifyEmailPage() {
                 <h1 className="text-2xl font-black text-white mb-2">
                   Подтвердите ваш email
                 </h1>
-                <p className="text-sm text-neutral-500">
+                <p className="text-sm text-white/40">
                   Мы отправили 6-значный код на{' '}
                   <span className="text-orange-400 font-medium">
                     {user?.email || 'ваш email'}
@@ -266,7 +266,7 @@ export default function VerifyEmailPage() {
 
               {/* Resend section */}
               <div className="text-center mt-5">
-                <p className="text-xs text-neutral-600 mb-2">
+                <p className="text-xs text-white/25 mb-2">
                   Не получили письмо?
                 </p>
                 <button
@@ -285,13 +285,13 @@ export default function VerifyEmailPage() {
 
               {/* Divider */}
               <div className="flex items-center gap-3 mt-6 mb-4">
-                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               </div>
 
               {/* Skip button */}
               <button
                 onClick={() => navigate('/vacancies')}
-                className="flex items-center justify-center gap-2 w-full py-2.5 text-sm text-neutral-500 hover:text-neutral-300 transition-colors font-medium"
+                className="flex items-center justify-center gap-2 w-full py-2.5 text-sm text-white/40 hover:text-white/80 transition-colors font-medium"
               >
                 Пропустить
                 <ArrowRight size={14} />
@@ -307,8 +307,8 @@ export default function VerifyEmailPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.4 }}
         >
-          <div className="flex items-center gap-2 text-[11px] text-neutral-600">
-            <Shield size={12} className="text-neutral-500" />
+          <div className="flex items-center gap-2 text-[11px] text-white/25">
+            <Shield size={12} className="text-white/40" />
             <span>Защищено шифрованием</span>
           </div>
           <div className="text-center text-white/20 text-xs">

@@ -72,7 +72,7 @@ export default function Onboarding({ userName, onComplete }: OnboardingProps) {
 
       {/* Card */}
       <motion.div
-        className="relative w-full max-w-md bg-neutral-900 border border-neutral-700 rounded-2xl overflow-hidden"
+        className="relative w-full max-w-md bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
@@ -80,7 +80,7 @@ export default function Onboarding({ userName, onComplete }: OnboardingProps) {
         {/* Skip button */}
         <button
           onClick={onComplete}
-          className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-neutral-600 hover:text-neutral-300 hover:bg-neutral-800 transition-colors"
+          className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-white/25 hover:text-white/80 hover:bg-white/[0.04] transition-colors"
         >
           <X size={16} />
         </button>
@@ -91,7 +91,7 @@ export default function Onboarding({ userName, onComplete }: OnboardingProps) {
             <div
               key={i}
               className={`h-1 rounded-full transition-all duration-300 ${
-                i === step ? 'w-6 bg-orange-500' : i < step ? 'w-1.5 bg-orange-500/50' : 'w-1.5 bg-neutral-700'
+                i === step ? 'w-6 bg-orange-500' : i < step ? 'w-1.5 bg-orange-500/50' : 'w-1.5 bg-white/[0.06]'
               }`}
             />
           ))}
@@ -120,7 +120,7 @@ export default function Onboarding({ userName, onComplete }: OnboardingProps) {
             )}
 
             <h2 className="text-xl font-bold text-white mb-3">{current.title}</h2>
-            <p className="text-sm text-neutral-400 leading-relaxed">{current.description}</p>
+            <p className="text-sm text-white/60 leading-relaxed">{current.description}</p>
           </motion.div>
         </AnimatePresence>
 
@@ -129,7 +129,7 @@ export default function Onboarding({ userName, onComplete }: OnboardingProps) {
           {step > 0 && (
             <button
               onClick={() => setStep(s => s - 1)}
-              className="flex-1 py-3 rounded-xl text-sm font-medium text-neutral-400 bg-neutral-800 border border-neutral-700 hover:text-white hover:border-neutral-600 transition-colors"
+              className="flex-1 py-3 rounded-xl text-sm font-medium text-white/60 bg-white/[0.02] border border-white/[0.06] hover:text-white hover:border-white/[0.08] transition-colors"
             >
               Назад
             </button>

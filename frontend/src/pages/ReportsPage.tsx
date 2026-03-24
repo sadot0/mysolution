@@ -68,11 +68,11 @@ function getActivityStyle(type: ActivityItem['type']) {
     case 'form':
       return { icon: FileSpreadsheet, color: 'text-cyan-400', bg: 'bg-cyan-500/10' };
     case 'login':
-      return { icon: Activity, color: 'text-white/60', bg: 'bg-neutral-500/10' };
+      return { icon: Activity, color: 'text-white/60', bg: 'bg-white/[0.03]' };
     case 'register':
       return { icon: Users, color: 'text-indigo-400', bg: 'bg-indigo-500/10' };
     default:
-      return { icon: Activity, color: 'text-white/60', bg: 'bg-neutral-500/10' };
+      return { icon: Activity, color: 'text-white/60', bg: 'bg-white/[0.03]' };
   }
 }
 
@@ -286,7 +286,7 @@ export default function ReportsPage() {
         >
           <div className="flex items-center gap-2 mb-4">
             <FileText size={16} className="text-orange-500" />
-            <h2 className="text-sm font-semibold text-neutral-300 tracking-wider uppercase">Быстрые отчёты</h2>
+            <h2 className="text-sm font-semibold text-white/80 tracking-wider uppercase">Быстрые отчёты</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -319,7 +319,7 @@ export default function ReportsPage() {
         >
           <div className="flex items-center gap-2 mb-4">
             <Shield size={16} className="text-orange-500" />
-            <h2 className="text-sm font-semibold text-neutral-300 tracking-wider uppercase">Комплаенс и аудит</h2>
+            <h2 className="text-sm font-semibold text-white/80 tracking-wider uppercase">Комплаенс и аудит</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -363,7 +363,7 @@ export default function ReportsPage() {
                     ) : (
                       <Square size={18} className="text-white/25 shrink-0" />
                     )}
-                    <span className={`text-sm ${item.done ? 'text-neutral-300' : 'text-white/40'}`}>
+                    <span className={`text-sm ${item.done ? 'text-white/80' : 'text-white/40'}`}>
                       {item.label}
                     </span>
                     {item.note && (
@@ -387,7 +387,7 @@ export default function ReportsPage() {
         >
           <div className="flex items-center gap-2 mb-4">
             <Download size={16} className="text-orange-500" />
-            <h2 className="text-sm font-semibold text-neutral-300 tracking-wider uppercase">Экспорт данных</h2>
+            <h2 className="text-sm font-semibold text-white/80 tracking-wider uppercase">Экспорт данных</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -448,7 +448,7 @@ export default function ReportsPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Clock size={16} className="text-orange-500" />
-              <h2 className="text-sm font-semibold text-neutral-300 tracking-wider uppercase">Журнал действий</h2>
+              <h2 className="text-sm font-semibold text-white/80 tracking-wider uppercase">Журнал действий</h2>
             </div>
             {!isSuperadmin && (
               <span className="inline-flex items-center gap-1.5 text-xs text-white/40 bg-white/[0.02]/60 border border-white/[0.06]/40 px-3 py-1.5 rounded-lg">
@@ -462,7 +462,7 @@ export default function ReportsPage() {
             variants={staggerItem}
             className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl backdrop-blur-xl overflow-hidden"
           >
-            <div className="divide-y divide-neutral-800/60">
+            <div className="divide-y divide-white/[0.03]">
               {activityItems.map((item, index) => {
                 const style = getActivityStyle(item.type);
                 const IconComp = style.icon;

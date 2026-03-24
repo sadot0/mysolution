@@ -109,10 +109,10 @@ export default function NotificationBell() {
     <div className="relative" ref={panelRef}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="relative flex items-center justify-center w-8 h-8 rounded-md bg-neutral-800 border border-neutral-700/50 hover:border-orange-500/30 transition-colors"
+        className="relative flex items-center justify-center w-8 h-8 rounded-md bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/30 transition-colors"
         title="Уведомления"
       >
-        <Bell size={14} className="text-neutral-400" />
+        <Bell size={14} className="text-white/60" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-[9px] font-bold text-white leading-none">
             {unreadCount > 99 ? '99+' : unreadCount}
@@ -121,9 +121,9 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 right-0 w-80 max-h-[420px] bg-neutral-900 border border-neutral-700 rounded-xl shadow-2xl shadow-black/60 z-[100] flex flex-col overflow-hidden">
+        <div className="absolute top-full mt-2 right-0 w-80 max-h-[420px] bg-white/[0.03] border border-white/[0.06] rounded-xl shadow-2xl shadow-black/60 z-[100] flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.04]">
             <span className="text-sm font-semibold text-white">Уведомления</span>
             <div className="flex items-center gap-2">
               {unreadCount > 0 && (
@@ -138,7 +138,7 @@ export default function NotificationBell() {
               )}
               <button
                 onClick={() => setOpen(false)}
-                className="p-1 rounded text-neutral-500 hover:text-white transition-colors"
+                className="p-1 rounded text-white/40 hover:text-white transition-colors"
               >
                 <X size={14} />
               </button>
@@ -148,7 +148,7 @@ export default function NotificationBell() {
           {/* List */}
           <div className="flex-1 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 text-neutral-500">
+              <div className="flex flex-col items-center justify-center py-10 text-white/40">
                 <Bell size={28} className="mb-2 opacity-30" />
                 <p className="text-xs">Нет уведомлений</p>
               </div>
@@ -158,21 +158,21 @@ export default function NotificationBell() {
                   key={n.id}
                   onClick={() => handleNotificationClick(n)}
                   className={clsx(
-                    'w-full flex items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-800/60',
+                    'w-full flex items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-white/[0.02]',
                     !n.read && 'bg-orange-500/5'
                   )}
                 >
-                  <div className="shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-full bg-neutral-800">
+                  <div className="shrink-0 mt-0.5 flex items-center justify-center w-7 h-7 rounded-full bg-white/[0.02]">
                     {typeIcon(n.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={clsx('text-xs leading-snug', n.read ? 'text-neutral-400' : 'text-white font-medium')}>
+                    <p className={clsx('text-xs leading-snug', n.read ? 'text-white/60' : 'text-white font-medium')}>
                       {n.title}
                     </p>
                     {n.message && (
-                      <p className="text-[11px] text-neutral-500 mt-0.5 line-clamp-2">{n.message}</p>
+                      <p className="text-[11px] text-white/40 mt-0.5 line-clamp-2">{n.message}</p>
                     )}
-                    <p className="text-[10px] text-neutral-600 mt-1">{timeAgo(n.created_at)}</p>
+                    <p className="text-[10px] text-white/25 mt-1">{timeAgo(n.created_at)}</p>
                   </div>
                   {!n.read && (
                     <span className="shrink-0 mt-2 w-2 h-2 rounded-full bg-orange-500" />

@@ -121,8 +121,8 @@ export default function DashboardPage() {
     switch (status) {
       case 'active': return 'bg-emerald-400';
       case 'paused': return 'bg-yellow-400';
-      case 'closed': return 'bg-neutral-500';
-      default: return 'bg-neutral-500';
+      case 'closed': return 'bg-white/[0.15]';
+      default: return 'bg-white/[0.15]';
     }
   };
 
@@ -140,7 +140,7 @@ export default function DashboardPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               Добро пожаловать, {firstName}!
             </h1>
-            <p className="text-sm text-neutral-400 mt-1">
+            <p className="text-sm text-white/60 mt-1">
               Вот что происходит в вашем хабе.
             </p>
           </div>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
             </Link>
             <Link
               to="/candidates"
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.06] text-neutral-300 text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.1] transition-all"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.06] text-white/80 text-sm font-medium hover:bg-white/[0.06] hover:border-white/[0.1] transition-all"
             >
               <Users size={14} />
               Все кандидаты
@@ -189,12 +189,12 @@ export default function DashboardPage() {
                   <div className={`p-2 rounded-xl ${stat.bg}`}>
                     <stat.icon size={16} className={stat.color} />
                   </div>
-                  <ArrowRight size={14} className="text-neutral-600 group-hover:text-neutral-400 transition-colors" />
+                  <ArrowRight size={14} className="text-white/25 group-hover:text-white/60 transition-colors" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs text-neutral-500">{stat.label}</div>
+                <div className="text-xs text-white/40">{stat.label}</div>
               </Link>
             </motion.div>
           ))}
@@ -218,7 +218,7 @@ export default function DashboardPage() {
                 </h2>
                 <Link
                   to="/vacancies"
-                  className="text-xs text-neutral-500 hover:text-orange-400 transition-colors flex items-center gap-1"
+                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
                 >
                   Все вакансии
                   <ChevronRight size={12} />
@@ -227,8 +227,8 @@ export default function DashboardPage() {
 
               {recentVacancies.length === 0 ? (
                 <div className="text-center py-8">
-                  <BriefcaseIcon size={32} className="mx-auto text-neutral-700 mb-3" />
-                  <p className="text-sm text-neutral-500 mb-4">Пока нет вакансий</p>
+                  <BriefcaseIcon size={32} className="mx-auto text-white/15 mb-3" />
+                  <p className="text-sm text-white/40 mb-4">Пока нет вакансий</p>
                   <Link
                     to="/vacancies"
                     state={{ showCreate: true }}
@@ -251,12 +251,12 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
                           {vacancy.title}
                         </p>
-                        <p className="text-[11px] text-neutral-600 mt-0.5">
+                        <p className="text-[11px] text-white/25 mt-0.5">
                           {formatDate(vacancy.created_at)}
                           {vacancy.location && ` · ${vacancy.location}`}
                         </p>
                       </div>
-                      <ChevronRight size={14} className="text-neutral-700 group-hover:text-neutral-400 shrink-0 transition-colors" />
+                      <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
                     </Link>
                   ))}
                 </div>
@@ -277,7 +277,7 @@ export default function DashboardPage() {
                 </h2>
                 <Link
                   to="/candidates"
-                  className="text-xs text-neutral-500 hover:text-orange-400 transition-colors flex items-center gap-1"
+                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
                 >
                   Все кандидаты
                   <ChevronRight size={12} />
@@ -286,8 +286,8 @@ export default function DashboardPage() {
 
               {recentCandidates.length === 0 ? (
                 <div className="text-center py-6">
-                  <Users size={28} className="mx-auto text-neutral-700 mb-2" />
-                  <p className="text-sm text-neutral-500">Кандидатов пока нет</p>
+                  <Users size={28} className="mx-auto text-white/15 mb-2" />
+                  <p className="text-sm text-white/40">Кандидатов пока нет</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -306,7 +306,7 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium text-white truncate group-hover:text-orange-400 transition-colors">
                           {candidate.full_name}
                         </p>
-                        <p className="text-[11px] text-neutral-600 mt-0.5">
+                        <p className="text-[11px] text-white/25 mt-0.5">
                           {formatDate(candidate.submitted_at)}
                         </p>
                       </div>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
                           {candidate.ai_analysis.overall_score}
                         </div>
                       )}
-                      <ChevronRight size={14} className="text-neutral-700 group-hover:text-neutral-400 shrink-0 transition-colors" />
+                      <ChevronRight size={14} className="text-white/15 group-hover:text-white/60 shrink-0 transition-colors" />
                     </Link>
                   ))}
                 </div>
@@ -345,9 +345,9 @@ export default function DashboardPage() {
                     className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/20 hover:bg-white/[0.05] transition-all text-center group"
                   >
                     <div className="p-2 rounded-lg bg-white/[0.04] group-hover:bg-orange-500/10 transition-colors">
-                      <action.icon size={16} className="text-neutral-400 group-hover:text-orange-400 transition-colors" />
+                      <action.icon size={16} className="text-white/60 group-hover:text-orange-400 transition-colors" />
                     </div>
-                    <span className="text-[11px] font-medium text-neutral-400 group-hover:text-white transition-colors">
+                    <span className="text-[11px] font-medium text-white/60 group-hover:text-white transition-colors">
                       {action.label}
                     </span>
                   </Link>
@@ -369,7 +369,7 @@ export default function DashboardPage() {
                 </h2>
                 <Link
                   to="/interviews"
-                  className="text-xs text-neutral-500 hover:text-orange-400 transition-colors flex items-center gap-1"
+                  className="text-xs text-white/40 hover:text-orange-400 transition-colors flex items-center gap-1"
                 >
                   Все интервью
                   <ChevronRight size={12} />
@@ -378,8 +378,8 @@ export default function DashboardPage() {
 
               {upcoming.length === 0 ? (
                 <div className="text-center py-5">
-                  <Calendar size={24} className="mx-auto text-neutral-700 mb-2" />
-                  <p className="text-xs text-neutral-500">Нет запланированных</p>
+                  <Calendar size={24} className="mx-auto text-white/15 mb-2" />
+                  <p className="text-xs text-white/40">Нет запланированных</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -395,7 +395,7 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium text-white truncate">
                           {(interview.candidate_name as string) || 'Кандидат'}
                         </p>
-                        <p className="text-[11px] text-neutral-500">
+                        <p className="text-[11px] text-white/40">
                           {interview.scheduled_at ? formatDate(interview.scheduled_at as string) : '—'}
                         </p>
                       </div>
@@ -426,8 +426,8 @@ export default function DashboardPage() {
 
               {notifications.length === 0 ? (
                 <div className="text-center py-5">
-                  <UserCheck size={24} className="mx-auto text-neutral-700 mb-2" />
-                  <p className="text-xs text-neutral-500">Новых уведомлений нет</p>
+                  <UserCheck size={24} className="mx-auto text-white/15 mb-2" />
+                  <p className="text-xs text-white/40">Новых уведомлений нет</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -438,10 +438,10 @@ export default function DashboardPage() {
                     >
                       <div className="shrink-0 mt-0.5 w-2 h-2 rounded-full bg-orange-400" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-neutral-300 line-clamp-2">
+                        <p className="text-xs text-white/80 line-clamp-2">
                           {(notif.message as string) || (notif.title as string) || 'Уведомление'}
                         </p>
-                        <p className="text-[10px] text-neutral-600 mt-1">
+                        <p className="text-[10px] text-white/25 mt-1">
                           {notif.created_at ? formatDate(notif.created_at as string) : ''}
                         </p>
                       </div>

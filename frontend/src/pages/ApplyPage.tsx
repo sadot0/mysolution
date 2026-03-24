@@ -70,7 +70,7 @@ function StepIndicator({ current, total, labels }: { current: number; total: num
                 {label}
               </span>
               {step < total && (
-                <ChevronRight size={12} className="text-neutral-700 shrink-0 ml-1 hidden sm:block" />
+                <ChevronRight size={12} className="text-white/15 shrink-0 ml-1 hidden sm:block" />
               )}
             </div>
           );

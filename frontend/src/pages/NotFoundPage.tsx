@@ -72,7 +72,7 @@ export default function NotFoundPage() {
           transition={{ delay: 0.4 }}
           className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6"
         >
-          <p className="text-xs text-neutral-500 mb-4 uppercase tracking-wider font-medium">
+          <p className="text-xs text-white/40 mb-4 uppercase tracking-wider font-medium">
             Может быть полезно
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -83,9 +83,9 @@ export default function NotFoundPage() {
                 className="flex-1 flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-orange-500/20 hover:bg-white/[0.05] transition-all group"
               >
                 <div className="p-2 rounded-lg bg-white/[0.04] group-hover:bg-orange-500/10 transition-colors">
-                  <Icon size={14} className="text-neutral-400 group-hover:text-orange-400 transition-colors" />
+                  <Icon size={14} className="text-white/60 group-hover:text-orange-400 transition-colors" />
                 </div>
-                <span className="text-sm text-neutral-300 group-hover:text-white transition-colors font-medium">
+                <span className="text-sm text-white/80 group-hover:text-white transition-colors font-medium">
                   {label}
                 </span>
               </Link>

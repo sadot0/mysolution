@@ -439,7 +439,7 @@ export default function TalentPoolPage() {
                       className="hover:scale-125 transition-transform"
                       disabled={updateMutation.isPending}
                     >
-                      <Star size={12} className={i < talent.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-700 hover:text-yellow-400/50'} />
+                      <Star size={12} className={i < talent.rating ? 'text-yellow-400 fill-yellow-400' : 'text-white/15 hover:text-yellow-400/50'} />
                     </button>
                   ))}
                   <span className="text-xs text-white/40 ml-1">{talent.rating}/5</span>
@@ -486,7 +486,7 @@ export default function TalentPoolPage() {
                 {talent.lastVacancy && (
                   <div className="bg-white/[0.02]/50 border border-white/[0.06]/50 rounded-lg px-3 py-2 mb-4">
                     <p className="text-[10px] text-white/25 uppercase tracking-wider mb-0.5">Последняя вакансия</p>
-                    <p className="text-xs text-neutral-300 font-medium">{talent.lastVacancy}</p>
+                    <p className="text-xs text-white/80 font-medium">{talent.lastVacancy}</p>
                   </div>
                 )}
 

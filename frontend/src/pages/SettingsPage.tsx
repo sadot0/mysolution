@@ -243,7 +243,7 @@ export default function SettingsPage() {
       case 'purchase': return { Icon: ArrowUpRight, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' };
       case 'usage': return { Icon: ArrowDownRight, color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' };
       case 'bonus': return { Icon: Gift, color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' };
-      default: return { Icon: Coins, color: 'text-white/60', bg: 'bg-neutral-500/10 border-neutral-500/20' };
+      default: return { Icon: Coins, color: 'text-white/60', bg: 'bg-white/[0.03] border-white/[0.06]' };
     }
   };
 
@@ -405,7 +405,7 @@ export default function SettingsPage() {
                         { icon: Fingerprint, label: 'Шифрование', value: 'TLS / HTTPS', color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' },
                       ].map(({ icon: Icon, label, value, color, bg }) => (
                         <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.04] transition-colors">
-                          <div className="flex items-center gap-3 text-neutral-300">
+                          <div className="flex items-center gap-3 text-white/80">
                             <div className={`w-7 h-7 rounded-lg border flex items-center justify-center ${bg}`}>
                               <Icon size={13} className={color} />
                             </div>
@@ -456,7 +456,7 @@ export default function SettingsPage() {
                           </div>
                         ) : (
                           <div className="space-y-4">
-                            <p className="text-sm text-neutral-300">
+                            <p className="text-sm text-white/80">
                               Откройте Google Authenticator и введите этот секретный ключ:
                             </p>
                             <code className="block p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg text-xs text-orange-400 font-mono break-all select-all">
@@ -482,7 +482,7 @@ export default function SettingsPage() {
                                 Подтвердить
                               </button>
                             </div>
-                            <button className="text-xs text-white/40 hover:text-neutral-300" onClick={() => setShow2FASetup(false)}>
+                            <button className="text-xs text-white/40 hover:text-white/80" onClick={() => setShow2FASetup(false)}>
                               Отмена
                             </button>
                           </div>
@@ -663,7 +663,7 @@ export default function SettingsPage() {
                         {members.map((m) => (
                           <div
                             key={m.id}
-                            className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-neutral-600/50 transition-all duration-200"
+                            className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08]/50 transition-all duration-200"
                           >
                             <div className="relative shrink-0">
                               <div className="flex items-center justify-center rounded-full font-bold text-sm w-10 h-10 bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/20 text-orange-400">
@@ -837,7 +837,7 @@ export default function SettingsPage() {
                               <img
                                 src={logoUrl}
                                 alt="Logo"
-                                className="w-10 h-10 rounded-lg object-cover border border-neutral-600"
+                                className="w-10 h-10 rounded-lg object-cover border border-white/[0.08]"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                               />
                             ) : (
@@ -859,7 +859,7 @@ export default function SettingsPage() {
                           />
                           <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
                             <p className="text-xs text-white/60 mb-1">Пример email:</p>
-                            <p className="text-xs text-neutral-300">Здравствуйте! Спасибо за ваш отклик на вакансию...</p>
+                            <p className="text-xs text-white/80">Здравствуйте! Спасибо за ваш отклик на вакансию...</p>
                             {emailFooter && (
                               <p className="text-xs text-white/40 mt-2 pt-2 border-t border-white/[0.04] italic">
                                 {emailFooter}
@@ -933,7 +933,7 @@ export default function SettingsPage() {
                 {/* Plans grid */}
                 <motion.div variants={staggerItem}>
                   <div className="mb-5">
-                    <h3 className="text-sm font-bold text-neutral-300 tracking-wider uppercase mb-3">Пополнить баланс</h3>
+                    <h3 className="text-sm font-bold text-white/80 tracking-wider uppercase mb-3">Пополнить баланс</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {plans.map((plan) => (
                         <div
@@ -955,7 +955,7 @@ export default function SettingsPage() {
                             <span className="text-xs font-normal text-white/40 ml-1">токенов</span>
                           </p>
                           <div className="flex items-baseline gap-2 mt-2">
-                            <span className="text-sm font-semibold text-neutral-300">${plan.price_usd}</span>
+                            <span className="text-sm font-semibold text-white/80">${plan.price_usd}</span>
                             <span className="text-xs text-white/40">/</span>
                             <span className="text-xs text-white/40">{formatNumber(plan.price_uzs)} сум</span>
                           </div>
@@ -1042,7 +1042,7 @@ export default function SettingsPage() {
                           return (
                             <div
                               key={tx.id}
-                              className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-neutral-600/50 transition-all duration-200"
+                              className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08]/50 transition-all duration-200"
                             >
                               <div className={`shrink-0 w-9 h-9 rounded-xl border flex items-center justify-center ${bg}`}>
                                 <Icon size={16} className={color} />
@@ -1082,7 +1082,7 @@ export default function SettingsPage() {
                     <div className="space-y-1">
                       {TOKEN_COSTS.map(({ label, cost, icon: CostIcon, color, bg }) => (
                         <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.04] transition-colors">
-                          <div className="flex items-center gap-3 text-neutral-300">
+                          <div className="flex items-center gap-3 text-white/80">
                             <div className={`w-7 h-7 rounded-lg border flex items-center justify-center ${bg}`}>
                               <CostIcon size={13} className={color} />
                             </div>
@@ -1124,7 +1124,7 @@ function PurchaseModal({ plan, onClose }: { plan: { name: string; tokens: number
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-white/60">В сумах</span>
-              <span className="text-sm font-mono text-neutral-300">{plan.price_uzs?.toLocaleString()} сум</span>
+              <span className="text-sm font-mono text-white/80">{plan.price_uzs?.toLocaleString()} сум</span>
             </div>
           </div>
 
@@ -1140,8 +1140,8 @@ function PurchaseModal({ plan, onClose }: { plan: { name: string; tokens: number
           <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 mb-4 text-center">
             <p className="text-sm font-medium text-orange-400 mb-1">Хотите пополнить сейчас?</p>
             <p className="text-xs text-white/60">Свяжитесь с нами для ручного пополнения:</p>
-            <p className="text-xs text-neutral-300 mt-1">info@mysolution.uz</p>
-            <p className="text-xs text-neutral-300">@mysolution.hub</p>
+            <p className="text-xs text-white/80 mt-1">info@mysolution.uz</p>
+            <p className="text-xs text-white/80">@mysolution.hub</p>
           </div>
 
           <button className="btn-secondary w-full justify-center" onClick={onClose}>Закрыть</button>

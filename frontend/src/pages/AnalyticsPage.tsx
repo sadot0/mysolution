@@ -82,10 +82,10 @@ function CustomTooltip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-neutral-950 border border-neutral-700 rounded-xl px-4 py-3 shadow-2xl">
+    <div className="bg-white/[0.01] border border-white/[0.06] rounded-xl px-4 py-3 shadow-2xl">
       <p className="text-white font-semibold text-sm mb-1">{label}</p>
       <p className="font-mono text-lg" style={{ color: payload[0].payload.color }}>
-        {payload[0].value} <span className="text-xs text-neutral-400">кандидатов</span>
+        {payload[0].value} <span className="text-xs text-white/60">кандидатов</span>
       </p>
     </div>
   );
@@ -153,11 +153,11 @@ export default function AnalyticsPage() {
           <h1 className="text-3xl font-bold text-white tracking-wider">АНАЛИТИКА</h1>
           <div className="h-px w-16 mt-2 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
           <div className="flex items-center gap-3 mt-1">
-            <p className="text-sm text-neutral-400">
+            <p className="text-sm text-white/60">
               Общая статистика по всем вакансиям
             </p>
             {dataUpdatedAt > 0 && (
-              <span className="text-xs text-neutral-600">
+              <span className="text-xs text-white/25">
                 Обновлено: {new Date(dataUpdatedAt).toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}
               </span>
             )}
@@ -172,32 +172,32 @@ export default function AnalyticsPage() {
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-5 animate-pulse"
+                  className="bg-white/[0.02] border border-white/[0.04] rounded-2xl p-5 animate-pulse"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="h-3 w-20 bg-neutral-800 rounded" />
-                    <div className="h-8 w-8 bg-neutral-800 rounded-lg" />
+                    <div className="h-3 w-20 bg-white/[0.02] rounded" />
+                    <div className="h-8 w-8 bg-white/[0.02] rounded-lg" />
                   </div>
-                  <div className="h-8 w-16 bg-neutral-800 rounded mb-2" />
-                  <div className="h-3 w-24 bg-neutral-800/60 rounded" />
+                  <div className="h-8 w-16 bg-white/[0.02] rounded mb-2" />
+                  <div className="h-3 w-24 bg-white/[0.02] rounded" />
                 </div>
               ))}
             </div>
             {/* Chart skeleton */}
-            <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 animate-pulse">
-              <div className="h-4 w-48 bg-neutral-800 rounded mb-2" />
-              <div className="h-3 w-64 bg-neutral-800/60 rounded mb-6" />
-              <div className="h-56 bg-neutral-800/40 rounded-xl" />
+            <div className="bg-white/[0.02] border border-white/[0.04] rounded-2xl p-6 animate-pulse">
+              <div className="h-4 w-48 bg-white/[0.02] rounded mb-2" />
+              <div className="h-3 w-64 bg-white/[0.02] rounded mb-6" />
+              <div className="h-56 bg-white/[0.02] rounded-xl" />
             </div>
             {/* Top performers skeleton */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-5 animate-pulse"
+                  className="bg-white/[0.02] border border-white/[0.04] rounded-2xl p-5 animate-pulse"
                 >
-                  <div className="h-4 w-24 bg-neutral-800 rounded mb-3" />
-                  <div className="h-6 w-12 bg-neutral-800 rounded" />
+                  <div className="h-4 w-24 bg-white/[0.02] rounded mb-3" />
+                  <div className="h-6 w-12 bg-white/[0.02] rounded" />
                 </div>
               ))}
             </div>
@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
             {/* Chart section */}
             {categoryData.some((d) => d.value > 0) && (
               <motion.div
-                className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-6 mb-6 backdrop-blur-sm"
+                className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-6 mb-6 backdrop-blur-sm"
                 variants={staggerItem}
                 initial="initial"
                 animate="animate"
@@ -271,7 +271,7 @@ export default function AnalyticsPage() {
                   </div>
                   <h3 className="font-bold text-white text-lg">Распределение по категориям</h3>
                 </div>
-                <p className="text-sm text-neutral-500 mb-6 ml-11">
+                <p className="text-sm text-white/40 mb-6 ml-11">
                   Результаты AI-анализа всех кандидатов
                 </p>
 
@@ -310,7 +310,7 @@ export default function AnalyticsPage() {
             {/* ── Hiring Funnel Section ── */}
             {!funnelLoading && funnelData && funnelData.funnel.total_applications > 0 && (
               <motion.div
-                className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-6 mb-6 backdrop-blur-sm"
+                className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-6 mb-6 backdrop-blur-sm"
                 variants={staggerItem}
                 initial="initial"
                 animate="animate"
@@ -321,7 +321,7 @@ export default function AnalyticsPage() {
                   </div>
                   <h3 className="font-bold text-white text-lg">Воронка найма</h3>
                 </div>
-                <p className="text-sm text-neutral-500 mb-8 ml-11">
+                <p className="text-sm text-white/40 mb-8 ml-11">
                   Прохождение кандидатов по этапам отбора
                 </p>
 
@@ -364,48 +364,48 @@ export default function AnalyticsPage() {
 
                 {/* Conversion rate cards + pipeline metric */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="bg-neutral-800/60 border border-neutral-700/40 rounded-xl p-4">
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle size={14} className="text-blue-400" />
-                      <span className="text-xs text-neutral-400 uppercase tracking-wider">Анализ</span>
+                      <span className="text-xs text-white/60 uppercase tracking-wider">Анализ</span>
                     </div>
                     <p className="font-mono text-xl font-bold text-blue-400 tabular-nums" >
                       {funnelData.conversions.analysis_rate}%
                     </p>
-                    <p className="text-xs text-neutral-500 mt-1">конверсия в анализ</p>
+                    <p className="text-xs text-white/40 mt-1">конверсия в анализ</p>
                   </div>
 
-                  <div className="bg-neutral-800/60 border border-neutral-700/40 rounded-xl p-4">
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <UserCheck size={14} className="text-emerald-400" />
-                      <span className="text-xs text-neutral-400 uppercase tracking-wider">Приглашение</span>
+                      <span className="text-xs text-white/60 uppercase tracking-wider">Приглашение</span>
                     </div>
                     <p className="font-mono text-xl font-bold text-emerald-400 tabular-nums" >
                       {funnelData.conversions.invite_rate}%
                     </p>
-                    <p className="text-xs text-neutral-500 mt-1">конверсия в приглашение</p>
+                    <p className="text-xs text-white/40 mt-1">конверсия в приглашение</p>
                   </div>
 
-                  <div className="bg-neutral-800/60 border border-neutral-700/40 rounded-xl p-4">
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <XCircle size={14} className="text-red-400" />
-                      <span className="text-xs text-neutral-400 uppercase tracking-wider">Отказ</span>
+                      <span className="text-xs text-white/60 uppercase tracking-wider">Отказ</span>
                     </div>
                     <p className="font-mono text-xl font-bold text-red-400 tabular-nums" >
                       {funnelData.conversions.rejection_rate}%
                     </p>
-                    <p className="text-xs text-neutral-500 mt-1">процент отказов</p>
+                    <p className="text-xs text-white/40 mt-1">процент отказов</p>
                   </div>
 
-                  <div className="bg-neutral-800/60 border border-neutral-700/40 rounded-xl p-4">
+                  <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Clock size={14} className="text-orange-400" />
-                      <span className="text-xs text-neutral-400 uppercase tracking-wider">Пайплайн</span>
+                      <span className="text-xs text-white/60 uppercase tracking-wider">Пайплайн</span>
                     </div>
                     <p className="font-mono text-xl font-bold text-orange-400 tabular-nums" >
                       {funnelData.avg_days_in_pipeline}
                     </p>
-                    <p className="text-xs text-neutral-500 mt-1">среднее время в пайплайне, дней</p>
+                    <p className="text-xs text-white/40 mt-1">среднее время в пайплайне, дней</p>
                   </div>
                 </div>
               </motion.div>
@@ -421,51 +421,51 @@ export default function AnalyticsPage() {
               >
                 <motion.div
                   variants={staggerItem}
-                  className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 border-l-2 border-l-emerald-500 backdrop-blur-sm"
+                  className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-5 border-l-2 border-l-emerald-500 backdrop-blur-sm"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Award size={18} className="text-emerald-500" />
-                    <span className="text-sm font-medium text-neutral-400">Лучшая категория</span>
+                    <span className="text-sm font-medium text-white/60">Лучшая категория</span>
                   </div>
                   <p className="text-white font-semibold">Отличный</p>
                   <p className="font-mono text-2xl font-bold text-emerald-400 mt-1 tabular-nums" >
                     {pct(categoryData[0]?.value || 0)}%
                   </p>
-                  <p className="text-xs text-neutral-500 mt-1">
+                  <p className="text-xs text-white/40 mt-1">
                     {categoryData[0]?.value || 0} кандидатов
                   </p>
                 </motion.div>
 
                 <motion.div
                   variants={staggerItem}
-                  className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 border-l-2 border-l-blue-500 backdrop-blur-sm"
+                  className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-5 border-l-2 border-l-blue-500 backdrop-blur-sm"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <ThumbsUp size={18} className="text-blue-400" />
-                    <span className="text-sm font-medium text-neutral-400">Самая частая</span>
+                    <span className="text-sm font-medium text-white/60">Самая частая</span>
                   </div>
                   <p className="text-white font-semibold">Хороший</p>
                   <p className="font-mono text-2xl font-bold text-blue-400 mt-1 tabular-nums" >
                     {pct(categoryData[1]?.value || 0)}%
                   </p>
-                  <p className="text-xs text-neutral-500 mt-1">
+                  <p className="text-xs text-white/40 mt-1">
                     {categoryData[1]?.value || 0} кандидатов
                   </p>
                 </motion.div>
 
                 <motion.div
                   variants={staggerItem}
-                  className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 border-l-2 border-l-red-500 backdrop-blur-sm"
+                  className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-5 border-l-2 border-l-red-500 backdrop-blur-sm"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <AlertTriangle size={18} className="text-red-400" />
-                    <span className="text-sm font-medium text-neutral-400">Требует внимания</span>
+                    <span className="text-sm font-medium text-white/60">Требует внимания</span>
                   </div>
                   <p className="text-white font-semibold">Ниже среднего</p>
                   <p className="font-mono text-2xl font-bold text-red-400 mt-1 tabular-nums" >
                     {pct(categoryData[3]?.value || 0)}%
                   </p>
-                  <p className="text-xs text-neutral-500 mt-1">
+                  <p className="text-xs text-white/40 mt-1">
                     {categoryData[3]?.value || 0} кандидатов
                   </p>
                 </motion.div>
@@ -475,7 +475,7 @@ export default function AnalyticsPage() {
             {/* Empty state */}
             {!data?.total_candidates && (
               <motion.div
-                className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl text-center py-20 backdrop-blur-sm"
+                className="bg-white/[0.03] border border-white/[0.04] rounded-2xl text-center py-20 backdrop-blur-sm"
                 variants={staggerItem}
                 initial="initial"
                 animate="animate"
@@ -484,17 +484,17 @@ export default function AnalyticsPage() {
                   <div className="flex items-center justify-center w-12 h-12 bg-orange-500/10 border border-orange-500/20 rounded-2xl">
                     <BarChart3 size={22} className="text-orange-500/60" />
                   </div>
-                  <div className="flex items-center justify-center w-14 h-14 bg-neutral-800 border border-neutral-600 rounded-2xl -mx-1">
-                    <TrendingUp size={28} className="text-neutral-500" />
+                  <div className="flex items-center justify-center w-14 h-14 bg-white/[0.02] border border-white/[0.08] rounded-2xl -mx-1">
+                    <TrendingUp size={28} className="text-white/40" />
                   </div>
                   <div className="flex items-center justify-center w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-2xl">
                     <Users size={22} className="text-blue-500/60" />
                   </div>
                 </div>
-                <p className="font-semibold text-neutral-300 mb-1 text-lg">
+                <p className="font-semibold text-white/80 mb-1 text-lg">
                   Нет данных для отображения
                 </p>
-                <p className="text-sm text-neutral-500 max-w-xs mx-auto">
+                <p className="text-sm text-white/40 max-w-xs mx-auto">
                   Добавьте кандидатов и запустите AI-анализ, чтобы увидеть статистику и графики
                 </p>
               </motion.div>
@@ -531,7 +531,7 @@ function FunnelBar({
   return (
     <div className="w-full flex items-center gap-4">
       <div className="w-36 text-right">
-        <span className="text-sm text-neutral-400">{label}</span>
+        <span className="text-sm text-white/60">{label}</span>
       </div>
       <div className="flex-1 relative">
         <div className={`w-full h-10 rounded-lg ${bgColor} overflow-hidden`}>
@@ -547,7 +547,7 @@ function FunnelBar({
         <span className="font-mono text-sm font-bold text-white tabular-nums" >
           {count}
         </span>
-        <span className="text-xs text-neutral-500 ml-1">
+        <span className="text-xs text-white/40 ml-1">
           ({total > 0 ? Math.round((count / total) * 100) : 0}%)
         </span>
       </div>
@@ -577,10 +577,10 @@ function StatCard({
 }) {
   return (
     <div
-      className={`bg-neutral-900/80 border border-neutral-700/60 ${borderColor} border-t-2 rounded-2xl p-4 md:p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm`}
+      className={`bg-white/[0.03] border border-white/[0.04] ${borderColor} border-t-2 rounded-2xl p-4 md:p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm`}
     >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs text-neutral-400 tracking-wider uppercase font-medium">{label}</p>
+        <p className="text-xs text-white/60 tracking-wider uppercase font-medium">{label}</p>
         <div className={`${iconBg} ${iconColor} p-2 rounded-lg`}>{icon}</div>
       </div>
       <p
@@ -594,7 +594,7 @@ function StatCard({
         <span className="text-xs font-mono text-emerald-500 tabular-nums" >
           {trend}
         </span>
-        <span className="text-xs text-neutral-600 ml-1">vs прошлый месяц</span>
+        <span className="text-xs text-white/25 ml-1">vs прошлый месяц</span>
       </div>
     </div>
   );

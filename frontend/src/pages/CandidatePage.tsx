@@ -734,7 +734,7 @@ export default function CandidatePage() {
           <span>/</span>
           <Link to={`/vacancies/${candidate?.vacancy_id}`} className="hover:text-orange-400 transition-colors">Вакансия</Link>
           <span>/</span>
-          <span className="text-neutral-300">{candidate?.full_name || '...'}</span>
+          <span className="text-white/80">{candidate?.full_name || '...'}</span>
         </div>
 
         {/* Pipeline stages */}

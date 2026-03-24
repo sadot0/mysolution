@@ -143,8 +143,8 @@ export default function VacanciesPage() {
             <div className="h-px w-16 mt-2 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
             {/* Stat badges bar */}
             <div className="flex items-center gap-2.5 mt-2 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-neutral-300">
-                <BriefcaseIcon size={11} className="text-neutral-500" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-white/80">
+                <BriefcaseIcon size={11} className="text-white/40" />
                 {vacancies.length} вакансий
               </span>
               {activeCount > 0 && (
@@ -177,7 +177,7 @@ export default function VacanciesPage() {
             <div className="relative flex-1 max-w-sm">
               <Search
                 size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500"
+                className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/40"
               />
               <input
                 id="vacancies-search"
@@ -240,10 +240,10 @@ export default function VacanciesPage() {
         ) : !filtered.length ? (
           <div className="card text-center py-16">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl mb-4">
-              <Search size={28} className="text-neutral-500" />
+              <Search size={28} className="text-white/40" />
             </div>
             <p className="text-white font-semibold mb-1">Ничего не найдено</p>
-            <p className="text-sm text-neutral-500 max-w-xs mx-auto">
+            <p className="text-sm text-white/40 max-w-xs mx-auto">
               Попробуйте изменить фильтры или поисковый запрос
             </p>
           </div>
@@ -332,7 +332,7 @@ function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
 const statusConfig = {
   active: { label: 'АКТИВНА', cls: 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30', dot: 'status-dot status-dot-active', accent: 'border-l-emerald-500/50' },
   paused: { label: 'ПАУЗА', cls: 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30', dot: 'status-dot status-dot-paused', accent: 'border-l-yellow-500/50' },
-  closed: { label: 'ЗАКРЫТА', cls: 'bg-neutral-500/20 text-white/60 border border-neutral-600', dot: 'status-dot status-dot-closed', accent: 'border-l-neutral-600' },
+  closed: { label: 'ЗАКРЫТА', cls: 'bg-white/[0.06] text-white/60 border border-white/[0.08]', dot: 'status-dot status-dot-closed', accent: 'border-l-white/[0.08]' },
 };
 
 const statusColors: Record<string, string> = {
@@ -920,7 +920,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
                           <p className={`text-sm font-semibold ${isSelected ? 'text-orange-400' : 'text-white'}`}>
                             {tpl.label}
                           </p>
-                          <p className="text-xs text-neutral-500 mt-0.5 leading-tight">
+                          <p className="text-xs text-white/40 mt-0.5 leading-tight">
                             {tpl.desc}
                           </p>
                         </div>

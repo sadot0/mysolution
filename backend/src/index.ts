@@ -707,9 +707,19 @@ app.get('/health', async (_req, res) => {
 
   const allOk = Object.values(checks).every(v => v === 'ok' || v === 'configured');
 
+  const memUsed = process.memoryUsage();
+  const system = {
+    memory_mb: Math.round(memUsed.heapUsed / 1024 / 1024),
+    cpu_count: os.cpus().length,
+    load_avg: os.loadavg()[0].toFixed(2),
+    free_mem_mb: Math.round(os.freemem() / 1024 / 1024),
+    total_mem_mb: Math.round(os.totalmem() / 1024 / 1024),
+  };
+
   res.status(allOk ? 200 : 503).json({
     status: allOk ? 'healthy' : 'degraded',
     checks,
+    system,
     uptime: Math.round(process.uptime()),
     timestamp: new Date().toISOString(),
     version: '2.1.0',
@@ -724,6 +734,7 @@ app.all('/api/*', (_req, res) => {
 // ── Serve frontend static files (production) ──────────────────────────────────
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 
 const frontendDist = path.join(__dirname, '../../frontend/dist');
 if (fs.existsSync(frontendDist)) {

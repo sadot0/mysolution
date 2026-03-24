@@ -29,11 +29,11 @@ const STATUS_CONFIG: Record<TicketStatus, { label: string; bg: string; text: str
   open: { label: 'Открыт', bg: 'bg-orange-500/20', text: 'text-orange-400' },
   in_progress: { label: 'В работе', bg: 'bg-blue-500/20', text: 'text-blue-400' },
   resolved: { label: 'Решён', bg: 'bg-green-500/20', text: 'text-green-400' },
-  closed: { label: 'Закрыт', bg: 'bg-neutral-500/20', text: 'text-white/60' },
+  closed: { label: 'Закрыт', bg: 'bg-white/[0.06]', text: 'text-white/60' },
 };
 
 const PRIORITY_CONFIG: Record<TicketPriority, { label: string; color: string }> = {
-  low: { label: 'Низкий', color: 'text-white/60 border-neutral-600' },
+  low: { label: 'Низкий', color: 'text-white/60 border-white/[0.08]' },
   medium: { label: 'Средний', color: 'text-blue-400 border-blue-600' },
   high: { label: 'Высокий', color: 'text-orange-400 border-orange-600' },
   urgent: { label: 'Срочный', color: 'text-red-400 border-red-600' },
@@ -205,7 +205,7 @@ export default function SupportPage() {
                         <CheckCircle2 className="w-4 h-4 text-orange-400" />
                         <span className="text-orange-400 text-xs font-medium">Ответ поддержки</span>
                       </div>
-                      <p className="text-neutral-300 text-sm">{ticket.admin_reply}</p>
+                      <p className="text-white/80 text-sm">{ticket.admin_reply}</p>
                     </div>
                   )}
                 </motion.div>
@@ -256,7 +256,7 @@ export default function SupportPage() {
                               className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all text-center ${
                                 isActive
                                   ? 'border-orange-500 bg-orange-500/10 text-orange-400'
-                                  : 'border-white/[0.06] bg-white/[0.02] text-white/60 hover:border-white/[0.08] hover:text-neutral-300'
+                                  : 'border-white/[0.06] bg-white/[0.02] text-white/60 hover:border-white/[0.08] hover:text-white/80'
                               }`}
                             >
                               <Icon className="w-5 h-5" />

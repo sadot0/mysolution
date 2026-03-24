@@ -177,12 +177,12 @@ export default function KanbanBoard({ candidates, onRefetch }: KanbanBoardProps)
               </AnimatePresence>
               {colCandidates.length === 0 && (
                 <div
-                  className="rounded-xl flex flex-col items-center justify-center min-h-[120px] border-2 border-dashed border-neutral-700/60 bg-neutral-800/20 gap-2"
+                  className="rounded-xl flex flex-col items-center justify-center min-h-[120px] border-2 border-dashed border-white/[0.04] bg-white/[0.01] gap-2"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-neutral-800/60 flex items-center justify-center">
-                    <Plus size={14} className="text-neutral-600" />
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.02] flex items-center justify-center">
+                    <Plus size={14} className="text-white/25" />
                   </div>
-                  <p className="text-xs text-neutral-600">
+                  <p className="text-xs text-white/25">
                     Нет кандидатов
                   </p>
                 </div>
@@ -228,7 +228,7 @@ function KanbanCard({
 
   return (
     <div
-      className={`kanban-card group bg-neutral-900 border border-neutral-700/80 rounded-xl cursor-pointer hover:border-orange-500/50 transition-all duration-200 flex flex-col relative overflow-hidden hover:shadow-lg hover:shadow-orange-500/5 ${isDragging ? 'dragging' : ''}`}
+      className={`kanban-card group bg-white/[0.03] border border-white/[0.05] rounded-xl cursor-pointer hover:border-orange-500/50 transition-all duration-200 flex flex-col relative overflow-hidden hover:shadow-lg hover:shadow-orange-500/5 ${isDragging ? 'dragging' : ''}`}
       style={{ borderLeftWidth: 3, borderLeftColor: col.color }}
       onClick={onClick}
       draggable
@@ -239,7 +239,7 @@ function KanbanCard({
         {/* Grip handle + Name + Score */}
         <div className="flex items-start gap-2">
           <div className="mt-0.5 opacity-0 group-hover:opacity-40 transition-opacity shrink-0 cursor-grab">
-            <GripVertical size={14} className="text-neutral-500" />
+            <GripVertical size={14} className="text-white/40" />
           </div>
           <p className="font-bold text-white text-sm leading-tight flex-1 truncate">
             {c.full_name}
@@ -265,7 +265,7 @@ function KanbanCard({
                     ? 'bg-orange-500/20 border-orange-500/50 text-orange-400'
                     : analysis.overall_score >= 60
                     ? 'bg-yellow-500/15 border-yellow-500/40 text-yellow-400'
-                    : 'bg-neutral-800 border-neutral-600 text-neutral-400'
+                    : 'bg-white/[0.02] border-white/[0.08] text-white/60'
                 } border`}
               >
                 {analysis.overall_score}
@@ -279,7 +279,7 @@ function KanbanCard({
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-1.5 text-xs text-neutral-500 pl-6">
+        <div className="flex items-center gap-1.5 text-xs text-white/40 pl-6">
           <Mail size={10} className="shrink-0" />
           <span className="truncate">{c.email}</span>
         </div>
@@ -294,14 +294,14 @@ function KanbanCard({
         )}
 
         {!analysis && !isAnalyzing && (
-          <div className="flex items-center gap-1.5 text-xs text-neutral-600 pl-6">
+          <div className="flex items-center gap-1.5 text-xs text-white/25 pl-6">
             <BrainCircuit size={11} />
             Без анализа
           </div>
         )}
 
         {/* Date */}
-        <div className="flex items-center gap-1.5 text-xs text-neutral-600 font-mono pl-6">
+        <div className="flex items-center gap-1.5 text-xs text-white/25 font-mono pl-6">
           <Calendar size={10} className="shrink-0" />
           {formatDate(c.submitted_at)}
         </div>
@@ -310,11 +310,11 @@ function KanbanCard({
       {/* Move button */}
       {!isAnalyzing && (
         <div
-          className="relative px-3.5 py-2.5 border-t border-neutral-800/80 bg-neutral-900/50"
+          className="relative px-3.5 py-2.5 border-t border-white/[0.03] bg-white/[0.02]"
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="flex items-center gap-1.5 text-xs w-full text-neutral-500 hover:text-orange-400 transition-colors font-medium"
+            className="flex items-center gap-1.5 text-xs w-full text-white/40 hover:text-orange-400 transition-colors font-medium"
             onClick={() => setShowMove(!showMove)}
             disabled={moving}
           >
@@ -327,13 +327,13 @@ function KanbanCard({
           </button>
 
           {showMove && (
-            <div className="absolute bottom-full left-2 right-2 mb-1.5 rounded-xl overflow-hidden z-30 bg-neutral-900 border border-neutral-700 shadow-xl shadow-black/50">
+            <div className="absolute bottom-full left-2 right-2 mb-1.5 rounded-xl overflow-hidden z-30 bg-white/[0.03] border border-white/[0.06] shadow-xl shadow-black/50">
               {targets.map((target) => {
                 const Icon = COLUMN_ICONS[target.id] || UserPlus;
                 return (
                   <button
                     key={target.id}
-                    className="w-full text-left text-xs px-3.5 py-3 flex items-center gap-3 text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors"
+                    className="w-full text-left text-xs px-3.5 py-3 flex items-center gap-3 text-white/60 hover:bg-white/[0.04] hover:text-white transition-colors"
                     onClick={() => {
                       setShowMove(false);
                       onMove(c.id, target.id);
@@ -341,7 +341,7 @@ function KanbanCard({
                   >
                     <Icon size={13} style={{ color: target.color }} className="shrink-0" />
                     <span className="flex-1">{target.label}</span>
-                    <ArrowRight size={10} className="text-neutral-600" />
+                    <ArrowRight size={10} className="text-white/25" />
                   </button>
                 );
               })}

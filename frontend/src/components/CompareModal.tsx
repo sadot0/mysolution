@@ -59,7 +59,7 @@ function getCategoryColor(cat: string): string {
     average: 'bg-yellow-500/20 text-yellow-400', below: 'bg-red-500/20 text-red-400',
     below_average: 'bg-red-500/20 text-red-400',
   };
-  return map[cat] || 'bg-neutral-500/20 text-neutral-400';
+  return map[cat] || 'bg-white/[0.06] text-white/60';
 }
 
 function getScoreColor(score: number): string {
@@ -187,13 +187,13 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
 
       {/* Modal */}
       <div
-        className="relative w-full max-w-6xl mx-4 bg-neutral-900 border border-neutral-700/50 rounded-2xl shadow-2xl"
+        className="relative w-full max-w-6xl mx-4 bg-white/[0.03] border border-white/[0.04] rounded-2xl shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-700/50">
+        <div className="flex items-center justify-between p-6 border-b border-white/[0.04]">
           <h2 className="text-xl font-bold text-white">Сравнение кандидатов</h2>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/[0.04] text-white/60 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -203,7 +203,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
           {loading && (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
-              <span className="ml-3 text-neutral-400">Загрузка...</span>
+              <span className="ml-3 text-white/60">Загрузка...</span>
             </div>
           )}
 
@@ -225,22 +225,22 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                       <p className="text-white font-semibold">
                         Рекомендуем: {comparison.recommended_name}
                       </p>
-                      <p className="text-neutral-400 text-sm mt-0.5">{comparison.reason}</p>
+                      <p className="text-white/60 text-sm mt-0.5">{comparison.reason}</p>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Radar Chart */}
-              <div className="mb-6 p-4 rounded-xl bg-neutral-800/50 border border-neutral-700/50">
-                <h3 className="text-sm font-medium text-neutral-400 mb-3 text-center">Радарная диаграмма</h3>
+              <div className="mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <h3 className="text-sm font-medium text-white/60 mb-3 text-center">Радарная диаграмма</h3>
                 <RadarChart candidates={candidates} colors={colors} />
                 {/* Legend */}
                 <div className="flex flex-wrap justify-center gap-4 mt-3">
                   {candidates.map((c, i) => (
                     <div key={c.id} className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: colors[i] }} />
-                      <span className="text-sm text-neutral-300">{c.full_name}</span>
+                      <span className="text-sm text-white/80">{c.full_name}</span>
                     </div>
                   ))}
                 </div>
@@ -251,7 +251,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                 <table className="w-full min-w-[600px]">
                   <thead>
                     <tr>
-                      <th className="text-left text-sm font-medium text-neutral-500 pb-4 pr-4 w-36">Параметр</th>
+                      <th className="text-left text-sm font-medium text-white/40 pb-4 pr-4 w-36">Параметр</th>
                       {candidates.map((c, i) => (
                         <th key={c.id} className="text-center pb-4 px-3" style={{ minWidth: '160px' }}>
                           {/* Avatar + Name */}
@@ -264,7 +264,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                             </div>
                             <div>
                               <p className="text-white font-medium text-sm leading-tight">{c.full_name}</p>
-                              <p className="text-neutral-500 text-xs mt-0.5">{c.email}</p>
+                              <p className="text-white/40 text-xs mt-0.5">{c.email}</p>
                             </div>
                             {comparison?.recommended === c.id && (
                               <span className="inline-flex items-center gap-1 text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">
@@ -276,10 +276,10 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-neutral-800">
+                  <tbody className="divide-y divide-white/[0.04]">
                     {/* Overall Score */}
                     <tr>
-                      <td className="py-4 pr-4 text-sm text-neutral-400 font-medium">Общий балл</td>
+                      <td className="py-4 pr-4 text-sm text-white/60 font-medium">Общий балл</td>
                       {candidates.map(c => (
                         <td key={c.id} className="py-4 px-3 text-center">
                           {c.ai_analysis ? (
@@ -287,7 +287,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                               {c.ai_analysis.overall_score}
                             </span>
                           ) : (
-                            <span className="text-neutral-600 text-sm">Нет данных</span>
+                            <span className="text-white/25 text-sm">Нет данных</span>
                           )}
                         </td>
                       ))}
@@ -295,7 +295,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
 
                     {/* Category */}
                     <tr>
-                      <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Категория</td>
+                      <td className="py-3 pr-4 text-sm text-white/60 font-medium">Категория</td>
                       {candidates.map(c => (
                         <td key={c.id} className="py-3 px-3 text-center">
                           {c.ai_analysis ? (
@@ -303,7 +303,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                               {getCategoryLabel(c.ai_analysis.category)}
                             </span>
                           ) : (
-                            <span className="text-neutral-600 text-sm">--</span>
+                            <span className="text-white/25 text-sm">--</span>
                           )}
                         </td>
                       ))}
@@ -312,23 +312,23 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                     {/* Individual scores */}
                     {SCORE_KEYS.map(key => (
                       <tr key={key}>
-                        <td className="py-3 pr-4 text-sm text-neutral-400">{SCORE_LABELS[key]}</td>
+                        <td className="py-3 pr-4 text-sm text-white/60">{SCORE_LABELS[key]}</td>
                         {candidates.map((c, ci) => {
                           const score = c.ai_analysis?.scores?.[key];
                           return (
                             <td key={c.id} className="py-3 px-3">
                               {score != null ? (
                                 <div className="flex items-center gap-2">
-                                  <div className="flex-1 h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                  <div className="flex-1 h-2 bg-white/[0.02] rounded-full overflow-hidden">
                                     <div
                                       className="h-full rounded-full transition-all"
                                       style={{ width: `${score}%`, backgroundColor: colors[ci] }}
                                     />
                                   </div>
-                                  <span className="text-sm text-neutral-300 w-8 text-right font-mono">{score}</span>
+                                  <span className="text-sm text-white/80 w-8 text-right font-mono">{score}</span>
                                 </div>
                               ) : (
-                                <span className="text-neutral-600 text-sm">--</span>
+                                <span className="text-white/25 text-sm">--</span>
                               )}
                             </td>
                           );
@@ -338,7 +338,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
 
                     {/* Strengths */}
                     <tr>
-                      <td className="py-3 pr-4 text-sm text-neutral-400 font-medium align-top">Сильные стороны</td>
+                      <td className="py-3 pr-4 text-sm text-white/60 font-medium align-top">Сильные стороны</td>
                       {candidates.map(c => (
                         <td key={c.id} className="py-3 px-3 align-top">
                           {c.ai_analysis?.strengths?.length ? (
@@ -351,7 +351,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                               ))}
                             </ul>
                           ) : (
-                            <span className="text-neutral-600 text-sm">--</span>
+                            <span className="text-white/25 text-sm">--</span>
                           )}
                         </td>
                       ))}
@@ -359,7 +359,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
 
                     {/* Weaknesses */}
                     <tr>
-                      <td className="py-3 pr-4 text-sm text-neutral-400 font-medium align-top">Слабые стороны</td>
+                      <td className="py-3 pr-4 text-sm text-white/60 font-medium align-top">Слабые стороны</td>
                       {candidates.map(c => (
                         <td key={c.id} className="py-3 px-3 align-top">
                           {c.ai_analysis?.weaknesses?.length ? (
@@ -372,7 +372,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
                               ))}
                             </ul>
                           ) : (
-                            <span className="text-neutral-600 text-sm">--</span>
+                            <span className="text-white/25 text-sm">--</span>
                           )}
                         </td>
                       ))}
@@ -384,7 +384,7 @@ export default function CompareModal({ candidateIds, onClose }: CompareModalProp
           )}
 
           {!loading && !error && candidates.length === 0 && (
-            <div className="text-center py-20 text-neutral-500">
+            <div className="text-center py-20 text-white/40">
               Кандидаты не найдены
             </div>
           )}

@@ -115,7 +115,7 @@ export default function CRMPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-sm text-neutral-400"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-sm text-white/60"
             >
               <Clock size={14} className="text-purple-400" />
               Ожидаемый запуск: Q3 2026
@@ -164,7 +164,7 @@ export default function CRMPage() {
                   <div className="p-2 rounded-lg bg-purple-500/10">
                     <Icon size={16} className="text-purple-400" />
                   </div>
-                  <span className="text-[11px] text-neutral-400 font-medium leading-tight">{label}</span>
+                  <span className="text-[11px] text-white/60 font-medium leading-tight">{label}</span>
                 </div>
               ))}
             </div>

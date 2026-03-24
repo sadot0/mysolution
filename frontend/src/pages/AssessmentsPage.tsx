@@ -152,7 +152,7 @@ export default function AssessmentsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === t.key
                   ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
-                  : 'text-white/60 hover:text-neutral-200 border border-transparent'
+                  : 'text-white/60 hover:text-white/90 border border-transparent'
               }`}
             >
               {t.label}
@@ -183,11 +183,11 @@ export default function AssessmentsPage() {
             animate="animate"
           >
             <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 bg-white/[0.02] border border-neutral-600 rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-white/[0.02] border border-white/[0.08] rounded-2xl flex items-center justify-center">
                 <ClipboardList size={28} className="text-white/40" />
               </div>
             </div>
-            <p className="font-semibold text-neutral-300 mb-1 text-lg">
+            <p className="font-semibold text-white/80 mb-1 text-lg">
               Создайте свой первый тест
             </p>
             <p className="text-sm text-white/40 max-w-xs mx-auto mb-6">
@@ -244,7 +244,7 @@ export default function AssessmentsPage() {
                     </span>
                   </div>
                   <div className="col-span-3 flex items-center">
-                    <span className="text-sm text-neutral-300">{result.testName}</span>
+                    <span className="text-sm text-white/80">{result.testName}</span>
                   </div>
                   <div className="col-span-2 flex items-center gap-2">
                     <div className="flex-1 h-1.5 bg-white/[0.02] rounded-full overflow-hidden">

@@ -499,7 +499,7 @@ function UsersTab() {
                     <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium tracking-wider ${
                       u.role === 'superadmin'
                         ? 'bg-red-500/15 text-red-400 border border-red-500/30'
-                        : 'bg-neutral-800 text-white/60 border border-neutral-700'
+                        : 'bg-white/[0.02] text-white/60 border border-white/[0.06]'
                     }`}>
                       {u.role === 'superadmin' ? <Crown size={11} /> : <UserCheck size={11} />}
                       {u.role === 'superadmin' ? 'ADMIN' : 'USER'}
@@ -633,7 +633,7 @@ function OrgsTab() {
                     <span className={`inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full tracking-wider font-medium ${
                       org.plan === 'pro'
                         ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30'
-                        : 'bg-neutral-800 text-white/60 border border-neutral-700'
+                        : 'bg-white/[0.02] text-white/60 border border-white/[0.06]'
                     }`}>
                       {org.plan === 'pro' && <Star size={10} />}
                       {org.plan === 'pro' ? 'PRO' : 'FREE'}

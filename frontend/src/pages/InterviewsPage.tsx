@@ -550,7 +550,7 @@ function CreateInterviewModal({
                   onChange={() => setType('online')}
                   className="accent-orange-500"
                 />
-                <span className="text-sm text-neutral-300 flex items-center gap-1">
+                <span className="text-sm text-white/80 flex items-center gap-1">
                   <Video size={14} className="text-blue-400" />
                   Онлайн
                 </span>
@@ -563,7 +563,7 @@ function CreateInterviewModal({
                   onChange={() => setType('offline')}
                   className="accent-orange-500"
                 />
-                <span className="text-sm text-neutral-300 flex items-center gap-1">
+                <span className="text-sm text-white/80 flex items-center gap-1">
                   <MapPin size={14} className="text-amber-400" />
                   Офлайн
                 </span>
@@ -781,7 +781,7 @@ export default function InterviewsPage() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     viewMode === 'calendar'
                       ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                      : 'text-white/40 hover:text-neutral-300 border border-transparent'
+                      : 'text-white/40 hover:text-white/80 border border-transparent'
                   }`}
                 >
                   <Calendar size={13} />
@@ -792,7 +792,7 @@ export default function InterviewsPage() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     viewMode === 'list'
                       ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                      : 'text-white/40 hover:text-neutral-300 border border-transparent'
+                      : 'text-white/40 hover:text-white/80 border border-transparent'
                   }`}
                 >
                   <List size={13} />
@@ -854,7 +854,7 @@ export default function InterviewsPage() {
                     <div className="card p-12 text-center backdrop-blur-xl rounded-2xl">
                       <Calendar
                         size={48}
-                        className="mx-auto mb-4 text-neutral-700"
+                        className="mx-auto mb-4 text-white/15"
                       />
                       <p className="text-white/40 text-sm mb-4">
                         Нет запланированных интервью
