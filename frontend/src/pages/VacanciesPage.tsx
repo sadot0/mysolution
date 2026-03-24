@@ -11,11 +11,9 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import Layout from '../components/Layout';
-import Onboarding from '../components/Onboarding';
 import { vacanciesApi, candidatesApi } from '../utils/api';
 import { Vacancy } from '../types';
 import { formatDate } from '../utils/helpers';
-import { useAuthStore } from '../utils/auth-store';
 import { pageVariants, staggerContainer, staggerItem, listSlide, fadeOverlay, scaleUp } from '../utils/animations';
 
 type TabKey = 'all' | 'active' | 'paused' | 'closed';
@@ -51,8 +49,6 @@ export default function VacanciesPage() {
     });
   };
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const { user } = useAuthStore();
 
   const { data, isLoading } = useQuery({
     queryKey: ['vacancies'],
@@ -101,12 +97,6 @@ export default function VacanciesPage() {
 
   const vacancies = data || [];
 
-  useEffect(() => {
-    const seen = localStorage.getItem('onboarding_complete');
-    if (!seen && !isLoading && vacancies.length === 0) {
-      setShowOnboarding(true);
-    }
-  }, [isLoading, vacancies.length]);
 
   const totalCandidates = useMemo(() => {
     return (allCandidatesRaw || []).length;
@@ -308,18 +298,6 @@ export default function VacanciesPage() {
 
       <AnimatePresence>
         {showCreate && <CreateVacancyModal onClose={() => setShowCreate(false)} />}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showOnboarding && (
-          <Onboarding
-            userName={user?.name || 'пользователь'}
-            onComplete={() => {
-              setShowOnboarding(false);
-              localStorage.setItem('onboarding_complete', '1');
-            }}
-          />
-        )}
       </AnimatePresence>
     </Layout>
   );

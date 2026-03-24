@@ -80,7 +80,7 @@ export default function LoginPage() {
       if (organization) localStorage.setItem('organization', JSON.stringify(organization));
       setAuth(newToken, user, (organization as Organization) || null);
       toast.success(`Добро пожаловать, ${user.name}!`);
-      window.location.href = '/vacancies';
+      window.location.href = '/dashboard';
     } catch {
       toast.error('Ошибка входа через Google');
     } finally {
@@ -98,7 +98,7 @@ export default function LoginPage() {
       if (organization) localStorage.setItem('organization', JSON.stringify(organization));
       setAuth(newToken, user, (organization as Organization) || null);
       toast.success(`Добро пожаловать, ${user.name}!`);
-      window.location.href = '/vacancies';
+      window.location.href = '/dashboard';
     } catch {
       toast.error('Ошибка входа через LinkedIn');
     } finally {
@@ -148,7 +148,7 @@ export default function LoginPage() {
       toast.success(mode === 'register' ? 'Аккаунт создан!' : `Добро пожаловать, ${user.name}!`);
 
       // Use window.location for guaranteed navigation
-      window.location.href = '/vacancies';
+      window.location.href = '/dashboard';
     } catch (err: unknown) {
       console.error('[LoginPage] Auth error:', err);
       const axiosErr = err as { response?: { data?: { error?: string }; status?: number }; code?: string; message?: string };

@@ -533,9 +533,8 @@ function SuccessScreen({ name, email }: { name: string; email: string }) {
         </button>
 
         {/* Footer */}
-        <div className="mt-10 pt-6 border-t border-white/[0.06] flex items-center justify-center gap-2 text-white/20">
-          <Lock size={11} />
-          <span className="text-xs">Powered by Solution AI</span>
+        <div className="mt-10 pt-6 border-t border-white/[0.06] text-center text-white/20 text-xs">
+          Powered by <a href="https://mysolution.uz" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-orange-400 transition-colors">SOLUTION HUB</a>
         </div>
       </div>
     </div>
@@ -771,15 +770,8 @@ export default function ApplyPage() {
 
       <motion.div variants={pageVariants} initial="initial" animate="animate" className="max-w-2xl mx-auto relative z-[1]">
         {/* Logo / Brand */}
-        <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div
-            className="w-10 h-10 flex items-center justify-center font-black text-black rounded-xl text-[1.05rem] bg-gradient-to-br from-orange-600 to-orange-400 shadow-[0_4px_16px_rgba(255,106,0,0.35)]"
-          >
-            R
-          </div>
-          <span className="text-white font-bold text-xl tracking-tight">
-            SOLUTION <span className="text-orange-400">HUB</span>
-          </span>
+        <div className="flex items-center justify-center mb-8">
+          <img src="/logo-full.svg" alt="Solution" className="h-6" />
         </div>
 
         {/* -- Job Details Card (Professional Header) -- */}
@@ -1161,15 +1153,14 @@ export default function ApplyPage() {
               {/* Trust signals */}
               <div className="flex items-center justify-center gap-2 mt-6 text-white/20">
                 <Lock size={12} />
-                <span className="text-xs">Ваши данные защищены и используются только для рассмотрения заявки</span>
+                <span className="text-xs">Данные зашифрованы &bull; SOLUTION HUB</span>
               </div>
             </>
           )}
 
           {/* Footer */}
-          <div className="flex items-center justify-center gap-1.5 mt-8 pb-4 text-white/15">
-            <span className="text-xs">Powered by</span>
-            <span className="text-xs font-semibold text-white/25">Solution AI</span>
+          <div className="text-center mt-8 pb-4 text-white/20 text-xs">
+            Powered by <a href="https://mysolution.uz" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-orange-400 transition-colors">SOLUTION</a>
           </div>
         </div>
       </motion.div>

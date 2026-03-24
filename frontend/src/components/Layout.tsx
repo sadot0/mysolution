@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { BriefcaseIcon, BarChart3, LogOutIcon, Users, Settings, Menu, X, HelpCircle, ShieldAlert, Building2, GraduationCap, Coins, Calendar, Database, ClipboardCheck, FileText, UsersRound } from 'lucide-react';
+import { BriefcaseIcon, BarChart3, LogOutIcon, Users, Settings, Menu, X, HelpCircle, ShieldAlert, Building2, GraduationCap, Coins, Calendar, Database, ClipboardCheck, FileText, UsersRound, LayoutDashboard } from 'lucide-react';
 import { useAuthStore } from '../utils/auth-store';
 import clsx from 'clsx';
 import NotificationBell from './NotificationBell';
@@ -85,6 +85,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     {
       label: null, // Core recruitment
       items: [
+        { href: '/dashboard', label: 'Главная', icon: LayoutDashboard },
         { href: '/vacancies', label: 'Вакансии', icon: BriefcaseIcon },
         { href: '/candidates', label: 'Кандидаты', icon: Users },
         { href: '/interviews', label: 'Интервью', icon: Calendar },
@@ -129,10 +130,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Logo + Token balance */}
       <div className="px-5 pt-5 pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2">
             <img src="/logo-full.svg" alt="Solution" className="h-6" />
             <span className="text-[9px] font-bold tracking-[0.2em] text-orange-400/60 bg-orange-500/10 px-1.5 py-0.5 rounded">HUB</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-1.5">
             <NotificationBell />
           <Link to="/settings" className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06] hover:border-orange-500/30 transition-colors">
@@ -287,13 +288,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile bottom navigation bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-black/80 backdrop-blur-xl border-t border-white/[0.04] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch bg-black/90 backdrop-blur-2xl border-t border-white/[0.06] md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="Мобильная навигация">
         {mobileBottomNav.map(({ href, label, icon: Icon }) => {
           const active = location.pathname.startsWith(href);
           return (
-            <Link key={href} to={href} className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5" aria-label={label} aria-current={active ? 'page' : undefined}>
-              <Icon size={18} className={active ? 'text-orange-500' : 'text-neutral-500'} aria-hidden="true" />
-              <span className={clsx('text-[9px] font-medium tracking-wider', active ? 'text-orange-500' : 'text-neutral-600')}>
+            <Link
+              key={href}
+              to={href}
+              className={clsx(
+                'flex-1 flex flex-col items-center justify-center gap-1 py-2.5 relative transition-all duration-200 active:scale-95',
+                active ? 'text-orange-500' : 'text-neutral-500'
+              )}
+              aria-label={label}
+              aria-current={active ? 'page' : undefined}
+            >
+              {/* Active glow dot */}
+              <div className={clsx(
+                'absolute top-1 w-1 h-1 rounded-full transition-all duration-300',
+                active ? 'bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)] opacity-100' : 'opacity-0'
+              )} />
+              <Icon size={18} className={clsx('transition-colors duration-200', active ? 'text-orange-500' : 'text-neutral-500')} aria-hidden="true" />
+              <span className={clsx('text-[9px] font-medium tracking-wider transition-colors duration-200', active ? 'text-orange-500' : 'text-neutral-600')}>
                 {label}
               </span>
             </Link>

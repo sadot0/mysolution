@@ -302,15 +302,18 @@ export default function VerifyEmailPage() {
 
         {/* ── Footer ── */}
         <motion.div
-          className="flex items-center justify-center gap-2 mt-6 text-[11px] text-neutral-600"
+          className="flex flex-col items-center gap-2 mt-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.4 }}
         >
-          <Shield size={12} className="text-neutral-500" />
-          <span>Защищено шифрованием</span>
-          <span className="text-neutral-700 mx-1">|</span>
-          <span className="text-neutral-500 font-medium">v2.1</span>
+          <div className="flex items-center gap-2 text-[11px] text-neutral-600">
+            <Shield size={12} className="text-neutral-500" />
+            <span>Защищено шифрованием</span>
+          </div>
+          <div className="text-center text-white/20 text-xs">
+            Powered by <a href="https://mysolution.uz" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-orange-400 transition-colors">SOLUTION</a>
+          </div>
         </motion.div>
       </div>
 

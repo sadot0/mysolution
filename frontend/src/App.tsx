@@ -5,6 +5,7 @@ import { useAuthStore } from './utils/auth-store';
 // Critical path — direct imports
 import LoginPage from './pages/LoginPage';
 import VacanciesPage from './pages/VacanciesPage';
+import DashboardPage from './pages/DashboardPage';
 
 // Lazy load everything else
 const VacancyPage = React.lazy(() => import('./pages/VacancyPage'));
@@ -42,6 +43,10 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route
+          path="/dashboard"
+          element={<PrivateRoute><DashboardPage /></PrivateRoute>}
+        />
         <Route
           path="/vacancies"
           element={<PrivateRoute><VacanciesPage /></PrivateRoute>}
@@ -103,7 +108,7 @@ export default function App() {
           element={<PrivateRoute><SupportPage /></PrivateRoute>}
         />
         <Route path="/apply/:vacancyId" element={<ApplyPage />} />
-        <Route path="/" element={<Navigate to="/vacancies" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
