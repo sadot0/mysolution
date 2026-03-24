@@ -153,7 +153,7 @@ export default function VacanciesPage() {
             <div className="h-px w-16 mt-2 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
             {/* Stat badges bar */}
             <div className="flex items-center gap-2.5 mt-2 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-neutral-300">
                 <BriefcaseIcon size={11} className="text-neutral-500" />
                 {vacancies.length} вакансий
               </span>
@@ -197,7 +197,7 @@ export default function VacanciesPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="input pl-9 pr-16 text-sm"
               />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-neutral-800 border border-neutral-700 text-[10px] font-mono text-neutral-500">
+              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white/[0.02] border border-white/[0.06] text-[10px] font-mono text-white/40">
                 ⌘K
               </kbd>
             </div>
@@ -249,7 +249,7 @@ export default function VacanciesPage() {
           <EmptyState onCreateClick={() => setShowCreate(true)} />
         ) : !filtered.length ? (
           <div className="card text-center py-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-neutral-800 border border-neutral-700 rounded-2xl mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl mb-4">
               <Search size={28} className="text-neutral-500" />
             </div>
             <p className="text-white font-semibold mb-1">Ничего не найдено</p>
@@ -284,7 +284,7 @@ export default function VacanciesPage() {
           </motion.div>
         ) : (
           <motion.div
-            className="space-y-0 rounded-xl overflow-hidden border border-neutral-700"
+            className="space-y-0 rounded-xl overflow-hidden border border-white/[0.06]"
             variants={staggerContainer}
             initial="initial"
             animate="animate"
@@ -329,16 +329,16 @@ export default function VacanciesPage() {
 
 function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
   return (
-    <div className="text-center py-24 sm:py-28 bg-neutral-900 border border-dashed border-neutral-700 rounded-xl">
+    <div className="text-center py-24 sm:py-28 bg-white/[0.03] backdrop-blur-xl border border-dashed border-white/[0.06] rounded-xl">
       <motion.div
-        className="inline-flex items-center justify-center w-24 h-24 bg-neutral-800 border border-neutral-700 rounded-3xl mb-8"
+        className="inline-flex items-center justify-center w-24 h-24 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-3xl mb-8"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       >
         <BriefcaseIcon size={44} className="text-orange-500/60" />
       </motion.div>
       <h3 className="text-xl font-bold text-white mb-3">Начните с первой вакансии</h3>
-      <p className="text-sm mb-10 max-w-sm mx-auto text-neutral-500 leading-relaxed">
+      <p className="text-sm mb-10 max-w-sm mx-auto text-white/40 leading-relaxed">
         Создайте вакансию — получите уникальную ссылку и начните принимать заявки прямо сейчас
       </p>
       <button className="btn-primary px-8 py-3" onClick={onCreateClick}>
@@ -354,7 +354,7 @@ function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
 const statusConfig = {
   active: { label: 'АКТИВНА', cls: 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30', dot: 'status-dot status-dot-active', accent: 'border-l-emerald-500/50' },
   paused: { label: 'ПАУЗА', cls: 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30', dot: 'status-dot status-dot-paused', accent: 'border-l-yellow-500/50' },
-  closed: { label: 'ЗАКРЫТА', cls: 'bg-neutral-500/20 text-neutral-400 border border-neutral-600', dot: 'status-dot status-dot-closed', accent: 'border-l-neutral-600' },
+  closed: { label: 'ЗАКРЫТА', cls: 'bg-neutral-500/20 text-white/60 border border-neutral-600', dot: 'status-dot status-dot-closed', accent: 'border-l-neutral-600' },
 };
 
 const statusColors: Record<string, string> = {
@@ -408,7 +408,7 @@ function VacancyCard({
 
   return (
     <div
-      className={`bg-neutral-900 border border-neutral-700 border-l-2 ${st.accent} rounded-lg p-4 sm:p-5 flex flex-col hover:border-orange-500/50 hover:bg-neutral-800/50 transition-all duration-200 cursor-pointer overflow-hidden min-h-[240px]`}
+      className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] border-l-2 ${st.accent} rounded-2xl p-4 sm:p-5 flex flex-col hover:border-[rgba(232,114,28,0.15)] hover:shadow-lg hover:shadow-black/20 hover:bg-white/[0.02] transition-all duration-200 cursor-pointer overflow-hidden min-h-[240px]`}
       onClick={onOpen}
     >
       {/* Top row: status + candidate count */}
@@ -437,11 +437,11 @@ function VacancyCard({
           {vacancy.title}
         </h3>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-neutral-500 font-mono">
+          <span className="text-xs text-white/40 font-mono">
             {formatDate(vacancy.created_at)}
           </span>
           {vacancy.location && (
-            <span className="flex items-center gap-1 text-xs text-neutral-500">
+            <span className="flex items-center gap-1 text-xs text-white/40">
               <MapPin size={9} />
               {vacancy.location}
             </span>
@@ -457,7 +457,7 @@ function VacancyCard({
 
       {/* Description */}
       {vacancy.description && (
-        <p className="text-xs mb-3 line-clamp-2 leading-relaxed text-neutral-400 break-words overflow-hidden">
+        <p className="text-xs mb-3 line-clamp-2 leading-relaxed text-white/60 break-words overflow-hidden">
           {vacancy.description}
         </p>
       )}
@@ -475,7 +475,7 @@ function VacancyCard({
       )}
 
       {questions.length > 0 && (
-        <p className="text-xs mb-3 text-neutral-600">
+        <p className="text-xs mb-3 text-white/25">
           {questions.length} вопрос{questions.length === 1 ? '' : questions.length < 5 ? 'а' : 'ов'} в анкете
         </p>
       )}
@@ -497,7 +497,7 @@ function VacancyCard({
           </div>
           <div className="flex flex-wrap gap-2">
             {segments.map(({ status, pct, color }) => (
-              <span key={status} className="flex items-center gap-1 text-xs text-neutral-500">
+              <span key={status} className="flex items-center gap-1 text-xs text-white/40">
                 <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: color }} />
                 {Math.round(pct)}%
               </span>
@@ -507,7 +507,7 @@ function VacancyCard({
       )}
 
       {/* Footer */}
-      <div className="flex items-center gap-2 pt-3 border-t border-neutral-800" onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-center gap-2 pt-3 border-t border-white/[0.04]" onClick={(e) => e.stopPropagation()}>
         <button
           className="btn-primary flex-1 justify-center md:hidden text-xs py-2"
           onClick={(e) => { e.stopPropagation(); onOpen(); }}
@@ -522,7 +522,7 @@ function VacancyCard({
           {copied ? <><Check size={11} />Скоп.</> : <><Link2 size={11} />Копировать</>}
         </button>
         <button
-          className="text-neutral-600 hover:text-red-400 transition-colors p-1 md:hidden"
+          className="text-white/25 hover:text-red-400 transition-colors p-1 md:hidden"
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
         >
           <Trash2 size={13} />
@@ -564,7 +564,7 @@ function VacancyListRow({
 
   return (
     <div
-      className={`flex items-center gap-4 p-4 border-b border-neutral-800 last:border-b-0 hover:bg-neutral-800/60 transition-colors cursor-pointer ${isEven ? 'bg-neutral-900' : 'bg-neutral-900/50'}`}
+      className={`flex items-center gap-4 p-4 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.04] transition-colors cursor-pointer ${isEven ? 'bg-white/[0.03]' : 'bg-white/[0.02]'}`}
       onClick={onOpen}
     >
       {/* Status dot */}
@@ -583,7 +583,7 @@ function VacancyListRow({
         <div className="flex items-center gap-3 flex-wrap">
           {skills.slice(0, 3).map((s) => <span key={s} className="skill-tag">{s}</span>)}
           {vacancy.location && (
-            <span className="flex items-center gap-1 text-xs text-neutral-500">
+            <span className="flex items-center gap-1 text-xs text-white/40">
               <MapPin size={9} />{vacancy.location}
             </span>
           )}
@@ -599,7 +599,7 @@ function VacancyListRow({
       )}
 
       {/* Date */}
-      <span className="text-xs font-mono shrink-0 hidden sm:block text-neutral-500">
+      <span className="text-xs font-mono shrink-0 hidden sm:block text-white/40">
         {formatDate(vacancy.created_at)}
       </span>
 
@@ -612,7 +612,7 @@ function VacancyListRow({
           {copied ? <Check size={11} /> : <Link2 size={11} />}
         </button>
         <button
-          className="text-neutral-600 hover:text-red-400 transition-colors p-1"
+          className="text-white/25 hover:text-red-400 transition-colors p-1"
           onClick={() => onDelete()}
         >
           <Trash2 size={14} />
@@ -709,7 +709,7 @@ function TagInput({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-lg bg-neutral-900 border border-neutral-700 focus-within:border-orange-500/50 transition-colors min-h-[42px]">
+    <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-lg bg-white/[0.03] border border-white/[0.06] focus-within:border-orange-500/50 transition-colors min-h-[42px]">
       {tags.map((tag, i) => (
         <span
           key={`${tag}-${i}`}
@@ -732,7 +732,7 @@ function TagInput({
         onKeyDown={handleKeyDown}
         onBlur={() => { if (input.trim()) addTag(input); }}
         placeholder={tags.length === 0 ? placeholder : 'Добавить...'}
-        className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white placeholder-neutral-600 py-1 px-1"
+        className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-white placeholder-white/25 py-1 px-1"
       />
     </div>
   );
@@ -865,16 +865,16 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
         exit="exit"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 sm:px-7 py-5 border-b border-neutral-700 bg-neutral-800/50">
+        <div className="flex items-center justify-between px-5 sm:px-7 py-5 border-b border-white/[0.04] bg-white/[0.02]">
           <div>
             <h3 className="text-lg font-bold text-white tracking-wider">НОВАЯ ВАКАНСИЯ</h3>
-            <p className="text-xs mt-0.5 text-neutral-500">
+            <p className="text-xs mt-0.5 text-white/40">
               {step === 1 ? 'Выберите шаблон и заполните основное' : 'Укажите требования и детали'}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-neutral-800 border border-neutral-700 text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.02] border border-white/[0.06] text-white/60 hover:bg-red-500/10 hover:text-red-400 transition-colors"
           >
             <X size={16} />
           </button>
@@ -885,21 +885,21 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-3 mb-5">
             <div className="flex items-center gap-2 flex-1">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                step >= 1 ? 'bg-orange-500 text-white' : 'bg-neutral-800 text-neutral-500 border border-neutral-700'
+                step >= 1 ? 'bg-orange-500 text-white' : 'bg-white/[0.02] text-white/40 border border-white/[0.06]'
               }`}>
                 1
               </div>
-              <span className={`text-xs font-medium ${step >= 1 ? 'text-white' : 'text-neutral-500'}`}>
+              <span className={`text-xs font-medium ${step >= 1 ? 'text-white' : 'text-white/40'}`}>
                 Основное
               </span>
             </div>
-            <div className={`flex-1 h-px transition-colors ${step >= 2 ? 'bg-orange-500' : 'bg-neutral-700'}`} />
+            <div className={`flex-1 h-px transition-colors ${step >= 2 ? 'bg-orange-500' : 'bg-white/[0.06]'}`} />
             <div className="flex items-center gap-2 flex-1 justify-end">
-              <span className={`text-xs font-medium ${step >= 2 ? 'text-white' : 'text-neutral-500'}`}>
+              <span className={`text-xs font-medium ${step >= 2 ? 'text-white' : 'text-white/40'}`}>
                 Требования
               </span>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                step >= 2 ? 'bg-orange-500 text-white' : 'bg-neutral-800 text-neutral-500 border border-neutral-700'
+                step >= 2 ? 'bg-orange-500 text-white' : 'bg-white/[0.02] text-white/40 border border-white/[0.06]'
               }`}>
                 2
               </div>
@@ -914,8 +914,8 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               {/* Template selector */}
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">Шаблон</span>
-                  <div className="flex-1 h-px bg-neutral-800" />
+                  <span className="text-xs font-bold tracking-wider text-white/60 uppercase">Шаблон</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {TEMPLATES.map((tpl) => {
@@ -929,13 +929,13 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
                         className={`flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all duration-200 text-center ${
                           isSelected
                             ? 'border-orange-500 bg-orange-500/10'
-                            : 'border-neutral-700 bg-neutral-800/50 hover:border-neutral-600 hover:bg-neutral-800'
+                            : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04]'
                         }`}
                       >
                         {IconComp && (
                           <IconComp
                             size={22}
-                            className={isSelected ? 'text-orange-400' : 'text-neutral-500'}
+                            className={isSelected ? 'text-orange-400' : 'text-white/40'}
                           />
                         )}
                         <div>
@@ -955,8 +955,8 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               {/* Basic info fields */}
               <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">Основное</span>
-                  <div className="flex-1 h-px bg-neutral-800" />
+                  <span className="text-xs font-bold tracking-wider text-white/60 uppercase">Основное</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
                 <div>
                   <label className="label">Название позиции *</label>
@@ -980,7 +980,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               </div>
 
               {/* Step 1 actions */}
-              <div className="flex gap-3 pt-4 border-t border-neutral-800">
+              <div className="flex gap-3 pt-4 border-t border-white/[0.04]">
                 <button type="button" className="btn-secondary flex-1 justify-center" onClick={onClose}>
                   Отмена
                 </button>
@@ -1003,8 +1003,8 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               {/* Skills & Experience */}
               <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">Навыки и опыт</span>
-                  <div className="flex-1 h-px bg-neutral-800" />
+                  <span className="text-xs font-bold tracking-wider text-white/60 uppercase">Навыки и опыт</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
                 <div>
                   <label className="label">Технические навыки</label>
@@ -1040,8 +1040,8 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               {/* Location & Salary */}
               <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">Локация и зарплата</span>
-                  <div className="flex-1 h-px bg-neutral-800" />
+                  <span className="text-xs font-bold tracking-wider text-white/60 uppercase">Локация и зарплата</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -1079,7 +1079,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
                         }}
                         className="w-4 h-4 rounded accent-orange-500"
                       />
-                      <span className="text-xs text-neutral-400">Договорная</span>
+                      <span className="text-xs text-white/60">Договорная</span>
                     </label>
 
                     {!negotiable && (
@@ -1089,7 +1089,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
                             <p className="font-bold text-emerald-400 font-mono">
                               AI: ${salaryRec.min.toLocaleString()} – ${salaryRec.max.toLocaleString()} {currency}
                             </p>
-                            <p className="text-neutral-400">{salaryRec.note}</p>
+                            <p className="text-white/60">{salaryRec.note}</p>
                           </div>
                         )}
                         <div className="flex gap-2">
@@ -1135,13 +1135,13 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               {/* Custom Questions */}
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">Анкета</span>
-                  <div className="flex-1 h-px bg-neutral-800" />
+                  <span className="text-xs font-bold tracking-wider text-white/60 uppercase">Анкета</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <label className="label mb-0">Вопросы в анкете</label>
-                    <p className="text-xs mt-0.5 text-neutral-600">Кандидаты ответят при подаче заявки</p>
+                    <p className="text-xs mt-0.5 text-white/25">Кандидаты ответят при подаче заявки</p>
                   </div>
                   <button
                     type="button"
@@ -1168,7 +1168,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
                         <button
                           type="button"
                           onClick={() => removeQuestion(i)}
-                          className="text-neutral-600 hover:text-red-400 transition-colors"
+                          className="text-white/25 hover:text-red-400 transition-colors"
                         >
                           <X size={15} />
                         </button>
@@ -1179,7 +1179,7 @@ function CreateVacancyModal({ onClose }: { onClose: () => void }) {
               </div>
 
               {/* Step 2 actions */}
-              <div className="flex gap-3 pt-4 border-t border-neutral-800">
+              <div className="flex gap-3 pt-4 border-t border-white/[0.04]">
                 <button
                   type="button"
                   className="btn-secondary flex-1 justify-center"

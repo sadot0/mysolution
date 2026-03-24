@@ -5,6 +5,9 @@ import { isValidUUID, sanitizeString, sanitizeEmail } from '../utils/validate';
 
 const router = Router();
 
+// Anti-abuse: minimum time between AI analyses per user (5 seconds)
+const lastAnalysis = new Map<string, number>();
+
 // Token costs
 const TOKEN_COSTS = {
   ai_analysis: 10,
@@ -47,10 +50,9 @@ router.get('/plans', async (_req, res: Response): Promise<void> => {
     if (error) {
       // Fallback with default plans if table doesn't exist
       res.json({ plans: [
-        { id: '1', name: 'Стартер', tokens: 100, price_usd: 2.99, price_uzs: 38000, popular: false },
-        { id: '2', name: 'Базовый', tokens: 500, price_usd: 9.99, price_uzs: 128000, popular: true },
-        { id: '3', name: 'Про', tokens: 1500, price_usd: 24.99, price_uzs: 320000, popular: false },
-        { id: '4', name: 'Бизнес', tokens: 5000, price_usd: 69.99, price_uzs: 900000, popular: false },
+        { id: '1', name: 'Стартер', tokens: 500, price_usd: 3.99, price_uzs: 50000, popular: false },
+        { id: '2', name: 'Бизнес', tokens: 2000, price_usd: 11.99, price_uzs: 150000, popular: true },
+        { id: '3', name: 'Корпоративный', tokens: 10000, price_usd: 39.99, price_uzs: 500000, popular: false },
       ]});
       return;
     }
@@ -59,6 +61,38 @@ router.get('/plans', async (_req, res: Response): Promise<void> => {
   } catch (err) {
     console.error('[Tokens/Plans] Error:', err);
     res.status(500).json({ error: 'Ошибка загрузки тарифов' });
+  }
+});
+
+// ── Custom price calculator ──
+router.post('/custom-price', async (req, res: Response): Promise<void> => {
+  try {
+    const { amount } = req.body;
+    const tokens = Math.max(50, Math.min(100000, parseInt(amount) || 0));
+
+    const PRICE_PER_TOKEN_UZS = 500;
+    const PRICE_PER_TOKEN_USD = 0.04;
+
+    // Volume discounts
+    let discount = 0;
+    if (tokens >= 10000) discount = 0.20;
+    else if (tokens >= 5000) discount = 0.15;
+    else if (tokens >= 2000) discount = 0.10;
+    else if (tokens >= 500) discount = 0.05;
+
+    const basePrice = tokens * PRICE_PER_TOKEN_UZS;
+    const discountedPrice = Math.round(basePrice * (1 - discount));
+
+    res.json({
+      tokens,
+      price_uzs: discountedPrice,
+      price_usd: Math.round(tokens * PRICE_PER_TOKEN_USD * (1 - discount) * 100) / 100,
+      discount_percent: Math.round(discount * 100),
+      price_per_token_uzs: Math.round(PRICE_PER_TOKEN_UZS * (1 - discount)),
+    });
+  } catch (err) {
+    console.error('[Tokens/CustomPrice] Error:', err);
+    res.status(500).json({ error: 'Ошибка расчёта' });
   }
 });
 
@@ -96,6 +130,16 @@ router.post('/use', authenticate, async (req: AuthRequest, res: Response): Promi
       return;
     }
 
+    // Anti-abuse: rate limit AI analyses to 1 per 5 seconds per user
+    if (action === 'ai_analysis') {
+      const lastTime = lastAnalysis.get(req.userId!) || 0;
+      if (Date.now() - lastTime < 5000) {
+        res.status(429).json({ error: 'Подождите 5 секунд между анализами' });
+        return;
+      }
+      lastAnalysis.set(req.userId!, Date.now());
+    }
+
     // Get current balance
     const { data: user } = await supabase
       .from('users')
@@ -112,7 +156,8 @@ router.post('/use', authenticate, async (req: AuthRequest, res: Response): Promi
       return;
     }
 
-    const newBalance = isWhitelisted ? balance : balance - cost;
+    // Balance can never go below 0
+    const newBalance = Math.max(0, isWhitelisted ? balance : balance - cost);
     const newUsed = (user?.tokens_used ?? 0) + cost;
 
     // Update balance

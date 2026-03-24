@@ -1409,7 +1409,7 @@
        ============================================ */
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 20px;
       margin-bottom: 32px;
     }
@@ -1520,13 +1520,19 @@
       opacity: 1;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
       .pricing-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 500px) {
       .pricing-grid {
         grid-template-columns: 1fr;
       }
@@ -3236,27 +3242,47 @@
     <div class="container">
       <div class="section-header center reveal">
         <p class="section-label" data-i18n="pricing.label">Тарифы</p>
-        <h2 class="section-title" data-i18n="pricing.title">Простые тарифы</h2>
-        <p class="section-subtitle" data-i18n="pricing.subtitle">Начните бесплатно. Масштабируйтесь когда будете готовы.</p>
+        <h2 class="section-title" data-i18n="pricing.title">Токены вместо подписок</h2>
+        <p class="section-subtitle" data-i18n="pricing.subtitle">Платите только за то, что используете. 100 токенов бесплатно при регистрации.</p>
       </div>
 
-      <div class="pricing-grid">
+      <!-- How tokens work -->
+      <div class="glass reveal" style="padding: 28px 32px; margin-bottom: 32px; text-align: center;">
+        <h3 style="font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 16px;" data-i18n="pricing.howworks">Как работают токены</h3>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--orange); font-weight: 700; font-size: 18px;">10</span>
+            <span style="font-size: 13px; color: rgba(255,255,255,0.5);" data-i18n="pricing.cost.analysis">AI анализ резюме</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--orange); font-weight: 700; font-size: 18px;">5</span>
+            <span style="font-size: 13px; color: rgba(255,255,255,0.5);" data-i18n="pricing.cost.interview">Вопросы для интервью</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--orange); font-weight: 700; font-size: 18px;">2</span>
+            <span style="font-size: 13px; color: rgba(255,255,255,0.5);" data-i18n="pricing.cost.export">Экспорт данных</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-grid" style="grid-template-columns: repeat(5, 1fr);">
         <!-- Free -->
         <div class="glass magnetic-card pricing-card reveal reveal-delay-1">
           <h3 data-i18n="pricing.free.name">Бесплатно</h3>
-          <div class="pricing-price">0 <span data-i18n="pricing.currency">сум</span></div>
+          <div class="pricing-price">100 <span data-i18n="pricing.tokens">ТОК</span></div>
+          <div style="font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.3);">0 <span style="font-size: 13px;">сум</span></div>
           <div class="pricing-features">
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.free.f1">Базовые функции</span>
+              <span data-i18n="pricing.free.f1">10 AI анализов</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.free.f2">Бесплатные кредиты</span>
+              <span data-i18n="pricing.free.f2">При регистрации</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.free.f3">1 пользователь</span>
+              <span data-i18n="pricing.free.f3">Все функции</span>
             </div>
           </div>
           <a href="/login" class="btn btn-secondary btn-sm" data-i18n="pricing.free.cta">Начать</a>
@@ -3265,82 +3291,137 @@
         <!-- Starter -->
         <div class="glass magnetic-card pricing-card reveal reveal-delay-2">
           <h3 data-i18n="pricing.starter.name">Стартер</h3>
-          <div class="pricing-price">300K <span data-i18n="pricing.permonth">сум/мес</span></div>
+          <div class="pricing-price">500 <span data-i18n="pricing.tokens">ТОК</span></div>
+          <div style="font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.3);">50,000 <span style="font-size: 13px;">сум</span></div>
           <div class="pricing-features">
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.starter.f1">Все базовые функции</span>
+              <span data-i18n="pricing.starter.f1">50 AI анализов</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.starter.f2">Больше кредитов</span>
+              <span data-i18n="pricing.starter.f2">Скидка 5%</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.starter.f3">До 3 пользователей</span>
+              <span data-i18n="pricing.starter.f3">100 сум/токен</span>
             </div>
           </div>
-          <a href="/login" class="btn btn-secondary btn-sm" data-i18n="pricing.starter.cta">Выбрать</a>
+          <a href="/login" class="btn btn-secondary btn-sm" data-i18n="pricing.starter.cta">Купить</a>
         </div>
 
         <!-- Business (Popular) -->
         <div class="glass magnetic-card pricing-card popular reveal reveal-delay-3">
           <div class="pricing-popular-badge" data-i18n="pricing.business.badge">Популярный</div>
           <h3 data-i18n="pricing.business.name">Бизнес</h3>
-          <div class="pricing-price">1M <span data-i18n="pricing.permonth">сум/мес</span></div>
+          <div class="pricing-price">2,000 <span data-i18n="pricing.tokens">ТОК</span></div>
+          <div style="font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.3);">150,000 <span style="font-size: 13px;">сум</span></div>
           <div class="pricing-features">
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.business.f1">Все функции</span>
+              <span data-i18n="pricing.business.f1">200 AI анализов</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.business.f2">Расширенная аналитика</span>
+              <span data-i18n="pricing.business.f2">Скидка 10%</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.business.f3">До 10 пользователей</span>
+              <span data-i18n="pricing.business.f3">75 сум/токен</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
               <span data-i18n="pricing.business.f4">Приоритетная поддержка</span>
             </div>
           </div>
-          <a href="/login" class="btn btn-primary btn-sm" data-i18n="pricing.business.cta">Выбрать</a>
+          <a href="/login" class="btn btn-primary btn-sm" data-i18n="pricing.business.cta">Купить</a>
         </div>
 
-        <!-- Enterprise -->
+        <!-- Corporate -->
         <div class="glass magnetic-card pricing-card reveal reveal-delay-4">
-          <h3 data-i18n="pricing.enterprise.name">Enterprise</h3>
-          <div class="pricing-price" data-i18n="pricing.enterprise.price">Индивидуально</div>
+          <h3 data-i18n="pricing.enterprise.name">Корпоративный</h3>
+          <div class="pricing-price">10,000 <span data-i18n="pricing.tokens">ТОК</span></div>
+          <div style="font-size: 22px; font-weight: 700; color: rgba(255,255,255,0.3);">500,000 <span style="font-size: 13px;">сум</span></div>
           <div class="pricing-features">
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.enterprise.f1">Все из Бизнеса</span>
+              <span data-i18n="pricing.enterprise.f1">1,000 AI анализов</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.enterprise.f2">Без лимитов</span>
+              <span data-i18n="pricing.enterprise.f2">Скидка 20%</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="pricing.enterprise.f3">Персональный менеджер</span>
+              <span data-i18n="pricing.enterprise.f3">50 сум/токен</span>
             </div>
             <div class="pricing-feature">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
               <span data-i18n="pricing.enterprise.f4">SLA и интеграции</span>
             </div>
           </div>
-          <a href="#contact" class="btn btn-secondary btn-sm" data-i18n="pricing.enterprise.cta">Связаться</a>
+          <a href="/login" class="btn btn-secondary btn-sm" data-i18n="pricing.enterprise.cta">Купить</a>
+        </div>
+
+        <!-- Custom package -->
+        <div class="glass magnetic-card pricing-card reveal reveal-delay-5">
+          <h3 data-i18n="pricing.custom.name">Свой пакет</h3>
+          <div class="pricing-price" style="font-size: 22px;" data-i18n="pricing.custom.subtitle">Выберите кол-во</div>
+          <div class="pricing-features" style="flex-grow: 0;">
+            <div style="padding: 8px 0;">
+              <input type="range" id="landing-token-slider" min="50" max="50000" step="50" value="1000" style="width: 100%; accent-color: #FF6A00; cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                <span id="landing-token-amount" style="font-size: 14px; font-weight: 700; color: var(--white);">1,000 ТОК</span>
+                <span id="landing-token-price" style="font-size: 14px; font-weight: 700; color: var(--orange);">500,000 сум</span>
+              </div>
+              <p id="landing-token-discount" style="font-size: 11px; color: #34d399; margin-top: 4px; text-align: center; min-height: 16px;"></p>
+            </div>
+          </div>
+          <div class="pricing-features" style="flex-grow: 1;">
+            <div class="pricing-feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="pricing.custom.f1">Минимум 50 токенов</span>
+            </div>
+            <div class="pricing-feature">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="pricing.custom.f2">Скидки от 500 ТОК</span>
+            </div>
+          </div>
+          <a href="/login" class="btn btn-secondary btn-sm" data-i18n="pricing.custom.cta">Купить</a>
         </div>
       </div>
 
-      <p class="pricing-note reveal" data-i18n="pricing.note">Точные тарифы формируются. Зарегистрируйтесь — первые кредиты бесплатно.</p>
+      <p class="pricing-note reveal" data-i18n="pricing.note">Цена за токен: 500 сум ($0.04). Минимум: 50 токенов (25,000 сум). Скидки при покупке от 500 ТОК.</p>
 
       <div class="glass pricing-outsource reveal">
         <p><span data-i18n="pricing.outsource.text">Аутсорсинг подбора — </span><span class="highlight" data-i18n="pricing.outsource.price">от 12 000 000 сум за сотрудника</span></p>
       </div>
     </div>
+
+    <script>
+      (function() {
+        var slider = document.getElementById('landing-token-slider');
+        var amountEl = document.getElementById('landing-token-amount');
+        var priceEl = document.getElementById('landing-token-price');
+        var discountEl = document.getElementById('landing-token-discount');
+        if (!slider) return;
+        function update() {
+          var tokens = parseInt(slider.value);
+          var discount = 0;
+          if (tokens >= 10000) discount = 0.20;
+          else if (tokens >= 5000) discount = 0.15;
+          else if (tokens >= 2000) discount = 0.10;
+          else if (tokens >= 500) discount = 0.05;
+          var basePrice = tokens * 500;
+          var finalPrice = Math.round(basePrice * (1 - discount));
+          amountEl.textContent = tokens.toLocaleString('ru-RU') + ' ТОК';
+          priceEl.textContent = finalPrice.toLocaleString('ru-RU') + ' сум';
+          discountEl.textContent = discount > 0 ? 'Скидка ' + Math.round(discount * 100) + '%' : '';
+        }
+        slider.addEventListener('input', update);
+        update();
+      })();
+    </script>
   </section>
 
   <!-- ============================================
@@ -3489,7 +3570,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner" data-i18n="faq.a4">Платформа — от 0 сум с бесплатными кредитами. Аутсорсинг подбора — от 12 млн сум за сотрудника. Точные тарифы зависят от задач.</div>
+            <div class="faq-answer-inner" data-i18n="faq.a4">Платформа работает на токенах. 100 токенов бесплатно при регистрации. Дополнительные токены от 500 сум ($0.04) за штуку. Аутсорсинг подбора — от 12 млн сум за сотрудника.</div>
           </div>
         </div>
 
@@ -4192,35 +4273,42 @@
           'numbers.n3': 'so\'m autsorsing<br>xodim uchun',
           'numbers.n4': 'yil HR<br>tajriba',
           'pricing.label': 'Tariflar',
-          'pricing.title': 'Oddiy tariflar',
-          'pricing.subtitle': 'Bepul boshlang. Tayyor bo\'lganingizda kengaytiring.',
+          'pricing.title': 'Obuna o\'rniga tokenlar',
+          'pricing.subtitle': 'Faqat ishlatganingiz uchun to\'lang. Ro\'yxatdan o\'tishda 100 token bepul.',
+          'pricing.howworks': 'Tokenlar qanday ishlaydi',
+          'pricing.cost.analysis': 'AI rezyume tahlili',
+          'pricing.cost.interview': 'Intervyu savollari',
+          'pricing.cost.export': 'Ma\'lumot eksporti',
+          'pricing.tokens': 'TOK',
           'pricing.free.name': 'Bepul',
-          'pricing.currency': 'so\'m',
-          'pricing.permonth': 'so\'m/oy',
-          'pricing.free.f1': 'Asosiy funktsiyalar',
-          'pricing.free.f2': 'Bepul kreditlar',
-          'pricing.free.f3': '1 foydalanuvchi',
+          'pricing.free.f1': '10 AI tahlil',
+          'pricing.free.f2': 'Ro\'yxatdan o\'tishda',
+          'pricing.free.f3': 'Barcha funktsiyalar',
           'pricing.free.cta': 'Boshlash',
           'pricing.starter.name': 'Starter',
-          'pricing.starter.f1': 'Barcha asosiy funktsiyalar',
-          'pricing.starter.f2': 'Ko\'proq kreditlar',
-          'pricing.starter.f3': '3 gacha foydalanuvchi',
-          'pricing.starter.cta': 'Tanlash',
+          'pricing.starter.f1': '50 AI tahlil',
+          'pricing.starter.f2': '5% chegirma',
+          'pricing.starter.f3': '100 so\'m/token',
+          'pricing.starter.cta': 'Sotib olish',
           'pricing.business.badge': 'Mashhur',
           'pricing.business.name': 'Biznes',
-          'pricing.business.f1': 'Barcha funktsiyalar',
-          'pricing.business.f2': 'Kengaytirilgan analitika',
-          'pricing.business.f3': '10 gacha foydalanuvchi',
+          'pricing.business.f1': '200 AI tahlil',
+          'pricing.business.f2': '10% chegirma',
+          'pricing.business.f3': '75 so\'m/token',
           'pricing.business.f4': 'Ustuvor qo\'llab-quvvatlash',
-          'pricing.business.cta': 'Tanlash',
-          'pricing.enterprise.name': 'Enterprise',
-          'pricing.enterprise.price': 'Individual',
-          'pricing.enterprise.f1': 'Biznesdan hammasi',
-          'pricing.enterprise.f2': 'Limitsiz',
-          'pricing.enterprise.f3': 'Shaxsiy menejer',
+          'pricing.business.cta': 'Sotib olish',
+          'pricing.enterprise.name': 'Korporativ',
+          'pricing.enterprise.f1': '1,000 AI tahlil',
+          'pricing.enterprise.f2': '20% chegirma',
+          'pricing.enterprise.f3': '50 so\'m/token',
           'pricing.enterprise.f4': 'SLA va integratsiyalar',
-          'pricing.enterprise.cta': 'Bog\'lanish',
-          'pricing.note': 'Aniq tariflar shakllanmoqda. Ro\'yxatdan o\'ting — birinchi kreditlar bepul.',
+          'pricing.enterprise.cta': 'Sotib olish',
+          'pricing.custom.name': 'O\'z paket',
+          'pricing.custom.subtitle': 'Miqdorni tanlang',
+          'pricing.custom.f1': 'Kamida 50 token',
+          'pricing.custom.f2': '500 TOK dan chegirmalar',
+          'pricing.custom.cta': 'Sotib olish',
+          'pricing.note': 'Token narxi: 500 so\'m ($0.04). Minimum: 50 token (25,000 so\'m). 500 TOK dan chegirmalar.',
           'pricing.outsource.text': 'Tanlash autsorsing — ',
           'pricing.outsource.price': '12 000 000 so\'mdan xodim uchun',
           'comparison.label': 'Taqqoslash',
@@ -4243,7 +4331,7 @@
           'faq.q3': 'Aqlli rekruter qanday ishlaydi?',
           'faq.a3': 'Vakansiya yaratasiz, nomzodlar anketa to\'ldiradi, tizim tahlil qiladi va reytinglaydi. Eng yaxshilari — tepada. Butun jarayon soatlar o\'rniga soniyalar oladi.',
           'faq.q4': 'Bu qancha turadi?',
-          'faq.a4': 'Platforma — bepul kreditlar bilan 0 so\'mdan. Tanlash autsorsing — xodim uchun 12 mln so\'mdan. Aniq tariflar vazifalarga bog\'liq.',
+          'faq.a4': 'Platforma token asosida ishlaydi. Ro\'yxatdan o\'tishda 100 token bepul. Qo\'shimcha tokenlar 500 so\'mdan ($0.04). Tanlash autsorsing — xodim uchun 12 mln so\'mdan.',
           'faq.q5': 'Ma\'lumotlar xavfsizmi?',
           'faq.a5': 'Ha. Shifrlash, himoyalangan serverlar, HTTPS. Nomzodlaringiz va kompaniyangiz ma\'lumotlari xavfsizligiga jiddiy yondashamiz.',
           'faq.q6': 'Qanday boshlash mumkin?',
@@ -4413,35 +4501,42 @@
           'numbers.n3': 'UZS outsourcing<br>per hire',
           'numbers.n4': 'years of HR<br>experience',
           'pricing.label': 'Pricing',
-          'pricing.title': 'Simple pricing',
-          'pricing.subtitle': 'Start for free. Scale when you\'re ready.',
+          'pricing.title': 'Tokens, not subscriptions',
+          'pricing.subtitle': 'Pay only for what you use. 100 tokens free on signup.',
+          'pricing.howworks': 'How tokens work',
+          'pricing.cost.analysis': 'AI resume analysis',
+          'pricing.cost.interview': 'Interview questions',
+          'pricing.cost.export': 'Data export',
+          'pricing.tokens': 'TOK',
           'pricing.free.name': 'Free',
-          'pricing.currency': 'UZS',
-          'pricing.permonth': 'UZS/mo',
-          'pricing.free.f1': 'Basic features',
-          'pricing.free.f2': 'Free credits',
-          'pricing.free.f3': '1 user',
+          'pricing.free.f1': '10 AI analyses',
+          'pricing.free.f2': 'On signup',
+          'pricing.free.f3': 'All features',
           'pricing.free.cta': 'Get started',
           'pricing.starter.name': 'Starter',
-          'pricing.starter.f1': 'All basic features',
-          'pricing.starter.f2': 'More credits',
-          'pricing.starter.f3': 'Up to 3 users',
-          'pricing.starter.cta': 'Choose',
+          'pricing.starter.f1': '50 AI analyses',
+          'pricing.starter.f2': '5% discount',
+          'pricing.starter.f3': '100 UZS/token',
+          'pricing.starter.cta': 'Buy',
           'pricing.business.badge': 'Popular',
           'pricing.business.name': 'Business',
-          'pricing.business.f1': 'All features',
-          'pricing.business.f2': 'Advanced analytics',
-          'pricing.business.f3': 'Up to 10 users',
+          'pricing.business.f1': '200 AI analyses',
+          'pricing.business.f2': '10% discount',
+          'pricing.business.f3': '75 UZS/token',
           'pricing.business.f4': 'Priority support',
-          'pricing.business.cta': 'Choose',
-          'pricing.enterprise.name': 'Enterprise',
-          'pricing.enterprise.price': 'Custom',
-          'pricing.enterprise.f1': 'Everything in Business',
-          'pricing.enterprise.f2': 'Unlimited',
-          'pricing.enterprise.f3': 'Dedicated manager',
+          'pricing.business.cta': 'Buy',
+          'pricing.enterprise.name': 'Corporate',
+          'pricing.enterprise.f1': '1,000 AI analyses',
+          'pricing.enterprise.f2': '20% discount',
+          'pricing.enterprise.f3': '50 UZS/token',
           'pricing.enterprise.f4': 'SLA & integrations',
-          'pricing.enterprise.cta': 'Contact us',
-          'pricing.note': 'Pricing is being finalized. Sign up — first credits are free.',
+          'pricing.enterprise.cta': 'Buy',
+          'pricing.custom.name': 'Custom',
+          'pricing.custom.subtitle': 'Choose amount',
+          'pricing.custom.f1': 'Minimum 50 tokens',
+          'pricing.custom.f2': 'Discounts from 500 TOK',
+          'pricing.custom.cta': 'Buy',
+          'pricing.note': 'Price per token: 500 UZS ($0.04). Minimum: 50 tokens (25,000 UZS). Discounts from 500 TOK.',
           'pricing.outsource.text': 'Recruitment outsourcing — ',
           'pricing.outsource.price': 'from 12,000,000 UZS per hire',
           'comparison.label': 'Comparison',
@@ -4464,7 +4559,7 @@
           'faq.q3': 'How does the smart recruiter work?',
           'faq.a3': 'You create a vacancy, candidates fill out a form, the system analyzes and ranks them. Best ones on top. The entire process takes seconds instead of hours.',
           'faq.q4': 'How much does it cost?',
-          'faq.a4': 'Platform — from 0 UZS with free credits. Recruitment outsourcing — from 12M UZS per hire. Exact pricing depends on the task.',
+          'faq.a4': 'The platform uses tokens. 100 tokens free on signup. Additional tokens from 500 UZS ($0.04) each. Recruitment outsourcing — from 12M UZS per hire.',
           'faq.q5': 'Is data secure?',
           'faq.a5': 'Yes. Encryption, secure servers, HTTPS. We take the security of your candidate and company data seriously.',
           'faq.q6': 'How do I start?',

@@ -110,7 +110,7 @@ export default function AdminPage() {
             <ShieldAlert size={32} className="text-red-400" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Доступ запрещён</h2>
-          <p className="text-sm mb-6 text-neutral-400">
+          <p className="text-sm mb-6 text-white/60">
             Эта страница доступна только суперадминистраторам.
           </p>
           <button className="btn-secondary" onClick={() => navigate('/vacancies')}>
@@ -140,14 +140,14 @@ function AdminContent() {
             </div>
             <h1 className="text-2xl font-bold text-white tracking-wider">АДМИН-ПАНЕЛЬ</h1>
           </div>
-          <p className="text-sm text-neutral-400 ml-12">
+          <p className="text-sm text-white/60 ml-12">
             Управление SOLUTION HUB
           </p>
         </div>
 
         {/* Tab bar */}
         <div className="mb-6 -mx-4 px-4 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-1 min-w-max bg-neutral-900/50 border border-neutral-800 rounded-xl p-1">
+          <div className="flex items-center gap-1 min-w-max bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-xl p-1">
             {TABS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
@@ -155,7 +155,7 @@ function AdminContent() {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium tracking-wider transition-all duration-200 whitespace-nowrap ${
                   activeTab === key
                     ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
-                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/60 border border-transparent'
+                    : 'text-white/60 hover:text-white/80 hover:bg-white/[0.04] border border-transparent'
                 }`}
               >
                 <Icon size={14} />
@@ -227,7 +227,7 @@ function DashboardTab() {
     <div className="space-y-6">
       {dataUpdatedAt > 0 && (
         <div className="flex justify-end">
-          <span className="text-xs text-neutral-600">
+          <span className="text-xs text-white/25">
             Обновлено: {new Date(dataUpdatedAt).toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -235,9 +235,9 @@ function DashboardTab() {
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {statCards.map(({ label, value, icon: Icon, color, iconBg, glow }) => (
-          <div key={label} className={`bg-neutral-900 border border-neutral-700 rounded-xl p-4 shadow-lg ${glow} hover:border-neutral-600 transition-all duration-300`}>
+          <div key={label} className={`bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 shadow-lg ${glow} hover:border-white/[0.1] transition-all duration-300`}>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-medium text-neutral-400 tracking-wider leading-tight">{label}</p>
+              <p className="text-[10px] font-medium text-white/60 tracking-wider leading-tight">{label}</p>
               <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${iconBg}`}>
                 <Icon size={15} className={color} />
               </div>
@@ -250,12 +250,12 @@ function DashboardTab() {
       {/* Quick metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {quickMetrics.map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 flex items-center gap-4 hover:border-neutral-600 transition-all">
-            <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+          <div key={label} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 flex items-center gap-4 hover:border-white/[0.1] transition-all">
+            <div className="w-12 h-12 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-center">
               <Icon size={20} className={color} />
             </div>
             <div>
-              <p className="text-xs text-neutral-400 tracking-wider">{label}</p>
+              <p className="text-xs text-white/60 tracking-wider">{label}</p>
               <p className={`text-2xl font-bold font-mono ${color}`}>{value.toLocaleString()}</p>
             </div>
           </div>
@@ -266,32 +266,32 @@ function DashboardTab() {
       <EconomicsBlock stats={stats} tokenStats={tokenStats} supportStats={supportStats} />
 
       {/* Recent activity */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
             <Activity size={14} className="text-orange-500" />
           </div>
           ПОСЛЕДНЯЯ АКТИВНОСТЬ
         </h3>
         {recentLogs.length === 0 ? (
-          <p className="text-sm text-neutral-500 text-center py-8">Нет данных об активности</p>
+          <p className="text-sm text-white/40 text-center py-8">Нет данных об активности</p>
         ) : (
           <div className="space-y-2">
             {recentLogs.slice(0, 10).map((log, i) => (
-              <div key={i} className="flex items-center gap-3 py-2.5 px-3 rounded-lg bg-neutral-800/40 border border-neutral-800 hover:border-neutral-700 transition-all">
+              <div key={i} className="flex items-center gap-3 py-2.5 px-3 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-all">
                 <div className="w-2 h-2 rounded-full bg-orange-500 shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-neutral-200 truncate">
+                  <p className="text-sm text-white/80 truncate">
                     <span className="text-orange-400 font-medium">{log.action}</span>
                     {log.user_email && (
-                      <span className="text-neutral-500 ml-2">{log.user_email}</span>
+                      <span className="text-white/40 ml-2">{log.user_email}</span>
                     )}
                   </p>
                   {log.details && (
-                    <p className="text-xs text-neutral-500 truncate">{log.details}</p>
+                    <p className="text-xs text-white/40 truncate">{log.details}</p>
                   )}
                 </div>
-                <span className="text-[10px] text-neutral-600 font-mono whitespace-nowrap">
+                <span className="text-[10px] text-white/25 font-mono whitespace-nowrap">
                   {new Date(log.created_at).toLocaleString('ru', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -365,16 +365,16 @@ function EconomicsBlock({
         <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
           <TrendingUp size={14} className="text-emerald-500" />
         </div>
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider">ЭКОНОМИКА</h3>
+        <h3 className="text-sm font-medium text-white/70 tracking-wider">ЭКОНОМИКА</h3>
       </div>
 
       {/* Main economics cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {econCards.map(({ label, value, sub, color, border }) => (
-          <div key={label} className={`bg-neutral-900 border border-neutral-700 ${border} border-t-2 rounded-xl p-4 hover:border-neutral-600 transition-all`}>
-            <p className="text-[10px] font-medium text-neutral-500 tracking-wider mb-2">{label}</p>
+          <div key={label} className={`bg-white/[0.03] border border-white/[0.06] ${border} border-t-2 rounded-xl p-4 hover:border-white/[0.1] transition-all`}>
+            <p className="text-[10px] font-medium text-white/40 tracking-wider mb-2">{label}</p>
             <p className={`text-xl font-bold font-mono ${color} mb-1`}>{value}</p>
-            <p className="text-[10px] text-neutral-600">{sub}</p>
+            <p className="text-[10px] text-white/25">{sub}</p>
           </div>
         ))}
       </div>
@@ -382,12 +382,12 @@ function EconomicsBlock({
       {/* Projections row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {projections.map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="bg-neutral-800/50 border border-neutral-700/50 rounded-xl p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-neutral-800 border border-neutral-700 flex items-center justify-center shrink-0">
+          <div key={label} className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-white/[0.02] border border-white/[0.06] flex items-center justify-center shrink-0">
               <Icon size={16} className={color} />
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] text-neutral-500 tracking-wider truncate">{label}</p>
+              <p className="text-[10px] text-white/40 tracking-wider truncate">{label}</p>
               <p className={`text-lg font-bold font-mono ${color}`}>{value}</p>
             </div>
           </div>
@@ -395,14 +395,14 @@ function EconomicsBlock({
       </div>
 
       {/* Margin indicator bar */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-neutral-400 tracking-wider">МАРЖИНАЛЬНОСТЬ</span>
+          <span className="text-xs text-white/60 tracking-wider">МАРЖИНАЛЬНОСТЬ</span>
           <span className={`text-sm font-bold font-mono ${margin >= 50 ? 'text-emerald-400' : margin >= 20 ? 'text-orange-400' : 'text-red-400'}`}>
             {margin.toFixed(1)}%
           </span>
         </div>
-        <div className="w-full h-3 bg-neutral-800 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-white/[0.02] rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-1000 ${
               margin >= 50 ? 'bg-gradient-to-r from-emerald-600 to-emerald-400' :
@@ -412,7 +412,7 @@ function EconomicsBlock({
             style={{ width: `${Math.min(Math.max(margin, 0), 100)}%` }}
           />
         </div>
-        <div className="flex justify-between mt-2 text-[10px] text-neutral-600">
+        <div className="flex justify-between mt-2 text-[10px] text-white/25">
           <span>Выручка: ${grossRevenue.toFixed(2)}</span>
           <span>Расходы: ${cogs.toFixed(2)}</span>
           <span>Чистая: ${grossProfit.toFixed(2)}</span>
@@ -450,14 +450,14 @@ function UsersTab() {
 
   if (usersLoading) return <div className="flex items-center justify-center py-20"><Loader2 className="animate-spin text-orange-500" size={32} /></div>;
   return (
-    <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
+    <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
             <Users size={14} className="text-blue-400" />
           </div>
           ПОЛЬЗОВАТЕЛИ
-          <span className="text-neutral-500 font-mono text-xs ml-1">({userTotal})</span>
+          <span className="text-white/40 font-mono text-xs ml-1">({userTotal})</span>
         </h3>
         <Pagination
           page={userPage}
@@ -472,9 +472,9 @@ function UsersTab() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[750px]">
             <thead className="sticky top-0 z-10">
-              <tr className="border-b border-neutral-700 bg-neutral-900">
+              <tr className="border-b border-white/[0.04] bg-white/[0.03]">
                 {['Имя / Email', 'Компания', 'Роль', 'Верифицирован', 'Дата', 'Действие'].map((h) => (
-                  <th key={h} className="text-left py-3 px-3 text-xs font-semibold text-neutral-400 tracking-wider uppercase">
+                  <th key={h} className="text-left py-3 px-3 text-xs font-semibold text-white/60 tracking-wider uppercase">
                     {h}
                   </th>
                 ))}
@@ -484,22 +484,22 @@ function UsersTab() {
               {users.map((u, i) => (
                 <tr
                   key={u.id}
-                  className={`border-b border-neutral-800/50 transition-all duration-200 hover:bg-neutral-800/60 hover:border-l-2 hover:border-l-orange-500 ${
-                    i % 2 === 1 ? 'bg-neutral-800/20' : ''
+                  className={`border-b border-white/[0.04] transition-all duration-200 hover:bg-white/[0.04] hover:border-l-2 hover:border-l-orange-500 ${
+                    i % 2 === 1 ? 'bg-white/[0.01]' : ''
                   }`}
                 >
                   <td className="py-3.5 px-3">
                     <p className="text-sm font-medium text-white">{u.name}</p>
-                    <p className="text-xs text-neutral-500">{u.email}</p>
+                    <p className="text-xs text-white/40">{u.email}</p>
                   </td>
                   <td className="py-3.5 px-3">
-                    <span className="text-sm text-neutral-400">{u.company_name || '—'}</span>
+                    <span className="text-sm text-white/60">{u.company_name || '—'}</span>
                   </td>
                   <td className="py-3.5 px-3">
                     <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium tracking-wider ${
                       u.role === 'superadmin'
                         ? 'bg-red-500/15 text-red-400 border border-red-500/30'
-                        : 'bg-neutral-800 text-neutral-400 border border-neutral-700'
+                        : 'bg-neutral-800 text-white/60 border border-neutral-700'
                     }`}>
                       {u.role === 'superadmin' ? <Crown size={11} /> : <UserCheck size={11} />}
                       {u.role === 'superadmin' ? 'ADMIN' : 'USER'}
@@ -516,7 +516,7 @@ function UsersTab() {
                     </span>
                   </td>
                   <td className="py-3.5 px-3">
-                    <span className="text-xs text-neutral-500 font-mono">
+                    <span className="text-xs text-white/40 font-mono">
                       {new Date(u.created_at).toLocaleDateString('ru')}
                     </span>
                   </td>
@@ -539,7 +539,7 @@ function UsersTab() {
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-neutral-500 text-sm">
+                  <td colSpan={6} className="py-12 text-center text-white/40 text-sm">
                     Нет пользователей
                   </td>
                 </tr>
@@ -547,7 +547,7 @@ function UsersTab() {
             </tbody>
           </table>
         </div>
-        <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-neutral-900 to-transparent pointer-events-none md:hidden" />
+        <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent pointer-events-none md:hidden" />
       </div>
     </div>
   );
@@ -581,14 +581,14 @@ function OrgsTab() {
 
   if (orgsLoading) return <div className="flex items-center justify-center py-20"><Loader2 className="animate-spin text-orange-500" size={32} /></div>;
   return (
-    <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
+    <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
             <Building2 size={14} className="text-orange-500" />
           </div>
           ОРГАНИЗАЦИИ
-          <span className="text-neutral-500 font-mono text-xs ml-1">({orgTotal})</span>
+          <span className="text-white/40 font-mono text-xs ml-1">({orgTotal})</span>
         </h3>
         <Pagination
           page={orgPage}
@@ -603,9 +603,9 @@ function OrgsTab() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px]">
             <thead className="sticky top-0 z-10">
-              <tr className="border-b border-neutral-700 bg-neutral-900">
+              <tr className="border-b border-white/[0.04] bg-white/[0.03]">
                 {['Название', 'Slug', 'Владелец', 'План', 'Дата', 'Действие'].map((h) => (
-                  <th key={h} className="text-left py-3 px-3 text-xs font-semibold text-neutral-400 tracking-wider uppercase">
+                  <th key={h} className="text-left py-3 px-3 text-xs font-semibold text-white/60 tracking-wider uppercase">
                     {h}
                   </th>
                 ))}
@@ -615,32 +615,32 @@ function OrgsTab() {
               {orgs.map((org, i) => (
                 <tr
                   key={org.id}
-                  className={`border-b border-neutral-800/50 transition-all duration-200 hover:bg-neutral-800/60 hover:border-l-2 hover:border-l-orange-500 ${
-                    i % 2 === 1 ? 'bg-neutral-800/20' : ''
+                  className={`border-b border-white/[0.04] transition-all duration-200 hover:bg-white/[0.04] hover:border-l-2 hover:border-l-orange-500 ${
+                    i % 2 === 1 ? 'bg-white/[0.01]' : ''
                   }`}
                 >
                   <td className="py-3.5 px-3">
                     <p className="text-sm font-medium text-white">{org.name}</p>
                   </td>
                   <td className="py-3.5 px-3">
-                    <code className="text-xs text-neutral-500 font-mono bg-neutral-800 px-1.5 py-0.5 rounded">{org.slug}</code>
+                    <code className="text-xs text-white/40 font-mono bg-white/[0.04] px-1.5 py-0.5 rounded">{org.slug}</code>
                   </td>
                   <td className="py-3.5 px-3">
-                    <p className="text-sm text-neutral-300">{org.users?.name}</p>
-                    <p className="text-xs text-neutral-500">{org.users?.email}</p>
+                    <p className="text-sm text-white/70">{org.users?.name}</p>
+                    <p className="text-xs text-white/40">{org.users?.email}</p>
                   </td>
                   <td className="py-3.5 px-3">
                     <span className={`inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full tracking-wider font-medium ${
                       org.plan === 'pro'
                         ? 'bg-purple-500/15 text-purple-400 border border-purple-500/30'
-                        : 'bg-neutral-800 text-neutral-400 border border-neutral-700'
+                        : 'bg-neutral-800 text-white/60 border border-neutral-700'
                     }`}>
                       {org.plan === 'pro' && <Star size={10} />}
                       {org.plan === 'pro' ? 'PRO' : 'FREE'}
                     </span>
                   </td>
                   <td className="py-3.5 px-3">
-                    <span className="text-xs text-neutral-500 font-mono">
+                    <span className="text-xs text-white/40 font-mono">
                       {new Date(org.created_at).toLocaleDateString('ru')}
                     </span>
                   </td>
@@ -663,7 +663,7 @@ function OrgsTab() {
               ))}
               {orgs.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-neutral-500 text-sm">
+                  <td colSpan={6} className="py-12 text-center text-white/40 text-sm">
                     Нет организаций
                   </td>
                 </tr>
@@ -671,7 +671,7 @@ function OrgsTab() {
             </tbody>
           </table>
         </div>
-        <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-neutral-900 to-transparent pointer-events-none md:hidden" />
+        <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent pointer-events-none md:hidden" />
       </div>
     </div>
   );
@@ -715,7 +715,7 @@ function SupportTab() {
     open: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
     in_progress: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
     resolved: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    closed: 'bg-neutral-800 text-neutral-400 border-neutral-700',
+    closed: 'bg-white/[0.02] text-white/60 border-white/[0.06]',
   };
 
   const statusLabels: Record<string, string> = {
@@ -729,7 +729,7 @@ function SupportTab() {
     urgent: 'bg-red-500/15 text-red-400 border-red-500/30',
     high: 'bg-orange-500/15 text-orange-400 border-orange-500/30',
     medium: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
-    low: 'bg-neutral-800 text-neutral-400 border-neutral-700',
+    low: 'bg-white/[0.02] text-white/60 border-white/[0.06]',
   };
 
   const categoryLabels: Record<string, string> = {
@@ -741,7 +741,7 @@ function SupportTab() {
   };
 
   const supportStatCards = [
-    { label: 'ВСЕГО', value: stats?.total ?? 0, color: 'text-neutral-200' },
+    { label: 'ВСЕГО', value: stats?.total ?? 0, color: 'text-white/80' },
     { label: 'ОТКРЫТО', value: stats?.open ?? 0, color: 'text-yellow-400' },
     { label: 'В РАБОТЕ', value: stats?.in_progress ?? 0, color: 'text-blue-400' },
     { label: 'РЕШЕНО', value: stats?.resolved ?? 0, color: 'text-emerald-400' },
@@ -754,8 +754,8 @@ function SupportTab() {
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {supportStatCards.map(({ label, value, color }) => (
-          <div key={label} className="bg-neutral-900 border border-neutral-700 rounded-xl p-4">
-            <p className="text-[10px] font-medium text-neutral-400 tracking-wider mb-2">{label}</p>
+          <div key={label} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4">
+            <p className="text-[10px] font-medium text-white/60 tracking-wider mb-2">{label}</p>
             <p className={`text-2xl font-bold font-mono ${color}`}>{value}</p>
           </div>
         ))}
@@ -763,12 +763,12 @@ function SupportTab() {
 
       {/* Category breakdown */}
       {stats?.by_category && (
-        <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-          <h4 className="text-xs font-medium text-neutral-400 tracking-wider mb-3">ПО КАТЕГОРИЯМ</h4>
+        <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+          <h4 className="text-xs font-medium text-white/60 tracking-wider mb-3">ПО КАТЕГОРИЯМ</h4>
           <div className="flex flex-wrap gap-3">
             {Object.entries(stats.by_category).map(([cat, count]) => (
-              <div key={cat} className="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 rounded-lg border border-neutral-700">
-                <span className="text-xs text-neutral-300">{categoryLabels[cat] || cat}</span>
+              <div key={cat} className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.02] rounded-lg border border-white/[0.06]">
+                <span className="text-xs text-white/70">{categoryLabels[cat] || cat}</span>
                 <span className="text-xs font-mono text-orange-400">{count}</span>
               </div>
             ))}
@@ -777,20 +777,20 @@ function SupportTab() {
       )}
 
       {/* Tickets table */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
             <MessageSquare size={14} className="text-yellow-400" />
           </div>
           ВСЕ ОБРАЩЕНИЯ
-          <span className="text-neutral-500 font-mono text-xs ml-1">({tickets.length})</span>
+          <span className="text-white/40 font-mono text-xs ml-1">({tickets.length})</span>
         </h3>
 
         <div className="space-y-2">
           {tickets.map((ticket) => {
             const isExpanded = expandedId === ticket.id;
             return (
-              <div key={ticket.id} className="border border-neutral-800 rounded-lg overflow-hidden hover:border-neutral-700 transition-all">
+              <div key={ticket.id} className="border border-white/[0.04] rounded-lg overflow-hidden hover:border-white/[0.08] transition-all">
                 {/* Ticket row */}
                 <button
                   onClick={() => {
@@ -798,7 +798,7 @@ function SupportTab() {
                     setReplyText(ticket.admin_reply || '');
                     setReplyStatus(ticket.status);
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-neutral-800/40 transition-all"
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-all"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -810,33 +810,33 @@ function SupportTab() {
                         {ticket.priority?.toUpperCase()}
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-neutral-500">
+                    <div className="flex items-center gap-3 text-xs text-white/40">
                       <span>{ticket.user_name || ticket.user_email}</span>
                       <span>{categoryLabels[ticket.category] || ticket.category}</span>
                       <span className="font-mono">{new Date(ticket.created_at).toLocaleDateString('ru')}</span>
                     </div>
                   </div>
-                  {isExpanded ? <ChevronUp size={16} className="text-neutral-400 shrink-0" /> : <ChevronDown size={16} className="text-neutral-400 shrink-0" />}
+                  {isExpanded ? <ChevronUp size={16} className="text-white/60 shrink-0" /> : <ChevronDown size={16} className="text-white/60 shrink-0" />}
                 </button>
 
                 {/* Expanded detail */}
                 {isExpanded && (
-                  <div className="px-4 pb-4 border-t border-neutral-800 bg-neutral-800/20">
+                  <div className="px-4 pb-4 border-t border-white/[0.04] bg-white/[0.01]">
                     <div className="py-3">
-                      <p className="text-xs text-neutral-400 tracking-wider mb-1">СООБЩЕНИЕ</p>
-                      <p className="text-sm text-neutral-200 whitespace-pre-wrap">{ticket.message}</p>
+                      <p className="text-xs text-white/60 tracking-wider mb-1">СООБЩЕНИЕ</p>
+                      <p className="text-sm text-white/80 whitespace-pre-wrap">{ticket.message}</p>
                     </div>
 
                     {ticket.admin_reply && (
-                      <div className="py-3 border-t border-neutral-800">
-                        <p className="text-xs text-neutral-400 tracking-wider mb-1">ПРЕДЫДУЩИЙ ОТВЕТ</p>
-                        <p className="text-sm text-neutral-300 whitespace-pre-wrap">{ticket.admin_reply}</p>
+                      <div className="py-3 border-t border-white/[0.04]">
+                        <p className="text-xs text-white/60 tracking-wider mb-1">ПРЕДЫДУЩИЙ ОТВЕТ</p>
+                        <p className="text-sm text-white/70 whitespace-pre-wrap">{ticket.admin_reply}</p>
                       </div>
                     )}
 
-                    <div className="pt-3 border-t border-neutral-800 space-y-3">
+                    <div className="pt-3 border-t border-white/[0.04] space-y-3">
                       <div>
-                        <label className="text-xs text-neutral-400 tracking-wider block mb-1">ОТВЕТ</label>
+                        <label className="text-xs text-white/60 tracking-wider block mb-1">ОТВЕТ</label>
                         <textarea
                           value={replyText}
                           onChange={(e) => setReplyText(e.target.value)}
@@ -847,7 +847,7 @@ function SupportTab() {
                       </div>
                       <div className="flex items-center gap-3">
                         <div>
-                          <label className="text-xs text-neutral-400 tracking-wider block mb-1">СТАТУС</label>
+                          <label className="text-xs text-white/60 tracking-wider block mb-1">СТАТУС</label>
                           <select
                             value={replyStatus}
                             onChange={(e) => setReplyStatus(e.target.value)}
@@ -876,7 +876,7 @@ function SupportTab() {
           })}
 
           {tickets.length === 0 && (
-            <p className="text-sm text-neutral-500 text-center py-12">Нет обращений</p>
+            <p className="text-sm text-white/40 text-center py-12">Нет обращений</p>
           )}
         </div>
       </div>
@@ -953,9 +953,9 @@ function TokensTab() {
       {/* Token stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {tokenStatCards.map(({ label, value, color, icon: Icon }) => (
-          <div key={label} className="bg-neutral-900 border border-neutral-700 rounded-xl p-4">
+          <div key={label} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[10px] font-medium text-neutral-400 tracking-wider">{label}</p>
+              <p className="text-[10px] font-medium text-white/60 tracking-wider">{label}</p>
               <Icon size={14} className={color} />
             </div>
             <p className={`text-2xl font-bold font-mono ${color}`}>{(value ?? 0).toLocaleString()}</p>
@@ -964,8 +964,8 @@ function TokensTab() {
       </div>
 
       {/* Whitelist management */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
             <CheckCircle2 size={14} className="text-emerald-400" />
           </div>
@@ -1001,13 +1001,13 @@ function TokensTab() {
         {/* Whitelist entries */}
         <div className="space-y-2">
           {whitelist.map((entry) => (
-            <div key={entry.id} className="flex items-center justify-between gap-3 px-3 py-2.5 bg-neutral-800/40 border border-neutral-800 rounded-lg">
+            <div key={entry.id} className="flex items-center justify-between gap-3 px-3 py-2.5 bg-white/[0.02] border border-white/[0.04] rounded-lg">
               <div className="min-w-0">
-                <p className="text-sm text-neutral-200 truncate">{entry.email}</p>
-                {entry.note && <p className="text-xs text-neutral-500 truncate">{entry.note}</p>}
+                <p className="text-sm text-white/80 truncate">{entry.email}</p>
+                {entry.note && <p className="text-xs text-white/40 truncate">{entry.note}</p>}
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[10px] text-neutral-600 font-mono">
+                <span className="text-[10px] text-white/25 font-mono">
                   {new Date(entry.created_at).toLocaleDateString('ru')}
                 </span>
                 <button
@@ -1021,14 +1021,14 @@ function TokensTab() {
             </div>
           ))}
           {whitelist.length === 0 && (
-            <p className="text-xs text-neutral-500 text-center py-4">Whitelist пуст</p>
+            <p className="text-xs text-white/40 text-center py-4">Whitelist пуст</p>
           )}
         </div>
       </div>
 
       {/* Bonus tokens */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
             <Gift size={14} className="text-purple-400" />
           </div>
@@ -1037,7 +1037,7 @@ function TokensTab() {
 
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input
               type="email"
               value={bonusEmail}
@@ -1113,12 +1113,12 @@ function UsageTab() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {usageStatCards.map(({ label, value, color, icon: Icon }) => (
-          <div key={label} className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+          <div key={label} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-center">
               <Icon size={20} className={color} />
             </div>
             <div>
-              <p className="text-[10px] text-neutral-400 tracking-wider">{label}</p>
+              <p className="text-[10px] text-white/60 tracking-wider">{label}</p>
               <p className={`text-2xl font-bold font-mono ${color}`}>{(value ?? 0).toLocaleString()}</p>
             </div>
           </div>
@@ -1126,8 +1126,8 @@ function UsageTab() {
       </div>
 
       {/* Action breakdown */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
             <Activity size={14} className="text-orange-500" />
           </div>
@@ -1135,7 +1135,7 @@ function UsageTab() {
         </h3>
 
         {Object.keys(actionBreakdown).length === 0 ? (
-          <p className="text-sm text-neutral-500 text-center py-8">Нет данных</p>
+          <p className="text-sm text-white/40 text-center py-8">Нет данных</p>
         ) : (
           <div className="space-y-3">
             {Object.entries(actionBreakdown)
@@ -1146,10 +1146,10 @@ function UsageTab() {
                 return (
                   <div key={action}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-neutral-300">{actionLabels[action] || action}</span>
+                      <span className="text-xs text-white/70">{actionLabels[action] || action}</span>
                       <span className="text-xs font-mono text-orange-400">{count.toLocaleString()}</span>
                     </div>
-                    <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-white/[0.02] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500"
                         style={{ width: `${pct}%` }}
@@ -1163,8 +1163,8 @@ function UsageTab() {
       </div>
 
       {/* Daily usage chart */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-4 md:p-6">
-        <h3 className="text-sm font-medium text-neutral-300 tracking-wider flex items-center gap-2 mb-4">
+      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-4 md:p-6">
+        <h3 className="text-sm font-medium text-white/70 tracking-wider flex items-center gap-2 mb-4">
           <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
             <TrendingUp size={14} className="text-blue-400" />
           </div>
@@ -1172,7 +1172,7 @@ function UsageTab() {
         </h3>
 
         {dailyUsage.length === 0 ? (
-          <p className="text-sm text-neutral-500 text-center py-8">Нет данных</p>
+          <p className="text-sm text-white/40 text-center py-8">Нет данных</p>
         ) : (
           <div className="flex items-end gap-1 h-40 overflow-x-auto pb-6 relative">
             {dailyUsage.map((day) => {
@@ -1180,14 +1180,14 @@ function UsageTab() {
               return (
                 <div key={day.date} className="flex flex-col items-center gap-1 flex-1 min-w-[24px] group relative">
                   {/* Tooltip */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-neutral-800 border border-neutral-700 rounded-lg px-2 py-1 text-[10px] font-mono text-orange-400 whitespace-nowrap z-10 pointer-events-none">
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/[0.02] border border-white/[0.06] rounded-lg px-2 py-1 text-[10px] font-mono text-orange-400 whitespace-nowrap z-10 pointer-events-none">
                     {day.count}
                   </div>
                   <div
                     className="w-full bg-gradient-to-t from-orange-500/80 to-orange-400 rounded-t-sm transition-all duration-300 hover:from-orange-400 hover:to-orange-300 min-h-[2px]"
                     style={{ height: `${heightPct}%` }}
                   />
-                  <span className="text-[8px] text-neutral-600 font-mono absolute -bottom-5 whitespace-nowrap">
+                  <span className="text-[8px] text-white/25 font-mono absolute -bottom-5 whitespace-nowrap">
                     {new Date(day.date).toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })}
                   </span>
                 </div>
@@ -1219,24 +1219,24 @@ function Pagination({
         disabled={page <= 1}
         className={`w-8 h-8 flex items-center justify-center rounded-lg border transition-all duration-200 ${
           page <= 1
-            ? 'bg-neutral-800/50 border-neutral-700/50 text-neutral-600 cursor-not-allowed'
-            : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:text-white hover:border-orange-500/30 hover:bg-neutral-700'
+            ? 'bg-white/[0.02] border-white/[0.04] text-white/25 cursor-not-allowed'
+            : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:text-white hover:border-[rgba(232,114,28,0.15)] hover:bg-white/[0.04]'
         }`}
       >
         <ChevronLeft size={14} />
       </button>
       <div className="flex items-center gap-1 px-2">
         <span className="text-xs font-mono font-medium text-orange-400">{page}</span>
-        <span className="text-xs text-neutral-600">/</span>
-        <span className="text-xs font-mono text-neutral-400">{maxPage}</span>
+        <span className="text-xs text-white/25">/</span>
+        <span className="text-xs font-mono text-white/60">{maxPage}</span>
       </div>
       <button
         onClick={onNext}
         disabled={page >= maxPage}
         className={`w-8 h-8 flex items-center justify-center rounded-lg border transition-all duration-200 ${
           page >= maxPage
-            ? 'bg-neutral-800/50 border-neutral-700/50 text-neutral-600 cursor-not-allowed'
-            : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:text-white hover:border-orange-500/30 hover:bg-neutral-700'
+            ? 'bg-white/[0.02] border-white/[0.04] text-white/25 cursor-not-allowed'
+            : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:text-white hover:border-[rgba(232,114,28,0.15)] hover:bg-white/[0.04]'
         }`}
       >
         <ChevronRight size={14} />

@@ -297,7 +297,7 @@ export default function CandidatesGlobalPage() {
                     </p>
 
                     {/* Score bar */}
-                    <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden mt-3">
+                    <div className="h-1.5 rounded-full bg-white/[0.02] overflow-hidden mt-3">
                       <div
                         className={`h-full rounded-full transition-all duration-1000 ${getScoreBarClass(c.ai_analysis?.overall_score ?? 0)}`}
                         style={{ width: `${c.ai_analysis?.overall_score ?? 0}%` }}
@@ -549,7 +549,7 @@ function CandidateGlobalCard({
               <span className="text-xs text-white/35">AI-оценка</span>
               <span className="text-xs font-bold text-orange-400">{analysis.overall_score}%</span>
             </div>
-            <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden">
+            <div className="h-1.5 rounded-full bg-white/[0.02] overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-1000 ${getScoreBarClass(analysis.overall_score)}`}
                 style={{ width: `${analysis.overall_score}%` }}

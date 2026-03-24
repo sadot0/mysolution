@@ -143,7 +143,7 @@ function StatCard({
         </div>
         <div>
           <p className="text-2xl font-black text-white">{value}</p>
-          <p className="text-xs text-neutral-500">{label}</p>
+          <p className="text-xs text-white/40">{label}</p>
         </div>
       </div>
     </motion.div>
@@ -179,7 +179,7 @@ function InterviewCard({
               <h3 className="text-sm font-bold text-white truncate">
                 {interview.candidateName}
               </h3>
-              <p className="text-xs text-neutral-500">{interview.vacancyTitle}</p>
+              <p className="text-xs text-white/40">{interview.vacancyTitle}</p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <span
@@ -202,7 +202,7 @@ function InterviewCard({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-neutral-400">
+          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-white/60">
             <span className="flex items-center gap-1">
               <Calendar size={12} />
               {formatDateShort(interview.date)}
@@ -225,7 +225,7 @@ function InterviewCard({
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-neutral-500">
+          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-white/40">
             <span className="flex items-center gap-1">
               <Mail size={11} />
               {interview.email}
@@ -262,20 +262,20 @@ function CalendarView({
   const today = new Date();
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card overflow-hidden backdrop-blur-xl rounded-2xl">
       {/* Day headers */}
-      <div className="grid grid-cols-[60px_repeat(7,1fr)] border-b border-neutral-800">
+      <div className="grid grid-cols-[60px_repeat(7,1fr)] border-b border-white/[0.04]">
         <div className="p-2" />
         {days.map((d, i) => {
           const isToday = isSameDay(d, today);
           return (
             <div
               key={i}
-              className={`p-3 text-center border-l border-neutral-800 ${
+              className={`p-3 text-center border-l border-white/[0.04] ${
                 isToday ? 'bg-orange-500/5' : ''
               }`}
             >
-              <p className="text-[10px] text-neutral-500 uppercase tracking-wider">
+              <p className="text-[10px] text-white/40 uppercase tracking-wider">
                 {DAYS_RU[i]}
               </p>
               <p
@@ -295,7 +295,7 @@ function CalendarView({
         {HOURS.map((hour) => (
           <div key={hour} className="contents">
             {/* Time label */}
-            <div className="p-2 text-[10px] text-neutral-600 text-right pr-3 border-b border-neutral-800/50 h-14 flex items-start justify-end">
+            <div className="p-2 text-[10px] text-white/25 text-right pr-3 border-b border-white/[0.04]/50 h-14 flex items-start justify-end">
               {String(hour).padStart(2, '0')}:00
             </div>
             {/* Day cells */}
@@ -309,7 +309,7 @@ function CalendarView({
               return (
                 <div
                   key={di}
-                  className={`border-l border-b border-neutral-800/50 h-14 p-0.5 relative ${
+                  className={`border-l border-b border-white/[0.04]/50 h-14 p-0.5 relative ${
                     isToday ? 'bg-orange-500/[0.02]' : ''
                   }`}
                 >
@@ -450,13 +450,13 @@ function CreateInterviewModal({
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-lg card p-6 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-lg card p-6 backdrop-blur-xl rounded-2xl max-h-[90vh] overflow-y-auto"
       >
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-black text-white">Запланировать интервью</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
+            className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-white/60 hover:text-white transition-colors"
           >
             <X size={14} />
           </button>
@@ -467,15 +467,15 @@ function CreateInterviewModal({
           <div>
             <label className="label">Кандидат</label>
             {selectedCandidate ? (
-              <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800/50 border border-neutral-700">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02]/50 border border-white/[0.06]">
                 <div>
                   <p className="text-sm text-white font-medium">{selectedCandidate.full_name}</p>
-                  <p className="text-xs text-neutral-500">{selectedCandidate.email} &mdash; {selectedCandidate.vacancy_title}</p>
+                  <p className="text-xs text-white/40">{selectedCandidate.email} &mdash; {selectedCandidate.vacancy_title}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setCandidateId('')}
-                  className="text-neutral-500 hover:text-red-400 transition-colors"
+                  className="text-white/40 hover:text-red-400 transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -490,7 +490,7 @@ function CreateInterviewModal({
                   onChange={(e) => setCandidateSearch(e.target.value)}
                 />
                 {filteredCandidates.length > 0 && (
-                  <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-neutral-900 border border-neutral-700">
+                  <div className="mt-1 max-h-40 overflow-y-auto rounded-lg bg-white/[0.03] border border-white/[0.06]">
                     {filteredCandidates.slice(0, 20).map((c) => (
                       <button
                         key={c.id}
@@ -499,16 +499,16 @@ function CreateInterviewModal({
                           setCandidateId(c.id);
                           setCandidateSearch('');
                         }}
-                        className="w-full text-left px-3 py-2 hover:bg-neutral-800 transition-colors border-b border-neutral-800 last:border-0"
+                        className="w-full text-left px-3 py-2 hover:bg-white/[0.02] transition-colors border-b border-white/[0.04] last:border-0"
                       >
                         <p className="text-sm text-white">{c.full_name}</p>
-                        <p className="text-[10px] text-neutral-500">{c.email} &mdash; {c.vacancy_title}</p>
+                        <p className="text-[10px] text-white/40">{c.email} &mdash; {c.vacancy_title}</p>
                       </button>
                     ))}
                   </div>
                 )}
                 {candidates.length === 0 && (
-                  <p className="text-xs text-neutral-500 mt-1">Нет доступных кандидатов</p>
+                  <p className="text-xs text-white/40 mt-1">Нет доступных кандидатов</p>
                 )}
               </div>
             )}
@@ -755,7 +755,7 @@ export default function InterviewsPage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 size={32} className="animate-spin text-orange-500 mb-4" />
-            <p className="text-sm text-neutral-500">Загрузка интервью...</p>
+            <p className="text-sm text-white/40">Загрузка интервью...</p>
           </div>
         ) : (
           <>
@@ -775,13 +775,13 @@ export default function InterviewsPage() {
             {/* View toggle + week nav */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
               {/* View toggle */}
-              <div className="flex items-center gap-1 bg-neutral-900 border border-neutral-800 rounded-lg p-1">
+              <div className="flex items-center gap-1 bg-white/[0.03] border border-white/[0.04] rounded-xl p-1 backdrop-blur-xl">
                 <button
                   onClick={() => setViewMode('calendar')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     viewMode === 'calendar'
                       ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                      : 'text-neutral-500 hover:text-neutral-300 border border-transparent'
+                      : 'text-white/40 hover:text-neutral-300 border border-transparent'
                   }`}
                 >
                   <Calendar size={13} />
@@ -792,7 +792,7 @@ export default function InterviewsPage() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     viewMode === 'list'
                       ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                      : 'text-neutral-500 hover:text-neutral-300 border border-transparent'
+                      : 'text-white/40 hover:text-neutral-300 border border-transparent'
                   }`}
                 >
                   <List size={13} />
@@ -805,16 +805,16 @@ export default function InterviewsPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setWeekOffset((p) => p - 1)}
-                    className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-neutral-600 transition-colors"
+                    className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.04] flex items-center justify-center text-white/60 hover:text-white hover:border-white/[0.08] transition-colors"
                   >
                     <ChevronLeft size={14} />
                   </button>
-                  <span className="text-xs text-neutral-400 font-medium min-w-[160px] text-center">
+                  <span className="text-xs text-white/60 font-medium min-w-[160px] text-center">
                     {weekLabel}
                   </span>
                   <button
                     onClick={() => setWeekOffset((p) => p + 1)}
-                    className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-neutral-600 transition-colors"
+                    className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.04] flex items-center justify-center text-white/60 hover:text-white hover:border-white/[0.08] transition-colors"
                   >
                     <ChevronRight size={14} />
                   </button>
@@ -851,12 +851,12 @@ export default function InterviewsPage() {
                   transition={{ duration: 0.2 }}
                 >
                   {sortedInterviews.length === 0 ? (
-                    <div className="card p-12 text-center">
+                    <div className="card p-12 text-center backdrop-blur-xl rounded-2xl">
                       <Calendar
                         size={48}
                         className="mx-auto mb-4 text-neutral-700"
                       />
-                      <p className="text-neutral-500 text-sm mb-4">
+                      <p className="text-white/40 text-sm mb-4">
                         Нет запланированных интервью
                       </p>
                       <button

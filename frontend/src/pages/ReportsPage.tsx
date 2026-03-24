@@ -68,11 +68,11 @@ function getActivityStyle(type: ActivityItem['type']) {
     case 'form':
       return { icon: FileSpreadsheet, color: 'text-cyan-400', bg: 'bg-cyan-500/10' };
     case 'login':
-      return { icon: Activity, color: 'text-neutral-400', bg: 'bg-neutral-500/10' };
+      return { icon: Activity, color: 'text-white/60', bg: 'bg-neutral-500/10' };
     case 'register':
       return { icon: Users, color: 'text-indigo-400', bg: 'bg-indigo-500/10' };
     default:
-      return { icon: Activity, color: 'text-neutral-400', bg: 'bg-neutral-500/10' };
+      return { icon: Activity, color: 'text-white/60', bg: 'bg-neutral-500/10' };
   }
 }
 
@@ -272,7 +272,7 @@ export default function ReportsPage() {
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-2xl font-bold text-white tracking-wider">ОТЧЁТЫ И АУДИТ</h1>
-          <p className="text-sm text-neutral-400 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             Генерация отчётов, аудит и соответствие требованиям
           </p>
         </div>
@@ -295,16 +295,16 @@ export default function ReportsPage() {
                 key={card.title}
                 variants={staggerItem}
                 onClick={card.onClick}
-                className={`text-left bg-neutral-900/80 border border-neutral-700/60 ${card.borderColor} border-l-2 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm group`}
+                className={`text-left bg-white/[0.03]/80 border border-white/[0.06]/60 ${card.borderColor} border-l-2 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-xl group`}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className={`${card.bg} ${card.color} p-2.5 rounded-xl`}>
                     <card.icon size={18} />
                   </div>
-                  <ChevronRight size={16} className="text-neutral-600 group-hover:text-orange-500 transition-colors mt-1" />
+                  <ChevronRight size={16} className="text-white/25 group-hover:text-orange-500 transition-colors mt-1" />
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-1">{card.title}</h3>
-                <p className="text-xs text-neutral-500 leading-relaxed">{card.description}</p>
+                <p className="text-xs text-white/40 leading-relaxed">{card.description}</p>
               </motion.button>
             ))}
           </div>
@@ -326,7 +326,7 @@ export default function ReportsPage() {
             {/* Audit report card */}
             <motion.div
               variants={staggerItem}
-              className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-6 backdrop-blur-sm"
+              className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-6 backdrop-blur-xl"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="bg-orange-500/10 text-orange-400 p-2.5 rounded-xl">
@@ -334,10 +334,10 @@ export default function ReportsPage() {
                 </div>
                 <div>
                   <h3 className="text-base font-semibold text-white">Аудиторский отчёт</h3>
-                  <p className="text-xs text-neutral-500 mt-0.5">Данные для внешних аудиторов</p>
+                  <p className="text-xs text-white/40 mt-0.5">Данные для внешних аудиторов</p>
                 </div>
               </div>
-              <p className="text-sm text-neutral-400 leading-relaxed mb-5">
+              <p className="text-sm text-white/60 leading-relaxed mb-5">
                 Скачайте данные для аудиторов: кто был выбран, на основании каких критериев, AI оценки и обоснования
               </p>
               <button
@@ -352,7 +352,7 @@ export default function ReportsPage() {
             {/* Compliance checklist */}
             <motion.div
               variants={staggerItem}
-              className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-6 backdrop-blur-sm"
+              className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-6 backdrop-blur-xl"
             >
               <h3 className="text-base font-semibold text-white mb-4">Статус соответствия</h3>
               <div className="space-y-3">
@@ -361,9 +361,9 @@ export default function ReportsPage() {
                     {item.done ? (
                       <CheckCircle size={18} className="text-emerald-400 shrink-0" />
                     ) : (
-                      <Square size={18} className="text-neutral-600 shrink-0" />
+                      <Square size={18} className="text-white/25 shrink-0" />
                     )}
-                    <span className={`text-sm ${item.done ? 'text-neutral-300' : 'text-neutral-500'}`}>
+                    <span className={`text-sm ${item.done ? 'text-neutral-300' : 'text-white/40'}`}>
                       {item.label}
                     </span>
                     {item.note && (
@@ -395,7 +395,7 @@ export default function ReportsPage() {
               variants={staggerItem}
               onClick={handleCsvExport}
               disabled={csvLoading}
-              className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm text-left group disabled:opacity-60"
+              className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-xl text-left group disabled:opacity-60"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="bg-emerald-500/10 text-emerald-400 p-2 rounded-xl">
@@ -405,13 +405,13 @@ export default function ReportsPage() {
                   {csvLoading ? 'Загрузка...' : 'CSV экспорт'}
                 </h3>
               </div>
-              <p className="text-xs text-neutral-500">Экспорт всех кандидатов в CSV формат</p>
+              <p className="text-xs text-white/40">Экспорт всех кандидатов в CSV формат</p>
             </motion.button>
 
             <motion.button
               variants={staggerItem}
               onClick={handlePdfExport}
-              className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm text-left group"
+              className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-xl text-left group"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="bg-red-500/10 text-red-400 p-2 rounded-xl">
@@ -419,13 +419,13 @@ export default function ReportsPage() {
                 </div>
                 <h3 className="text-sm font-semibold text-white">PDF отчёт</h3>
               </div>
-              <p className="text-xs text-neutral-500">Сводный PDF отчёт по всем данным</p>
+              <p className="text-xs text-white/40">Сводный PDF отчёт по всем данным</p>
             </motion.button>
 
             <motion.button
               variants={staggerItem}
               onClick={() => { navigate('/vacancies'); toast('Выберите вакансию, затем нажмите Экспорт → Excel', { icon: '📊' }); }}
-              className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm text-left relative group"
+              className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-xl text-left relative group"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="bg-green-500/10 text-green-400 p-2 rounded-xl">
@@ -433,7 +433,7 @@ export default function ReportsPage() {
                 </div>
                 <h3 className="text-sm font-semibold text-white">Excel отчёт</h3>
               </div>
-              <p className="text-xs text-neutral-500">Полный Excel отчёт с графиками</p>
+              <p className="text-xs text-white/40">Полный Excel отчёт с графиками</p>
             </motion.button>
           </div>
         </motion.div>
@@ -451,7 +451,7 @@ export default function ReportsPage() {
               <h2 className="text-sm font-semibold text-neutral-300 tracking-wider uppercase">Журнал действий</h2>
             </div>
             {!isSuperadmin && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-neutral-500 bg-neutral-800/60 border border-neutral-700/40 px-3 py-1.5 rounded-lg">
+              <span className="inline-flex items-center gap-1.5 text-xs text-white/40 bg-white/[0.02]/60 border border-white/[0.06]/40 px-3 py-1.5 rounded-lg">
                 <Lock size={12} />
                 Полные данные доступны для администраторов
               </span>
@@ -460,7 +460,7 @@ export default function ReportsPage() {
 
           <motion.div
             variants={staggerItem}
-            className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl backdrop-blur-sm overflow-hidden"
+            className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl backdrop-blur-xl overflow-hidden"
           >
             <div className="divide-y divide-neutral-800/60">
               {activityItems.map((item, index) => {
@@ -470,7 +470,7 @@ export default function ReportsPage() {
                   <motion.div
                     key={index}
                     variants={staggerItem}
-                    className="flex items-center gap-4 px-5 py-3.5 hover:bg-neutral-800/30 transition-colors"
+                    className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.02]/30 transition-colors"
                   >
                     <div className={`${style.bg} ${style.color} p-2 rounded-lg shrink-0`}>
                       <IconComp size={14} />
@@ -480,15 +480,15 @@ export default function ReportsPage() {
                         <span className="text-sm font-medium text-white">{item.action}</span>
                         {item.target && (
                           <>
-                            <span className="text-neutral-600">&mdash;</span>
-                            <span className="text-sm text-neutral-400 truncate">{item.target}</span>
+                            <span className="text-white/25">&mdash;</span>
+                            <span className="text-sm text-white/60 truncate">{item.target}</span>
                           </>
                         )}
                       </div>
-                      <p className="text-xs text-neutral-600 mt-0.5">{item.user}</p>
+                      <p className="text-xs text-white/25 mt-0.5">{item.user}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-xs font-mono text-neutral-500 tabular-nums" >
+                      <p className="text-xs font-mono text-white/40 tabular-nums" >
                         {item.date}
                       </p>
                     </div>

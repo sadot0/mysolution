@@ -65,7 +65,7 @@ function PipelineBar({ status }: { status: string }) {
   const isRejected = status === 'rejected';
 
   return (
-    <div className="card mb-6 px-6 py-4 bg-gradient-to-br from-orange-500/[0.06] to-orange-500/[0.02]">
+    <div className="card mb-6 px-6 py-4 backdrop-blur-xl rounded-2xl bg-gradient-to-br from-orange-500/[0.06] to-orange-500/[0.02]">
       <div className="flex items-center gap-0">
         {STAGES.map((stage, i) => {
           const isActive = i === stepIndex;
@@ -387,7 +387,7 @@ function InterviewQuestionsSection({ candidateId }: { candidateId: string }) {
   ];
 
   return (
-    <div className="card">
+    <div className="card backdrop-blur-xl rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-orange-500/10 border border-orange-500/20 rounded-lg flex items-center justify-center">
@@ -539,7 +539,7 @@ function IndependentAssessmentCard({ assessment }: IndependentAssessmentProps) {
   const recCfg = recMap[assessment.hire_recommendation];
 
   return (
-    <div className="card">
+    <div className="card backdrop-blur-xl rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-violet-500/[0.12] border border-violet-500/25 rounded-lg flex items-center justify-center">
@@ -729,7 +729,7 @@ export default function CandidatePage() {
       <motion.div variants={slideInLeft} initial="initial" animate="animate" className="p-6 md:p-8 max-w-6xl page-content">
 
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-neutral-500 mb-4">
+        <div className="flex items-center gap-2 text-xs text-white/40 mb-4">
           <Link to="/vacancies" className="hover:text-orange-400 transition-colors">Вакансии</Link>
           <span>/</span>
           <Link to={`/vacancies/${candidate?.vacancy_id}`} className="hover:text-orange-400 transition-colors">Вакансия</Link>
@@ -924,7 +924,7 @@ export default function CandidatePage() {
 
             {/* Score card (if analyzed) */}
             {analysis && (
-              <div className="card text-center p-6">
+              <div className="card text-center p-6 backdrop-blur-xl rounded-2xl">
                 <div className="flex justify-center mb-3">
                   <ScoreRing score={analysis.overall_score} category={analysis.category} size="lg" />
                 </div>
@@ -938,7 +938,7 @@ export default function CandidatePage() {
             )}
 
             {/* Contacts */}
-            <div className="card">
+            <div className="card backdrop-blur-xl rounded-2xl">
               <h3 className="font-bold text-white mb-4">Контакты</h3>
               <div className="space-y-3">
                 {[
@@ -975,7 +975,7 @@ export default function CandidatePage() {
             </div>
 
             {/* Resume */}
-            <div className="card">
+            <div className="card backdrop-blur-xl rounded-2xl">
               <h3 className="font-bold text-white mb-3">Резюме</h3>
               {candidate?.resume_text ? (
                 <div className="mb-3">
@@ -1009,7 +1009,7 @@ export default function CandidatePage() {
 
             {/* Quick decision (if analyzed + undecided) */}
             {canDecide && (
-              <div className="card p-5 bg-gradient-to-br from-orange-500/[0.08] to-orange-500/[0.03]">
+              <div className="card p-5 backdrop-blur-xl rounded-2xl bg-gradient-to-br from-orange-500/[0.08] to-orange-500/[0.03]">
                 <p className="text-xs font-bold uppercase tracking-wider mb-3 text-white/35">
                   Принять решение
                 </p>
@@ -1067,7 +1067,7 @@ export default function CandidatePage() {
           <div className="lg:col-span-2 space-y-5">
             {isAnalyzing ? (
               /* Analyzing state */
-              <div className="card text-center py-16">
+              <div className="card text-center py-16 backdrop-blur-xl rounded-2xl">
                 <div className="relative inline-block mb-5">
                   <div className="w-20 h-20 rounded-full border-[3px] border-blue-400/20 flex items-center justify-center">
                     <BrainCircuit size={34} className="text-blue-400 animate-bounce" />
@@ -1086,7 +1086,7 @@ export default function CandidatePage() {
             ) : analysis ? (
               <>
                 {/* Scores breakdown */}
-                <div className="card">
+                <div className="card backdrop-blur-xl rounded-2xl">
                   <h3 className="font-bold text-white mb-5">Оценки по критериям</h3>
 
                   {/* Score bars */}
@@ -1101,7 +1101,7 @@ export default function CandidatePage() {
                             {value}%
                           </span>
                         </div>
-                        <div className="h-2 rounded-full bg-neutral-800 overflow-hidden">
+                        <div className="h-2 rounded-full bg-white/[0.02] overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-1000 ease-out ${getScoreBarClass(value)}`}
                             style={{ width: `${value}%` }}
@@ -1116,7 +1116,7 @@ export default function CandidatePage() {
                 </div>
 
                 {/* Summary */}
-                <div className="card">
+                <div className="card backdrop-blur-xl rounded-2xl">
                   <div className="flex items-center gap-2.5 mb-3">
                     <Sparkles size={16} className="text-orange-400" />
                     <h3 className="font-bold text-white">Резюме AI</h3>
@@ -1128,7 +1128,7 @@ export default function CandidatePage() {
 
                 {/* Strengths / Weaknesses */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="card">
+                  <div className="card backdrop-blur-xl rounded-2xl">
                     <h3 className="font-bold mb-3 text-emerald-500">Сильные стороны</h3>
                     <ul className="space-y-2.5">
                       {analysis.strengths.map((s, i) => (
@@ -1141,7 +1141,7 @@ export default function CandidatePage() {
                       ))}
                     </ul>
                   </div>
-                  <div className="card">
+                  <div className="card backdrop-blur-xl rounded-2xl">
                     <h3 className="font-bold mb-3 text-red-400">Слабые стороны</h3>
                     <ul className="space-y-2.5">
                       {analysis.weaknesses.map((w, i) => (
@@ -1157,7 +1157,7 @@ export default function CandidatePage() {
                 </div>
 
                 {/* Recommendations */}
-                <div className="card">
+                <div className="card backdrop-blur-xl rounded-2xl">
                   <h3 className="font-bold text-white mb-4">Рекомендации для интервью</h3>
                   <ul className="space-y-3">
                     {analysis.recommendations.map((r, i) => (
@@ -1173,7 +1173,7 @@ export default function CandidatePage() {
 
                 {/* AI Insights */}
                 {analysis.ai_insights && (
-                  <div className="card">
+                  <div className="card backdrop-blur-xl rounded-2xl">
                     <h3 className="font-bold text-white mb-4">AI Инсайты</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                       {analysis.ai_insights.green_flags?.length > 0 && (
@@ -1232,7 +1232,7 @@ export default function CandidatePage() {
               <>
                 {/* Form responses */}
                 {candidate?.form_responses && Object.keys(candidate.form_responses).length > 0 && (
-                  <div className="card">
+                  <div className="card backdrop-blur-xl rounded-2xl">
                     <h3 className="font-bold text-white mb-4">Ответы из формы</h3>
                     <div className="space-y-4">
                       {Object.entries(candidate.form_responses).map(([key, value]) => (
@@ -1248,7 +1248,7 @@ export default function CandidatePage() {
                 )}
 
                 {/* Run analysis CTA */}
-                <div className="card text-center py-14 bg-gradient-to-br from-orange-500/[0.07] to-orange-500/[0.03] border-dashed border-orange-500/20">
+                <div className="card text-center py-14 backdrop-blur-xl rounded-2xl bg-gradient-to-br from-orange-500/[0.07] to-orange-500/[0.03] border-dashed border-orange-500/20">
                   <div className="relative inline-block mb-5">
                     <div className="flex items-center justify-center w-20 h-20 rounded-full bg-orange-500/[0.08] border-2 border-orange-500/[0.18] animate-[pulse_3s_ease-in-out_infinite]">
                       <BrainCircuit size={34} className="text-orange-400" />
@@ -1352,7 +1352,7 @@ function EmailModal({ candidateId, candidateName, template, onClose }: {
       <div className="modal-content max-w-md" onClick={e => e.stopPropagation()}>
         <div className="p-6">
           <h3 className="text-lg font-bold text-white mb-4">{titles[template]}</h3>
-          <p className="text-sm text-neutral-400 mb-4">
+          <p className="text-sm text-white/60 mb-4">
             Отправить {template === 'invite' ? 'приглашение' : template === 'reject' ? 'вежливый отказ' : 'предложение о работе'} для <strong className="text-white">{candidateName}</strong>
           </p>
           

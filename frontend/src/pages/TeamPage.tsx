@@ -64,7 +64,7 @@ const ROLE_LABELS: Record<string, string> = {
 const ROLE_COLORS: Record<string, string> = {
   owner: 'text-orange-400 bg-orange-500/10 border-orange-500/20',
   admin: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
-  member: 'text-neutral-400 bg-neutral-500/10 border-neutral-500/20',
+  member: 'text-white/60 bg-white/[0.06] border-white/[0.1]',
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -241,7 +241,7 @@ export default function TeamPage() {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">КОМАНДА</h1>
-              <p className="text-sm text-neutral-500">Управление участниками и совместная работа</p>
+              <p className="text-sm text-white/40">Управление участниками и совместная работа</p>
             </div>
           </div>
         </motion.div>
@@ -252,13 +252,13 @@ export default function TeamPage() {
 
             {/* Members */}
             <motion.div variants={container} initial="hidden" animate="show">
-              <h2 className="text-sm font-semibold text-neutral-400 tracking-wider uppercase mb-4">
+              <h2 className="text-sm font-semibold text-white/60 tracking-wider uppercase mb-4">
                 Участники ({members.length})
               </h2>
               {members.length === 0 ? (
-                <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-8 text-center">
-                  <Users size={32} className="text-neutral-600 mx-auto mb-3" />
-                  <p className="text-sm text-neutral-500">Пока нет участников. Пригласите коллег в команду.</p>
+                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8 text-center">
+                  <Users size={32} className="text-white/25 mx-auto mb-3" />
+                  <p className="text-sm text-white/40">Пока нет участников. Пригласите коллег в команду.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -266,7 +266,7 @@ export default function TeamPage() {
                     <motion.div
                       key={m.id}
                       variants={item}
-                      className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 hover:border-orange-500/30 transition-all duration-200"
+                      className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 hover:border-[rgba(232,114,28,0.15)] hover:shadow-lg hover:shadow-black/20 transition-all duration-200"
                     >
                       <div className="flex items-start gap-3 mb-4">
                         <div className="relative">
@@ -274,11 +274,11 @@ export default function TeamPage() {
                             {getInitials(m.name)}
                           </div>
                           {/* Online dot */}
-                          <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-neutral-900 rounded-full" />
+                          <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-black rounded-full" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-white truncate">{m.name}</p>
-                          <p className="text-xs text-neutral-500 truncate">{m.email}</p>
+                          <p className="text-xs text-white/40 truncate">{m.email}</p>
                         </div>
                       </div>
 
@@ -290,20 +290,20 @@ export default function TeamPage() {
                       </div>
 
                       <div className="grid grid-cols-3 gap-2">
-                        <div className="text-center p-2 rounded-lg bg-neutral-800/50">
+                        <div className="text-center p-2 rounded-lg bg-white/[0.02]">
                           <BriefcaseIcon size={12} className="text-blue-400 mx-auto mb-1" />
                           <p className="text-sm font-bold text-white">{m.vacancies}</p>
-                          <p className="text-[9px] text-neutral-500">Вакансий</p>
+                          <p className="text-[9px] text-white/40">Вакансий</p>
                         </div>
-                        <div className="text-center p-2 rounded-lg bg-neutral-800/50">
+                        <div className="text-center p-2 rounded-lg bg-white/[0.02]">
                           <UserCheck size={12} className="text-green-400 mx-auto mb-1" />
                           <p className="text-sm font-bold text-white">{m.analyzed}</p>
-                          <p className="text-[9px] text-neutral-500">Оценено</p>
+                          <p className="text-[9px] text-white/40">Оценено</p>
                         </div>
-                        <div className="text-center p-2 rounded-lg bg-neutral-800/50">
+                        <div className="text-center p-2 rounded-lg bg-white/[0.02]">
                           <Send size={12} className="text-orange-400 mx-auto mb-1" />
                           <p className="text-sm font-bold text-white">{m.invited}</p>
-                          <p className="text-[9px] text-neutral-500">Приглашений</p>
+                          <p className="text-[9px] text-white/40">Приглашений</p>
                         </div>
                       </div>
                     </motion.div>
@@ -317,7 +317,7 @@ export default function TeamPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-neutral-900 border border-neutral-800 rounded-xl p-5"
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5"
             >
               <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <Mail size={16} className="text-orange-400" />
@@ -367,7 +367,7 @@ export default function TeamPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-neutral-900 border border-neutral-800 rounded-xl p-5"
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5"
             >
               <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <Shield size={16} className="text-orange-400" />
@@ -381,21 +381,21 @@ export default function TeamPage() {
                     <Star size={10} className="inline mr-1" />
                     Владелец
                   </p>
-                  <p className="text-[11px] text-neutral-400">Полный доступ ко всем функциям</p>
+                  <p className="text-[11px] text-white/60">Полный доступ ко всем функциям</p>
                 </div>
                 <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
                   <p className="text-xs font-bold text-blue-400 mb-1">
                     <Edit3 size={10} className="inline mr-1" />
                     Админ
                   </p>
-                  <p className="text-[11px] text-neutral-400">Управление вакансиями и кандидатами</p>
+                  <p className="text-[11px] text-white/60">Управление вакансиями и кандидатами</p>
                 </div>
                 <div className="p-3 rounded-lg bg-neutral-500/5 border border-neutral-600/20">
-                  <p className="text-xs font-bold text-neutral-400 mb-1">
+                  <p className="text-xs font-bold text-white/60 mb-1">
                     <Eye size={10} className="inline mr-1" />
                     Участник
                   </p>
-                  <p className="text-[11px] text-neutral-400">Просмотр и комментарии</p>
+                  <p className="text-[11px] text-white/60">Просмотр и комментарии</p>
                 </div>
               </div>
 
@@ -403,25 +403,25 @@ export default function TeamPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-800">
-                      <th className="text-left py-2 pr-4 text-neutral-500 font-medium">Действие</th>
+                    <tr className="border-b border-white/[0.04]">
+                      <th className="text-left py-2 pr-4 text-white/40 font-medium">Действие</th>
                       <th className="text-center py-2 px-3 text-orange-400 font-medium">Владелец</th>
                       <th className="text-center py-2 px-3 text-blue-400 font-medium">Админ</th>
-                      <th className="text-center py-2 px-3 text-neutral-400 font-medium">Участник</th>
+                      <th className="text-center py-2 px-3 text-white/60 font-medium">Участник</th>
                     </tr>
                   </thead>
                   <tbody>
                     {PERMISSIONS.map(p => (
-                      <tr key={p.action} className="border-b border-neutral-800/50 hover:bg-neutral-800/30 transition-colors">
-                        <td className="py-2 pr-4 text-neutral-300">{p.action}</td>
+                      <tr key={p.action} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                        <td className="py-2 pr-4 text-white/70">{p.action}</td>
                         <td className="py-2 px-3 text-center">
-                          {p.owner ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-neutral-700 mx-auto" />}
+                          {p.owner ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-white/25 mx-auto" />}
                         </td>
                         <td className="py-2 px-3 text-center">
-                          {p.admin ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-neutral-700 mx-auto" />}
+                          {p.admin ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-white/25 mx-auto" />}
                         </td>
                         <td className="py-2 px-3 text-center">
-                          {p.member ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-neutral-700 mx-auto" />}
+                          {p.member ? <Check size={14} className="text-green-400 mx-auto" /> : <Trash2 size={12} className="text-white/25 mx-auto" />}
                         </td>
                       </tr>
                     ))}
@@ -438,7 +438,7 @@ export default function TeamPage() {
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 }}
-              className="bg-neutral-900 border border-neutral-800 rounded-xl p-5"
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5"
             >
               <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <Clock size={16} className="text-orange-400" />
@@ -446,7 +446,7 @@ export default function TeamPage() {
               </h2>
               <div className="space-y-4">
                 {activity.length === 0 ? (
-                  <p className="text-xs text-neutral-600 text-center py-4">Нет данных об активности</p>
+                  <p className="text-xs text-white/25 text-center py-4">Нет данных об активности</p>
                 ) : (
                   activity.map(a => (
                     <div key={a.id} className="flex items-start gap-3">
@@ -454,11 +454,11 @@ export default function TeamPage() {
                         {a.author[0]}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-neutral-300">
+                        <p className="text-xs text-white/70">
                           <span className="font-semibold text-white">{a.author}</span>{' '}
                           {a.action}
                         </p>
-                        <p className="text-[10px] text-neutral-600 mt-0.5">{a.time}</p>
+                        <p className="text-[10px] text-white/25 mt-0.5">{a.time}</p>
                       </div>
                     </div>
                   ))
@@ -471,7 +471,7 @@ export default function TeamPage() {
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.25 }}
-              className="bg-neutral-900 border border-neutral-800 rounded-xl p-5"
+              className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5"
             >
               <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <MessageSquare size={16} className="text-orange-400" />
@@ -500,18 +500,18 @@ export default function TeamPage() {
               {/* Notes list */}
               <div className="space-y-3 max-h-[400px] overflow-y-auto">
                 {notes.length === 0 ? (
-                  <p className="text-xs text-neutral-600 text-center py-4">Пока нет заметок</p>
+                  <p className="text-xs text-white/25 text-center py-4">Пока нет заметок</p>
                 ) : (
                   notes.map(n => (
-                    <div key={n.id} className="p-3 rounded-lg bg-neutral-800/50 border border-neutral-800">
+                    <div key={n.id} className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
                       <div className="flex items-center gap-2 mb-1.5">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-[8px] font-bold">
                           {n.author[0]}
                         </div>
                         <span className="text-[11px] font-semibold text-white">{n.author}</span>
-                        <span className="text-[10px] text-neutral-600 ml-auto">{n.date}</span>
+                        <span className="text-[10px] text-white/25 ml-auto">{n.date}</span>
                       </div>
-                      <p className="text-xs text-neutral-400 leading-relaxed">{n.text}</p>
+                      <p className="text-xs text-white/60 leading-relaxed">{n.text}</p>
                     </div>
                   ))
                 )}

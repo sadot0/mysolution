@@ -130,7 +130,7 @@ export default function AssessmentsPage() {
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-wider">ТЕСТИРОВАНИЕ</h1>
-            <p className="text-sm text-neutral-400 mt-1">
+            <p className="text-sm text-white/60 mt-1">
               Оценка навыков и знаний кандидатов
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function AssessmentsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 bg-neutral-900/60 border border-neutral-800 rounded-xl p-1 w-fit">
+        <div className="flex gap-1 mb-6 bg-white/[0.03]/60 border border-white/[0.04] rounded-2xl p-1 backdrop-blur-xl w-fit">
           {tabs.map((t) => (
             <button
               key={t.key}
@@ -152,7 +152,7 @@ export default function AssessmentsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === t.key
                   ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
-                  : 'text-neutral-400 hover:text-neutral-200 border border-transparent'
+                  : 'text-white/60 hover:text-neutral-200 border border-transparent'
               }`}
             >
               {t.label}
@@ -177,20 +177,20 @@ export default function AssessmentsPage() {
         {/* My tests tab */}
         {activeTab === 'my' && (
           <motion.div
-            className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl text-center py-20 backdrop-blur-sm"
+            className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl text-center py-20 backdrop-blur-xl"
             variants={staggerItem}
             initial="initial"
             animate="animate"
           >
             <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 bg-neutral-800 border border-neutral-600 rounded-2xl flex items-center justify-center">
-                <ClipboardList size={28} className="text-neutral-500" />
+              <div className="w-16 h-16 bg-white/[0.02] border border-neutral-600 rounded-2xl flex items-center justify-center">
+                <ClipboardList size={28} className="text-white/40" />
               </div>
             </div>
             <p className="font-semibold text-neutral-300 mb-1 text-lg">
               Создайте свой первый тест
             </p>
-            <p className="text-sm text-neutral-500 max-w-xs mx-auto mb-6">
+            <p className="text-sm text-white/40 max-w-xs mx-auto mb-6">
               Используйте конструктор для создания уникальных тестов для вашей компании
             </p>
             <button
@@ -213,12 +213,12 @@ export default function AssessmentsPage() {
             {realResults && realResults.length > 0 && (
               <div className="mb-3 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs text-neutral-500">Показаны реальные данные AI-оценок кандидатов</span>
+                <span className="text-xs text-white/40">Показаны реальные данные AI-оценок кандидатов</span>
               </div>
             )}
-            <div className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl overflow-hidden backdrop-blur-sm">
+            <div className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl overflow-hidden backdrop-blur-xl">
               {/* Table header */}
-              <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-neutral-800 text-xs text-neutral-500 uppercase tracking-wider font-medium">
+              <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/[0.04] text-xs text-white/40 uppercase tracking-wider font-medium">
                 <div className="col-span-3">Кандидат</div>
                 <div className="col-span-3">Тест</div>
                 <div className="col-span-2">Результат</div>
@@ -231,7 +231,7 @@ export default function AssessmentsPage() {
                 <motion.div
                   key={result.id}
                   variants={staggerItem}
-                  className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-neutral-800/50 hover:bg-neutral-800/30 transition-colors"
+                  className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/[0.04]/50 hover:bg-white/[0.02]/30 transition-colors"
                 >
                   <div className="col-span-3 flex items-center gap-3">
                     <div className="w-8 h-8 bg-orange-500/10 border border-orange-500/20 rounded-lg flex items-center justify-center">
@@ -247,7 +247,7 @@ export default function AssessmentsPage() {
                     <span className="text-sm text-neutral-300">{result.testName}</span>
                   </div>
                   <div className="col-span-2 flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-white/[0.02] rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full ${result.passed ? 'bg-emerald-500' : 'bg-red-500'}`}
                         style={{ width: `${(result.score / result.maxScore) * 100}%` }}
@@ -258,7 +258,7 @@ export default function AssessmentsPage() {
                     </span>
                   </div>
                   <div className="col-span-2 flex items-center">
-                    <span className="text-sm text-neutral-400">{formatDate(result.date)}</span>
+                    <span className="text-sm text-white/60">{formatDate(result.date)}</span>
                   </div>
                   <div className="col-span-2 flex items-center">
                     {result.passed ? (
@@ -278,7 +278,7 @@ export default function AssessmentsPage() {
 
               {displayResults.length === 0 && (
                 <div className="text-center py-12">
-                  <p className="text-sm text-neutral-500">Результатов пока нет</p>
+                  <p className="text-sm text-white/40">Результатов пока нет</p>
                 </div>
               )}
             </div>
@@ -335,26 +335,26 @@ function AssignModal({ test, onClose }: { test: TestTemplate; onClose: () => voi
       exit={{ opacity: 0 }}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-xl" onClick={onClose} />
 
       {/* Modal */}
       <motion.div
-        className="relative w-full max-w-lg bg-neutral-900 border border-neutral-700/60 rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg bg-white/[0.03] border border-white/[0.06]/60 rounded-2xl shadow-2xl overflow-hidden"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-neutral-800">
+        <div className="flex items-center justify-between p-5 border-b border-white/[0.04]">
           <div>
             <h3 className="text-base font-semibold text-white">Назначить кандидату</h3>
-            <p className="text-xs text-neutral-500 mt-0.5">
+            <p className="text-xs text-white/40 mt-0.5">
               Тест: {test.title}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors text-neutral-400 hover:text-white"
+            className="p-1.5 rounded-lg hover:bg-white/[0.02] transition-colors text-white/60 hover:text-white"
           >
             <X size={18} />
           </button>
@@ -363,7 +363,7 @@ function AssignModal({ test, onClose }: { test: TestTemplate; onClose: () => voi
         {/* Search */}
         <div className="px-5 pt-4 pb-2">
           <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input
               type="text"
               value={search}
@@ -385,8 +385,8 @@ function AssignModal({ test, onClose }: { test: TestTemplate; onClose: () => voi
 
           {!isLoading && filtered.length === 0 && (
             <div className="text-center py-8">
-              <Users size={24} className="mx-auto text-neutral-600 mb-2" />
-              <p className="text-sm text-neutral-500">
+              <Users size={24} className="mx-auto text-white/25 mb-2" />
+              <p className="text-sm text-white/40">
                 {candidates.length === 0 ? 'Кандидаты не найдены' : 'Ничего не найдено'}
               </p>
             </div>
@@ -397,7 +397,7 @@ function AssignModal({ test, onClose }: { test: TestTemplate; onClose: () => voi
               <button
                 key={c.id}
                 onClick={() => handleAssign(c)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-neutral-800/60 transition-colors text-left group"
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.02]/60 transition-colors text-left group"
               >
                 <div className="w-8 h-8 bg-orange-500/10 border border-orange-500/20 rounded-lg flex items-center justify-center shrink-0">
                   <span className="text-xs font-bold text-orange-400">
@@ -406,9 +406,9 @@ function AssignModal({ test, onClose }: { test: TestTemplate; onClose: () => voi
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white font-medium truncate">{c.full_name}</p>
-                  <p className="text-xs text-neutral-500 truncate">{c.email}</p>
+                  <p className="text-xs text-white/40 truncate">{c.email}</p>
                 </div>
-                <UserCheck size={16} className="text-neutral-600 group-hover:text-orange-400 transition-colors shrink-0" />
+                <UserCheck size={16} className="text-white/25 group-hover:text-orange-400 transition-colors shrink-0" />
               </button>
             ))}
           </div>
@@ -428,7 +428,7 @@ function TestCard({ test, onAssign }: { test: TestTemplate; onAssign: () => void
   return (
     <motion.div
       variants={staggerItem}
-      className="bg-neutral-900/80 border border-neutral-700/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-sm flex flex-col"
+      className="bg-white/[0.03]/80 border border-white/[0.06]/60 rounded-2xl p-5 hover:border-orange-500/30 transition-all duration-300 backdrop-blur-xl flex flex-col"
     >
       {/* Icon + difficulty */}
       <div className="flex items-start justify-between mb-4">
@@ -444,7 +444,7 @@ function TestCard({ test, onAssign }: { test: TestTemplate; onAssign: () => void
       <h3 className="text-sm font-bold text-white mb-3">{test.title}</h3>
 
       {/* Meta */}
-      <div className="flex items-center gap-3 text-xs text-neutral-500 mb-4">
+      <div className="flex items-center gap-3 text-xs text-white/40 mb-4">
         <span className="flex items-center gap-1">
           <ClipboardList size={12} />
           {test.questionCount} вопросов
@@ -456,7 +456,7 @@ function TestCard({ test, onAssign }: { test: TestTemplate; onAssign: () => void
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-xs text-neutral-500 mb-4 mt-auto">
+      <div className="flex items-center gap-4 text-xs text-white/40 mb-4 mt-auto">
         <span className="flex items-center gap-1">
           <Users size={12} />
           Пройден {test.completedCount} раз

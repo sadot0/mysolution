@@ -46,10 +46,9 @@ interface TokenTransaction {
 }
 
 const FALLBACK_PLANS: TokenPlan[] = [
-  { id: 'starter', name: 'Стартер', tokens: 100, price_usd: 5, price_uzs: 64000, popular: false },
-  { id: 'basic', name: 'Базовый', tokens: 500, price_usd: 20, price_uzs: 256000, popular: true },
-  { id: 'pro', name: 'Про', tokens: 1500, price_usd: 50, price_uzs: 640000, popular: false },
-  { id: 'business', name: 'Бизнес', tokens: 5000, price_usd: 150, price_uzs: 1920000, popular: false },
+  { id: 'starter', name: 'Стартер', tokens: 500, price_usd: 3.99, price_uzs: 50000, popular: false },
+  { id: 'business', name: 'Бизнес', tokens: 2000, price_usd: 11.99, price_uzs: 150000, popular: true },
+  { id: 'corporate', name: 'Корпоративный', tokens: 10000, price_usd: 39.99, price_uzs: 500000, popular: false },
 ];
 
 const TOKEN_COSTS = [
@@ -226,6 +225,7 @@ export default function SettingsPage() {
   };
 
   const [purchasePlan, setPurchasePlan] = useState<TokenPlan | null>(null);
+  const [customAmount, setCustomAmount] = useState(1000);
 
   const initials = user?.name
     ? user.name.split(' ').map((w) => w.charAt(0).toUpperCase()).slice(0, 2).join('')
@@ -243,7 +243,7 @@ export default function SettingsPage() {
       case 'purchase': return { Icon: ArrowUpRight, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' };
       case 'usage': return { Icon: ArrowDownRight, color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' };
       case 'bonus': return { Icon: Gift, color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' };
-      default: return { Icon: Coins, color: 'text-neutral-400', bg: 'bg-neutral-500/10 border-neutral-500/20' };
+      default: return { Icon: Coins, color: 'text-white/60', bg: 'bg-neutral-500/10 border-neutral-500/20' };
     }
   };
 
@@ -259,11 +259,11 @@ export default function SettingsPage() {
         <div className="mb-5 md:mb-6">
           <h1 className="text-3xl font-bold text-white tracking-wider">НАСТРОЙКИ</h1>
           <div className="h-px w-16 mt-2 mb-1 bg-gradient-to-r from-orange-500 to-transparent rounded-full" />
-          <p className="text-sm text-neutral-400">Управление профилем и аккаунтом</p>
+          <p className="text-sm text-white/60">Управление профилем и аккаунтом</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 p-1 mb-6 bg-neutral-800/80 border border-neutral-700 rounded-xl w-full md:w-fit">
+        <div className="flex gap-1 p-1 mb-6 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-xl w-full md:w-fit">
           {([
             { key: 'profile', label: 'Профиль', icon: UserCircle2 },
             { key: 'org', label: 'Организация', icon: Building2 },
@@ -275,7 +275,7 @@ export default function SettingsPage() {
               className={`relative flex items-center justify-center gap-2 flex-1 md:flex-none px-5 py-2.5 rounded-lg text-sm font-medium tracking-wider transition-all duration-300 ${
                 activeTab === key
                   ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/20'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-700/50'
+                  : 'text-white/60 hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               <Icon size={15} />
@@ -300,14 +300,14 @@ export default function SettingsPage() {
               >
                 {/* Avatar + Name */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
-                    <div className="flex items-center gap-4 md:gap-5 mb-6 pb-6 border-b border-neutral-700/50">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
+                    <div className="flex items-center gap-4 md:gap-5 mb-6 pb-6 border-b border-white/[0.04]">
                       <div className="shrink-0 flex items-center justify-center rounded-full font-black text-2xl md:text-3xl w-16 h-16 md:w-[72px] md:h-[72px] bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30 ring-4 ring-orange-500/10">
                         {initials}
                       </div>
                       <div className="min-w-0">
                         <p className="text-lg md:text-xl font-bold text-white truncate">{user?.name}</p>
-                        <p className="text-sm mt-0.5 text-neutral-400 truncate">{user?.email}</p>
+                        <p className="text-sm mt-0.5 text-white/60 truncate">{user?.email}</p>
                         <div className="flex flex-wrap items-center gap-2 mt-1.5">
                           <p className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500">
                             HR Manager
@@ -361,7 +361,7 @@ export default function SettingsPage() {
                         <label className="label flex items-center gap-2">
                           <Mail size={13} className="text-orange-400" />
                           Email
-                          <span className="text-xs font-normal text-neutral-600">
+                          <span className="text-xs font-normal text-white/25">
                             (нельзя изменить)
                           </span>
                         </label>
@@ -387,14 +387,14 @@ export default function SettingsPage() {
 
                 {/* Security */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-5">
                       <div className="w-9 h-9 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center">
                         <Shield size={16} className="text-blue-400" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Безопасность</h3>
-                        <p className="text-xs text-neutral-500">Параметры защиты аккаунта</p>
+                        <p className="text-xs text-white/40">Параметры защиты аккаунта</p>
                       </div>
                     </div>
                     <div className="space-y-1">
@@ -404,7 +404,7 @@ export default function SettingsPage() {
                         { icon: Shield, label: 'Rate limiting', value: '10 попыток / 15 мин', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
                         { icon: Fingerprint, label: 'Шифрование', value: 'TLS / HTTPS', color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' },
                       ].map(({ icon: Icon, label, value, color, bg }) => (
-                        <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-neutral-800/50 transition-colors">
+                        <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.04] transition-colors">
                           <div className="flex items-center gap-3 text-neutral-300">
                             <div className={`w-7 h-7 rounded-lg border flex items-center justify-center ${bg}`}>
                               <Icon size={13} className={color} />
@@ -412,8 +412,8 @@ export default function SettingsPage() {
                             <span className="text-sm">{label}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Lock size={10} className="text-neutral-600" />
-                            <span className="font-medium text-xs text-neutral-400 font-mono">
+                            <Lock size={10} className="text-white/25" />
+                            <span className="font-medium text-xs text-white/60 font-mono">
                               {value}
                             </span>
                           </div>
@@ -425,14 +425,14 @@ export default function SettingsPage() {
 
                 {/* 2FA */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-5">
                       <div className="w-9 h-9 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center">
                         <Fingerprint size={16} className="text-purple-400" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Двухфакторная аутентификация</h3>
-                        <p className="text-xs text-neutral-500">Дополнительная защита аккаунта</p>
+                        <p className="text-xs text-white/40">Дополнительная защита аккаунта</p>
                       </div>
                     </div>
 
@@ -440,7 +440,7 @@ export default function SettingsPage() {
                       <>
                         {!show2FASetup ? (
                           <div>
-                            <p className="text-sm text-neutral-400 mb-4">
+                            <p className="text-sm text-white/60 mb-4">
                               Добавьте дополнительный уровень защиты. После включения потребуется код из приложения-аутентификатора при каждом входе.
                             </p>
                             <button className="btn-primary text-sm" onClick={async () => {
@@ -459,7 +459,7 @@ export default function SettingsPage() {
                             <p className="text-sm text-neutral-300">
                               Откройте Google Authenticator и введите этот секретный ключ:
                             </p>
-                            <code className="block p-3 bg-neutral-800 border border-neutral-700 rounded-lg text-xs text-orange-400 font-mono break-all select-all">
+                            <code className="block p-3 bg-white/[0.02] border border-white/[0.06] rounded-lg text-xs text-orange-400 font-mono break-all select-all">
                               {twoFASecret}
                             </code>
                             <div className="flex gap-2">
@@ -482,7 +482,7 @@ export default function SettingsPage() {
                                 Подтвердить
                               </button>
                             </div>
-                            <button className="text-xs text-neutral-500 hover:text-neutral-300" onClick={() => setShow2FASetup(false)}>
+                            <button className="text-xs text-white/40 hover:text-neutral-300" onClick={() => setShow2FASetup(false)}>
                               Отмена
                             </button>
                           </div>
@@ -510,17 +510,17 @@ export default function SettingsPage() {
 
                 {/* Telegram */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-5">
                       <div className="w-9 h-9 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center">
                         <Send size={16} className="text-blue-400" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Telegram уведомления</h3>
-                        <p className="text-xs text-neutral-500">Получайте уведомления в Telegram</p>
+                        <p className="text-xs text-white/40">Получайте уведомления в Telegram</p>
                       </div>
                     </div>
-                    <p className="text-sm text-neutral-400 mb-4">
+                    <p className="text-sm text-white/60 mb-4">
                       Новые кандидаты, результаты AI анализа и другие события — прямо в ваш Telegram.
                     </p>
                     <div className="flex gap-2 mb-3">
@@ -541,7 +541,7 @@ export default function SettingsPage() {
                         {telegramConnected ? 'Обновить' : 'Подключить'}
                       </button>
                     </div>
-                    <p className="text-xs text-neutral-600">
+                    <p className="text-xs text-white/25">
                       1. Найдите бота <span className="text-orange-400">@mysolution_bot</span> в Telegram{' '}
                       2. Отправьте /start{' '}
                       3. Скопируйте Chat ID сюда
@@ -557,9 +557,9 @@ export default function SettingsPage() {
 
                 {/* Danger zone */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-red-500/20 rounded-xl p-5 md:p-6">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-red-500/20 rounded-2xl p-5 md:p-6">
                     <h3 className="font-bold mb-1 text-red-400">Выход из аккаунта</h3>
-                    <p className="text-sm mb-4 text-neutral-500">
+                    <p className="text-sm mb-4 text-white/40">
                       Вы будете перенаправлены на страницу входа. Текущая сессия завершится.
                     </p>
                     <button className="btn-danger w-full justify-center py-3" onClick={handleLogout}>
@@ -590,7 +590,7 @@ export default function SettingsPage() {
               >
                 {/* Org card */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="w-11 h-11 bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/20 rounded-xl flex items-center justify-center">
                         <Building2 size={20} className="text-orange-400" />
@@ -602,7 +602,7 @@ export default function SettingsPage() {
                             className={`text-xs px-2 py-0.5 rounded-full ${
                               currentOrg?.plan === 'pro'
                                 ? 'bg-purple-500/10 border border-purple-500/30 text-purple-400'
-                                : 'bg-neutral-800 border border-neutral-700 text-neutral-400'
+                                : 'bg-white/[0.02] border border-white/[0.06] text-white/60'
                             }`}
                           >
                             {currentOrg?.plan === 'pro' ? 'Pro' : 'Free'}
@@ -645,41 +645,41 @@ export default function SettingsPage() {
 
                 {/* Members */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-4">
                       <div className="w-9 h-9 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center">
                         <Users size={16} className="text-blue-400" />
                       </div>
                       <h3 className="font-bold text-white">Участники</h3>
-                      <span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-400 font-mono">
+                      <span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-white/60 font-mono">
                         {members.length}
                       </span>
                     </div>
 
                     {members.length === 0 ? (
-                      <p className="text-sm text-neutral-500">Загрузка...</p>
+                      <p className="text-sm text-white/40">Загрузка...</p>
                     ) : (
                       <div className="space-y-2">
                         {members.map((m) => (
                           <div
                             key={m.id}
-                            className="flex items-center gap-3 p-3.5 rounded-xl bg-neutral-800/50 border border-neutral-700/50 hover:border-neutral-600/50 transition-all duration-200"
+                            className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-neutral-600/50 transition-all duration-200"
                           >
                             <div className="relative shrink-0">
                               <div className="flex items-center justify-center rounded-full font-bold text-sm w-10 h-10 bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/20 text-orange-400">
                                 {m.users?.name?.charAt(0).toUpperCase() || '?'}
                               </div>
                               {/* Online status dot */}
-                              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-neutral-900" />
+                              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-black" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-white truncate">{m.users?.name}</p>
-                              <p className="text-xs truncate text-neutral-500">{m.users?.email}</p>
+                              <p className="text-xs truncate text-white/40">{m.users?.email}</p>
                             </div>
                             <div className="shrink-0 flex items-center gap-1.5">
                               {m.role === 'owner' && <Crown size={12} className="text-yellow-400" />}
                               {m.role === 'admin' && <UserCheck size={12} className="text-blue-400" />}
-                              <span className="text-xs text-neutral-400">
+                              <span className="text-xs text-white/60">
                                 {ROLE_LABELS[m.role] || m.role}
                               </span>
                             </div>
@@ -692,7 +692,7 @@ export default function SettingsPage() {
 
                 {/* Invite */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6">
                     <div className="flex items-center gap-2.5 mb-4">
                       <div className="w-9 h-9 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center">
                         <Send size={16} className="text-emerald-500" />
@@ -742,14 +742,14 @@ export default function SettingsPage() {
               </motion.div>
                 {/* Branding */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-5">
                       <div className="w-9 h-9 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center">
                         <Palette size={16} className="text-purple-400" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Брендинг</h3>
-                        <p className="text-xs text-neutral-500">Настройте внешний вид под ваш бренд</p>
+                        <p className="text-xs text-white/40">Настройте внешний вид под ваш бренд</p>
                       </div>
                     </div>
 
@@ -765,7 +765,7 @@ export default function SettingsPage() {
                             type="color"
                             value={brandColor}
                             onChange={(e) => setBrandColor(e.target.value)}
-                            className="w-12 h-10 rounded-lg border border-neutral-700 bg-transparent cursor-pointer"
+                            className="w-12 h-10 rounded-lg border border-white/[0.06] bg-transparent cursor-pointer"
                           />
                           <input
                             type="text"
@@ -796,9 +796,9 @@ export default function SettingsPage() {
                       {/* Custom domain */}
                       <div>
                         <label className="label flex items-center gap-2">
-                          <Globe size={13} className="text-neutral-500" />
+                          <Globe size={13} className="text-white/40" />
                           Свой домен
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-500 font-medium">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.02] border border-white/[0.06] text-white/40 font-medium">
                             Coming soon
                           </span>
                         </label>
@@ -830,8 +830,8 @@ export default function SettingsPage() {
 
                       {/* Preview card */}
                       <div>
-                        <p className="text-xs font-bold text-neutral-400 tracking-wider uppercase mb-3">Предпросмотр</p>
-                        <div className="rounded-xl border border-neutral-700 bg-neutral-800/50 p-5 space-y-3">
+                        <p className="text-xs font-bold text-white/60 tracking-wider uppercase mb-3">Предпросмотр</p>
+                        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 space-y-3">
                           <div className="flex items-center gap-3">
                             {logoUrl ? (
                               <img
@@ -850,18 +850,18 @@ export default function SettingsPage() {
                             )}
                             <div>
                               <p className="text-sm font-bold text-white">Ваш бренд</p>
-                              <p className="text-xs text-neutral-500">{currentOrg?.name || 'Организация'}</p>
+                              <p className="text-xs text-white/40">{currentOrg?.name || 'Организация'}</p>
                             </div>
                           </div>
                           <div
                             className="h-1 rounded-full"
                             style={{ backgroundColor: brandColor }}
                           />
-                          <div className="rounded-lg border border-neutral-700 bg-neutral-900/50 p-3">
-                            <p className="text-xs text-neutral-400 mb-1">Пример email:</p>
+                          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+                            <p className="text-xs text-white/60 mb-1">Пример email:</p>
                             <p className="text-xs text-neutral-300">Здравствуйте! Спасибо за ваш отклик на вакансию...</p>
                             {emailFooter && (
-                              <p className="text-xs text-neutral-500 mt-2 pt-2 border-t border-neutral-700/50 italic">
+                              <p className="text-xs text-white/40 mt-2 pt-2 border-t border-white/[0.04] italic">
                                 {emailFooter}
                               </p>
                             )}
@@ -904,7 +904,7 @@ export default function SettingsPage() {
               >
                 {/* Balance card */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-4">
                       <motion.div
                         className="w-14 h-14 bg-gradient-to-br from-orange-500/20 to-yellow-500/10 border border-orange-500/20 rounded-2xl flex items-center justify-center"
@@ -922,7 +922,7 @@ export default function SettingsPage() {
                         >
                           {formatNumber(tokenBalance)}
                         </motion.p>
-                        <p className="text-sm text-neutral-400 mt-0.5">
+                        <p className="text-sm text-white/60 mt-0.5">
                           Использовано: {formatNumber(tokenUsed)} токенов
                         </p>
                       </div>
@@ -938,10 +938,10 @@ export default function SettingsPage() {
                       {plans.map((plan) => (
                         <div
                           key={plan.id}
-                          className={`relative bg-neutral-900 border rounded-xl p-5 transition-all duration-200 hover:border-orange-500/40 ${
+                          className={`relative bg-white/[0.03] backdrop-blur-xl border rounded-2xl p-5 transition-all duration-200 hover:border-orange-500/40 ${
                             plan.popular
                               ? 'border-orange-500/30 shadow-lg shadow-orange-500/5'
-                              : 'border-neutral-700'
+                              : 'border-white/[0.06]'
                           }`}
                         >
                           {plan.popular && (
@@ -952,12 +952,12 @@ export default function SettingsPage() {
                           <p className="text-lg font-bold text-white">{plan.name}</p>
                           <p className="text-2xl font-black text-orange-400 mt-1">
                             {formatNumber(plan.tokens)}
-                            <span className="text-xs font-normal text-neutral-500 ml-1">токенов</span>
+                            <span className="text-xs font-normal text-white/40 ml-1">токенов</span>
                           </p>
                           <div className="flex items-baseline gap-2 mt-2">
                             <span className="text-sm font-semibold text-neutral-300">${plan.price_usd}</span>
-                            <span className="text-xs text-neutral-500">/</span>
-                            <span className="text-xs text-neutral-500">{formatNumber(plan.price_uzs)} сум</span>
+                            <span className="text-xs text-white/40">/</span>
+                            <span className="text-xs text-white/40">{formatNumber(plan.price_uzs)} сум</span>
                           </div>
                           <button
                             className="btn-primary w-full justify-center py-2.5 mt-4 text-sm"
@@ -968,27 +968,72 @@ export default function SettingsPage() {
                           </button>
                         </div>
                       ))}
+
+                      {/* Custom package */}
+                      <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+                        <h4 className="text-sm font-semibold text-white mb-4">Свой пакет</h4>
+                        <input
+                          type="range"
+                          min={50}
+                          max={50000}
+                          step={50}
+                          value={customAmount}
+                          onChange={e => setCustomAmount(Number(e.target.value))}
+                          className="w-full accent-orange-500"
+                        />
+                        <div className="flex justify-between mt-2">
+                          <span className="text-xs text-white/40">{customAmount.toLocaleString()} токенов</span>
+                          <span className="text-sm font-bold text-orange-400">
+                            {(customAmount * (customAmount >= 10000 ? 400 : customAmount >= 5000 ? 425 : customAmount >= 2000 ? 450 : customAmount >= 500 ? 475 : 500)).toLocaleString()} сум
+                          </span>
+                        </div>
+                        {customAmount >= 500 && (
+                          <p className="text-xs text-emerald-400 mt-1">
+                            Скидка {customAmount >= 10000 ? '20' : customAmount >= 5000 ? '15' : customAmount >= 2000 ? '10' : '5'}%
+                          </p>
+                        )}
+                        <button
+                          className="btn-primary w-full justify-center py-2.5 mt-4 text-sm"
+                          onClick={() => {
+                            const discount = customAmount >= 10000 ? 0.20 : customAmount >= 5000 ? 0.15 : customAmount >= 2000 ? 0.10 : customAmount >= 500 ? 0.05 : 0;
+                            const priceUzs = Math.round(customAmount * 500 * (1 - discount));
+                            const priceUsd = Math.round(customAmount * 0.04 * (1 - discount) * 100) / 100;
+                            setPurchasePlan({ id: 'custom', name: 'Свой пакет', tokens: customAmount, price_usd: priceUsd, price_uzs: priceUzs });
+                          }}
+                        >
+                          <Coins size={14} />
+                          Купить
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Token cost reference */}
+                    <div className="text-xs text-white/40 space-y-1 mt-4">
+                      <p>AI анализ резюме — 10 токенов</p>
+                      <p>Вопросы для интервью — 5 токенов</p>
+                      <p>Экспорт данных — 2 токена</p>
+                      <p className="text-orange-400 mt-2">Цена: 500 сум за токен ($0.04)</p>
                     </div>
                   </div>
                 </motion.div>
 
                 {/* Transaction history */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6 mb-5">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6 mb-5">
                     <div className="flex items-center gap-2.5 mb-4">
                       <div className="w-9 h-9 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center">
                         <ArrowUpRight size={16} className="text-blue-400" />
                       </div>
                       <h3 className="font-bold text-white">История транзакций</h3>
-                      <span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-400 font-mono">
+                      <span className="ml-auto text-xs px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-white/60 font-mono">
                         {transactions.length}
                       </span>
                     </div>
 
                     {transactions.length === 0 ? (
                       <div className="text-center py-8">
-                        <Coins size={32} className="text-neutral-600 mx-auto mb-2" />
-                        <p className="text-sm text-neutral-500">Транзакций пока нет</p>
+                        <Coins size={32} className="text-white/25 mx-auto mb-2" />
+                        <p className="text-sm text-white/40">Транзакций пока нет</p>
                       </div>
                     ) : (
                       <div className="space-y-2">
@@ -997,20 +1042,20 @@ export default function SettingsPage() {
                           return (
                             <div
                               key={tx.id}
-                              className="flex items-center gap-3 p-3.5 rounded-xl bg-neutral-800/50 border border-neutral-700/50 hover:border-neutral-600/50 transition-all duration-200"
+                              className="flex items-center gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-neutral-600/50 transition-all duration-200"
                             >
                               <div className={`shrink-0 w-9 h-9 rounded-xl border flex items-center justify-center ${bg}`}>
                                 <Icon size={16} className={color} />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white truncate">{tx.description}</p>
-                                <p className="text-xs text-neutral-500">{formatDate(tx.created_at)}</p>
+                                <p className="text-xs text-white/40">{formatDate(tx.created_at)}</p>
                               </div>
                               <div className="shrink-0 text-right">
                                 <p className={`text-sm font-bold ${tx.amount > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                                   {tx.amount > 0 ? '+' : ''}{formatNumber(tx.amount)}
                                 </p>
-                                <p className="text-[10px] text-neutral-500">
+                                <p className="text-[10px] text-white/40">
                                   Баланс: {formatNumber(tx.balance_after)}
                                 </p>
                               </div>
@@ -1024,19 +1069,19 @@ export default function SettingsPage() {
 
                 {/* Token costs info */}
                 <motion.div variants={staggerItem}>
-                  <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 md:p-6">
+                  <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-5 md:p-6">
                     <div className="flex items-center gap-2.5 mb-4">
                       <div className="w-9 h-9 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-center justify-center">
                         <Info size={16} className="text-orange-400" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Стоимость операций</h3>
-                        <p className="text-xs text-neutral-500">Сколько токенов расходуется</p>
+                        <p className="text-xs text-white/40">Сколько токенов расходуется</p>
                       </div>
                     </div>
                     <div className="space-y-1">
                       {TOKEN_COSTS.map(({ label, cost, icon: CostIcon, color, bg }) => (
-                        <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-neutral-800/50 transition-colors">
+                        <div key={label} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.04] transition-colors">
                           <div className="flex items-center gap-3 text-neutral-300">
                             <div className={`w-7 h-7 rounded-lg border flex items-center justify-center ${bg}`}>
                               <CostIcon size={13} className={color} />
@@ -1070,23 +1115,23 @@ function PurchaseModal({ plan, onClose }: { plan: { name: string; tokens: number
       <div className="modal-content max-w-md" onClick={e => e.stopPropagation()}>
         <div className="p-6">
           <h3 className="text-lg font-bold text-white mb-1">Пополнить баланс</h3>
-          <p className="text-sm text-neutral-400 mb-6">Тариф «{plan.name}» — {plan.tokens.toLocaleString()} токенов</p>
+          <p className="text-sm text-white/60 mb-6">Тариф «{plan.name}» — {plan.tokens.toLocaleString()} токенов</p>
 
-          <div className="bg-neutral-800 border border-neutral-700 rounded-lg p-4 mb-4">
+          <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 mb-4">
             <div className="flex justify-between mb-1">
-              <span className="text-sm text-neutral-400">Сумма</span>
+              <span className="text-sm text-white/60">Сумма</span>
               <span className="text-lg font-bold text-orange-400 font-mono">${plan.price_usd}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-neutral-400">В сумах</span>
+              <span className="text-sm text-white/60">В сумах</span>
               <span className="text-sm font-mono text-neutral-300">{plan.price_uzs?.toLocaleString()} сум</span>
             </div>
           </div>
 
           <div className="space-y-2 mb-6">
             {['Click', 'Payme', 'Uzcard', 'Stripe'].map(method => (
-              <div key={method} className="flex items-center justify-between p-3 bg-neutral-800/50 border border-neutral-700/50 rounded-lg opacity-50">
-                <span className="text-sm text-neutral-400">{method}</span>
+              <div key={method} className="flex items-center justify-between p-3 bg-white/[0.02] border border-white/[0.04] rounded-lg opacity-50">
+                <span className="text-sm text-white/60">{method}</span>
                 <span className="text-xs bg-orange-500/15 text-orange-400 px-2 py-0.5 rounded">Q2 2026</span>
               </div>
             ))}
@@ -1094,7 +1139,7 @@ function PurchaseModal({ plan, onClose }: { plan: { name: string; tokens: number
 
           <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 mb-4 text-center">
             <p className="text-sm font-medium text-orange-400 mb-1">Хотите пополнить сейчас?</p>
-            <p className="text-xs text-neutral-400">Свяжитесь с нами для ручного пополнения:</p>
+            <p className="text-xs text-white/60">Свяжитесь с нами для ручного пополнения:</p>
             <p className="text-xs text-neutral-300 mt-1">info@mysolution.uz</p>
             <p className="text-xs text-neutral-300">@mysolution.hub</p>
           </div>

@@ -212,7 +212,7 @@ export default function TalentPoolPage() {
             </div>
             <div>
               <h1 className="text-2xl font-black text-white tracking-tight">БАЗА ТАЛАНТОВ</h1>
-              <p className="text-xs text-neutral-500">Сохранённые кандидаты для будущих вакансий</p>
+              <p className="text-xs text-white/40">Сохранённые кандидаты для будущих вакансий</p>
             </div>
           </div>
 
@@ -225,7 +225,7 @@ export default function TalentPoolPage() {
               Добавить в базу
             </button>
             <div className="relative flex-1 md:w-72">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 type="text"
                 placeholder="Поиск по имени, должности, навыкам..."
@@ -239,7 +239,7 @@ export default function TalentPoolPage() {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                 showFilters || hasActiveFilters
                   ? 'bg-orange-500/10 border-orange-500/30 text-orange-400'
-                  : 'bg-neutral-900 border-neutral-700 text-neutral-400 hover:border-neutral-600'
+                  : 'bg-white/[0.03] border-white/[0.06] text-white/60 hover:border-white/[0.08]'
               }`}
             >
               <Filter size={14} />
@@ -261,8 +261,8 @@ export default function TalentPoolPage() {
             { label: 'С высоким рейтингом', value: stats.highRated, color: 'text-orange-400' },
             { label: 'Добавлено за месяц', value: stats.recentMonth, color: 'text-emerald-400' },
           ].map(stat => (
-            <div key={stat.label} className="bg-neutral-900 border border-neutral-800 rounded-xl p-4">
-              <p className="text-xs text-neutral-500 mb-1">{stat.label}</p>
+            <div key={stat.label} className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-4 backdrop-blur-xl">
+              <p className="text-xs text-white/40 mb-1">{stat.label}</p>
               <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
             </div>
           ))}
@@ -274,7 +274,7 @@ export default function TalentPoolPage() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 mb-6"
+            className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-5 mb-6 backdrop-blur-xl"
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-white">Фильтры</h3>
@@ -300,7 +300,7 @@ export default function TalentPoolPage() {
                       className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
                         selectedSkills.includes(skill)
                           ? 'bg-orange-500/20 border-orange-500/40 text-orange-300'
-                          : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:border-neutral-600'
+                          : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:border-white/[0.08]'
                       }`}
                     >
                       {skill}
@@ -323,7 +323,7 @@ export default function TalentPoolPage() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-medium border text-left transition-all ${
                         selectedExperience === opt
                           ? 'bg-orange-500/20 border-orange-500/40 text-orange-300'
-                          : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:border-neutral-600'
+                          : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:border-white/[0.08]'
                       }`}
                     >
                       {opt}
@@ -346,12 +346,12 @@ export default function TalentPoolPage() {
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border text-left transition-all ${
                         selectedRating === r
                           ? 'bg-orange-500/20 border-orange-500/40 text-orange-300'
-                          : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:border-neutral-600'
+                          : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:border-white/[0.08]'
                       }`}
                     >
                       <span className="flex">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={10} className={i < r ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-600'} />
+                          <Star key={i} size={10} className={i < r ? 'text-yellow-400 fill-yellow-400' : 'text-white/25'} />
                         ))}
                       </span>
                       {r}+ звёзд
@@ -374,7 +374,7 @@ export default function TalentPoolPage() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-medium border text-left transition-all ${
                         selectedCity === c
                           ? 'bg-orange-500/20 border-orange-500/40 text-orange-300'
-                          : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:border-neutral-600'
+                          : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:border-white/[0.08]'
                       }`}
                     >
                       {c}
@@ -390,7 +390,7 @@ export default function TalentPoolPage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Loader2 size={32} className="text-orange-400 animate-spin mb-4" />
-            <p className="text-sm text-neutral-500">Загрузка базы талантов...</p>
+            <p className="text-sm text-white/40">Загрузка базы талантов...</p>
           </div>
         ) : filteredTalents.length > 0 ? (
           /* Talent grid */
@@ -404,7 +404,7 @@ export default function TalentPoolPage() {
               <motion.div
                 key={talent.id}
                 variants={staggerItem}
-                className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 hover:border-neutral-700 transition-all group"
+                className="bg-white/[0.03] border border-white/[0.04] rounded-2xl p-5 hover:border-white/[0.06] transition-all group backdrop-blur-xl"
               >
                 {/* Top row: avatar + name + favorite */}
                 <div className="flex items-start justify-between mb-4">
@@ -414,18 +414,18 @@ export default function TalentPoolPage() {
                     </div>
                     <div>
                       <h3 className="text-sm font-bold text-white leading-tight">{talent.name}</h3>
-                      <p className="text-xs text-neutral-500">{talent.title}</p>
+                      <p className="text-xs text-white/40">{talent.title}</p>
                     </div>
                   </div>
                   <button
                     onClick={() => toggleFavorite(talent)}
-                    className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-white/[0.02] transition-colors"
                     disabled={updateMutation.isPending}
                   >
                     {talent.favorite ? (
                       <Star size={16} className="text-yellow-400 fill-yellow-400" />
                     ) : (
-                      <StarOff size={16} className="text-neutral-600 hover:text-neutral-400" />
+                      <StarOff size={16} className="text-white/25 hover:text-white/60" />
                     )}
                   </button>
                 </div>
@@ -442,13 +442,13 @@ export default function TalentPoolPage() {
                       <Star size={12} className={i < talent.rating ? 'text-yellow-400 fill-yellow-400' : 'text-neutral-700 hover:text-yellow-400/50'} />
                     </button>
                   ))}
-                  <span className="text-xs text-neutral-500 ml-1">{talent.rating}/5</span>
+                  <span className="text-xs text-white/40 ml-1">{talent.rating}/5</span>
                 </div>
 
                 {/* Skills */}
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {talent.skills.map(skill => (
-                    <span key={skill} className="px-2 py-0.5 bg-neutral-800 border border-neutral-700 rounded-md text-[11px] text-neutral-400 font-medium">
+                    <span key={skill} className="px-2 py-0.5 bg-white/[0.02] border border-white/[0.06] rounded-md text-[11px] text-white/60 font-medium">
                       {skill}
                     </span>
                   ))}
@@ -457,25 +457,25 @@ export default function TalentPoolPage() {
                 {/* Info rows */}
                 <div className="space-y-1.5 mb-4">
                   {talent.experience && (
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-white/40">
                       <Briefcase size={11} className="shrink-0" />
                       <span>{talent.experience}</span>
                     </div>
                   )}
                   {talent.city && (
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-white/40">
                       <MapPin size={11} className="shrink-0" />
                       <span>{talent.city}</span>
                     </div>
                   )}
                   {talent.email && (
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-white/40">
                       <Mail size={11} className="shrink-0" />
                       <span>{talent.email}</span>
                     </div>
                   )}
                   {talent.phone && (
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-white/40">
                       <Phone size={11} className="shrink-0" />
                       <span>{talent.phone}</span>
                     </div>
@@ -484,8 +484,8 @@ export default function TalentPoolPage() {
 
                 {/* Last vacancy */}
                 {talent.lastVacancy && (
-                  <div className="bg-neutral-800/50 border border-neutral-700/50 rounded-lg px-3 py-2 mb-4">
-                    <p className="text-[10px] text-neutral-600 uppercase tracking-wider mb-0.5">Последняя вакансия</p>
+                  <div className="bg-white/[0.02]/50 border border-white/[0.06]/50 rounded-lg px-3 py-2 mb-4">
+                    <p className="text-[10px] text-white/25 uppercase tracking-wider mb-0.5">Последняя вакансия</p>
                     <p className="text-xs text-neutral-300 font-medium">{talent.lastVacancy}</p>
                   </div>
                 )}
@@ -498,7 +498,7 @@ export default function TalentPoolPage() {
                   </button>
                   <button
                     onClick={() => setDeletingId(talent.id)}
-                    className="px-3 py-2.5 rounded-xl border border-neutral-700 bg-neutral-900 text-neutral-500 hover:text-red-400 hover:border-red-500/30 transition-all"
+                    className="px-3 py-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] text-white/40 hover:text-red-400 hover:border-red-500/30 transition-all"
                     title="Удалить из базы"
                   >
                     <Trash2 size={13} />
@@ -510,11 +510,11 @@ export default function TalentPoolPage() {
         ) : (
           /* Empty state */
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-16 h-16 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center mb-4">
-              <Database size={24} className="text-neutral-600" />
+            <div className="w-16 h-16 bg-white/[0.03] border border-white/[0.04] rounded-2xl flex items-center justify-center mb-4">
+              <Database size={24} className="text-white/25" />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">База талантов пуста</h3>
-            <p className="text-sm text-neutral-500 max-w-sm">
+            <p className="text-sm text-white/40 max-w-sm">
               {searchQuery || hasActiveFilters
                 ? 'По выбранным фильтрам ничего не найдено. Попробуйте изменить параметры поиска.'
                 : 'Кандидаты автоматически добавляются после анализа. Вы также можете добавить кандидата вручную.'}
@@ -536,9 +536,9 @@ export default function TalentPoolPage() {
         {/* Delete confirmation modal */}
         {deletingId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-6 w-full max-w-sm mx-4">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 w-full max-w-sm mx-4 backdrop-blur-xl">
               <h3 className="text-lg font-bold text-white mb-2">Удалить из базы?</h3>
-              <p className="text-sm text-neutral-400 mb-6">Кандидат будет удалён из базы талантов. Это действие нельзя отменить.</p>
+              <p className="text-sm text-white/60 mb-6">Кандидат будет удалён из базы талантов. Это действие нельзя отменить.</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeletingId(null)}
@@ -563,10 +563,10 @@ export default function TalentPoolPage() {
         {/* Add talent modal */}
         {showAddModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-6 w-full max-w-md mx-4">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 w-full max-w-md mx-4 backdrop-blur-xl">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-lg font-bold text-white">Добавить в базу</h3>
-                <button onClick={() => setShowAddModal(false)} className="p-1.5 rounded-lg hover:bg-neutral-800 transition-colors text-neutral-400">
+                <button onClick={() => setShowAddModal(false)} className="p-1.5 rounded-lg hover:bg-white/[0.02] transition-colors text-white/60">
                   <X size={18} />
                 </button>
               </div>

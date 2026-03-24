@@ -57,14 +57,14 @@ function StepIndicator({ current, total, labels }: { current: number; total: num
                     ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
                     : isActive
                     ? 'bg-orange-500/20 border-orange-500/50 text-orange-400'
-                    : 'bg-neutral-800 border-neutral-700 text-neutral-500'
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/40'
                 }`}
               >
                 {isDone ? <CheckCircle size={13} /> : step}
               </div>
               <span
                 className={`text-xs font-semibold hidden sm:inline transition-colors ${
-                  isActive ? 'text-white' : isDone ? 'text-neutral-400' : 'text-neutral-600'
+                  isActive ? 'text-white' : isDone ? 'text-white/60' : 'text-white/25'
                 }`}
               >
                 {label}
@@ -312,7 +312,7 @@ function EmailVerifyStep({
   };
 
   return (
-    <div className="card p-6 sm:p-8">
+    <div className="card p-6 sm:p-8 backdrop-blur-xl rounded-2xl">
       <div className="flex items-center gap-3 mb-6">
         <div className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center bg-orange-500/[0.12] border border-orange-500/25">
           <Mail size={20} className="text-orange-400" />
@@ -435,7 +435,7 @@ function FileUploadArea({
   return (
     <div>
       <label className="label flex items-center gap-1.5">
-        <Upload size={11} className="text-neutral-500" />
+        <Upload size={11} className="text-white/40" />
         Резюме <span className="text-white/25">(PDF или DOCX)</span>
       </label>
       <div
@@ -502,7 +502,7 @@ function FileUploadArea({
 function SuccessScreen({ name, email }: { name: string; email: string }) {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="card text-center max-w-lg w-full p-8 sm:p-12">
+      <div className="card text-center max-w-lg w-full p-8 sm:p-12 backdrop-blur-xl rounded-2xl">
         {/* Animated checkmark */}
         <div className="relative inline-flex items-center justify-center mb-8">
           <div className="absolute w-24 h-24 rounded-3xl border-2 border-emerald-500/30 animate-ping opacity-20" />
@@ -724,7 +724,7 @@ export default function ApplyPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 size={36} className="animate-spin text-orange-400" />
-          <p className="text-sm text-neutral-500">Загружаем вакансию...</p>
+          <p className="text-sm text-white/40">Загружаем вакансию...</p>
         </div>
       </div>
     );
@@ -734,7 +734,7 @@ export default function ApplyPage() {
   if (pageError && !vacancy) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="card text-center max-w-md w-full p-8 sm:p-12">
+        <div className="card text-center max-w-md w-full p-8 sm:p-12 backdrop-blur-xl rounded-2xl">
           <div className="inline-flex items-center justify-center mb-5 w-[68px] h-[68px] rounded-2xl bg-red-500/10 border border-red-500/25">
             <AlertCircle size={30} className="text-red-400" />
           </div>
@@ -783,7 +783,7 @@ export default function ApplyPage() {
         </div>
 
         {/* -- Job Details Card (Professional Header) -- */}
-        <div className="card mb-6 p-0 overflow-hidden">
+        <div className="card mb-6 p-0 overflow-hidden backdrop-blur-xl rounded-2xl">
           {/* Company logo placeholder + title */}
           <div
             className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 bg-gradient-to-b from-orange-500/[0.06] to-transparent border-b border-white/[0.04]"
@@ -901,7 +901,7 @@ export default function ApplyPage() {
               <StepIndicator current={formStep} total={formTotalSteps} labels={stepLabels} />
 
               {/* -- Application form card -- */}
-              <div className="card p-0 overflow-hidden">
+              <div className="card p-0 overflow-hidden backdrop-blur-xl rounded-2xl">
                 <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 border-b border-white/[0.06]">
                   <h2 className="text-lg font-bold text-white flex items-center gap-2">
                     <PenLine size={18} className="text-orange-400" />
@@ -931,7 +931,7 @@ export default function ApplyPage() {
                         {/* Name */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <User size={11} className="text-neutral-500" />
+                            <User size={11} className="text-white/40" />
                             Полное имя <span className="text-red-400">*</span>
                           </label>
                           <input
@@ -951,7 +951,7 @@ export default function ApplyPage() {
                         {/* Email (readonly) */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <Mail size={11} className="text-neutral-500" />
+                            <Mail size={11} className="text-white/40" />
                             Email
                           </label>
                           <div className="relative">
@@ -971,7 +971,7 @@ export default function ApplyPage() {
                         {/* Phone */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <Phone size={11} className="text-neutral-500" />
+                            <Phone size={11} className="text-white/40" />
                             Телефон
                           </label>
                           <input
@@ -988,7 +988,7 @@ export default function ApplyPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <div>
                             <label className="label flex items-center gap-1.5">
-                              <LinkIcon size={11} className="text-neutral-500" />
+                              <LinkIcon size={11} className="text-white/40" />
                               LinkedIn
                             </label>
                             <input
@@ -1001,7 +1001,7 @@ export default function ApplyPage() {
                           </div>
                           <div>
                             <label className="label flex items-center gap-1.5">
-                              <Globe size={11} className="text-neutral-500" />
+                              <Globe size={11} className="text-white/40" />
                               Портфолио
                             </label>
                             <input
@@ -1022,7 +1022,7 @@ export default function ApplyPage() {
                         {/* Experience */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <Briefcase size={11} className="text-neutral-500" />
+                            <Briefcase size={11} className="text-white/40" />
                             Опыт работы
                           </label>
                           <textarea
@@ -1037,7 +1037,7 @@ export default function ApplyPage() {
                         {/* Skills */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <Code size={11} className="text-neutral-500" />
+                            <Code size={11} className="text-white/40" />
                             Навыки и технологии
                           </label>
                           <textarea
@@ -1052,7 +1052,7 @@ export default function ApplyPage() {
                         {/* Cover letter */}
                         <div>
                           <label className="label flex items-center gap-1.5">
-                            <PenLine size={11} className="text-neutral-500" />
+                            <PenLine size={11} className="text-white/40" />
                             Сопроводительное письмо
                           </label>
                           <textarea

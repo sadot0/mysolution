@@ -343,7 +343,7 @@ export default function VacancyPage() {
     <Layout>
       <motion.div variants={pageVariants} initial="initial" animate="animate" className="p-4 md:p-8 max-w-7xl mx-auto page-content">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-neutral-500 mb-4">
+        <div className="flex items-center gap-2 text-xs text-white/40 mb-4">
           <Link to="/vacancies" className="hover:text-orange-400 transition-colors">Вакансии</Link>
           <span>/</span>
           <span className="text-neutral-300">{vacancy?.title || '...'}</span>
@@ -386,7 +386,7 @@ export default function VacancyPage() {
                     Удалённо
                   </span>
                 )}
-                <span className="text-xs text-neutral-500 ml-1">
+                <span className="text-xs text-white/40 ml-1">
                   {candidates.length} кандидатов
                 </span>
               </div>
@@ -461,13 +461,13 @@ export default function VacancyPage() {
                   Опубликовать
                 </button>
                 {showPublishDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-neutral-900 border border-neutral-700 rounded-lg shadow-xl z-50 py-1 overflow-hidden">
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-white/[0.03] border border-white/[0.06] rounded-xl shadow-xl z-50 backdrop-blur-xl py-1 overflow-hidden">
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-300 cursor-default"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300 cursor-default"
                       onClick={(e) => e.preventDefault()}
                     >
                       <span className="flex items-center gap-2">
-                        <ExternalLink size={14} className="text-neutral-500" />
+                        <ExternalLink size={14} className="text-white/40" />
                         OLX Uzbekistan
                       </span>
                       <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">Скоро</span>
@@ -477,7 +477,7 @@ export default function VacancyPage() {
                         href={vacancy.hh_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-800 text-sm text-green-400"
+                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-green-400"
                       >
                         <span className="flex items-center gap-2">
                           <ExternalLink size={14} />
@@ -487,7 +487,7 @@ export default function VacancyPage() {
                       </a>
                     ) : (
                       <button
-                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-200"
+                        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-200"
                         onClick={() => { setShowHHModal(true); setShowPublishDropdown(false); }}
                       >
                         <span className="flex items-center gap-2">
@@ -498,17 +498,17 @@ export default function VacancyPage() {
                       </button>
                     )}
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-300 cursor-default"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300 cursor-default"
                       onClick={(e) => e.preventDefault()}
                     >
                       <span className="flex items-center gap-2">
-                        <ExternalLink size={14} className="text-neutral-500" />
+                        <ExternalLink size={14} className="text-white/40" />
                         LinkedIn
                       </span>
                       <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">Скоро</span>
                     </button>
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-200"
+                      className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-200"
                       onClick={() => { setShowTelegramModal(true); setShowPublishDropdown(false); }}
                     >
                       <span className="flex items-center gap-2">
@@ -517,19 +517,19 @@ export default function VacancyPage() {
                       </span>
                       <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">Опубликовать</span>
                     </button>
-                    <div className="border-t border-neutral-700 my-1" />
+                    <div className="border-t border-white/[0.06] my-1" />
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-white"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white"
                       onClick={() => { copyLink(); setShowPublishDropdown(false); }}
                     >
-                      <Link2 size={14} className="text-neutral-400" />
+                      <Link2 size={14} className="text-white/60" />
                       Скопировать ссылку
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-white"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white"
                       onClick={openQrCode}
                     >
-                      <QrCode size={14} className="text-neutral-400" />
+                      <QrCode size={14} className="text-white/60" />
                       Скачать QR-код
                     </button>
                   </div>
@@ -546,23 +546,23 @@ export default function VacancyPage() {
                   Экспорт данных
                 </button>
                 {showExportDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-72 bg-neutral-900 border border-neutral-700 rounded-lg shadow-xl z-50 py-1 overflow-hidden">
+                  <div className="absolute right-0 top-full mt-2 w-72 bg-white/[0.03] border border-white/[0.06] rounded-xl shadow-xl z-50 backdrop-blur-xl py-1 overflow-hidden">
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-white"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white"
                       onClick={() => { exportCsv(); setShowExportDropdown(false); }}
                     >
-                      <Download size={14} className="text-neutral-400" />
+                      <Download size={14} className="text-white/60" />
                       CSV (все кандидаты)
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-white"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-white"
                       onClick={() => { exportExcel(); setShowExportDropdown(false); }}
                     >
-                      <Download size={14} className="text-neutral-400" />
+                      <Download size={14} className="text-white/60" />
                       Excel (все кандидаты)
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-300"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300"
                       onClick={async () => {
                         setShowExportDropdown(false);
                         toast.loading('Генерация PDF...', { id: 'pdf' });
@@ -579,11 +579,11 @@ export default function VacancyPage() {
                         } catch { toast.error('Ошибка генерации PDF', { id: 'pdf' }); }
                       }}
                     >
-                      <FileText size={14} className="text-neutral-500" />
+                      <FileText size={14} className="text-white/40" />
                       PDF отчёт (все кандидаты)
                     </button>
                     <button
-                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-neutral-800 text-sm text-neutral-300"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-white/[0.02] text-sm text-neutral-300"
                       onClick={async () => {
                         setShowExportDropdown(false);
                         try {
@@ -599,7 +599,7 @@ export default function VacancyPage() {
                         } catch { toast.error('Ошибка экспорта'); }
                       }}
                     >
-                      <ExternalLink size={14} className="text-neutral-500" />
+                      <ExternalLink size={14} className="text-white/40" />
                       Данные для аудита
                     </button>
                   </div>
@@ -652,10 +652,10 @@ export default function VacancyPage() {
         </div>
 
         {activeTab === 'form' ? (
-          <div className="card p-6">
+          <div className="card p-6 backdrop-blur-xl rounded-2xl">
             <div className="mb-4">
               <h3 className="text-lg font-bold text-white mb-1">Кастомные вопросы</h3>
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-white/40">
                 Эти вопросы отображаются кандидатам при отклике через публичную форму
               </p>
             </div>
@@ -672,7 +672,7 @@ export default function VacancyPage() {
         {/* Top info cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {/* Public link card */}
-          <div className="card md:col-span-2 p-5">
+          <div className="card md:col-span-2 p-5 backdrop-blur-xl rounded-2xl">
             <p className="section-label">
               Ссылка для кандидатов
             </p>
@@ -707,7 +707,7 @@ export default function VacancyPage() {
           </div>
 
           {/* Stats card */}
-          <div className="card p-5">
+          <div className="card p-5 backdrop-blur-xl rounded-2xl">
             <p className="section-label">
               Статистика
             </p>
@@ -721,7 +721,7 @@ export default function VacancyPage() {
                   <p className={`text-2xl font-black ${color}`}>
                     {value}
                   </p>
-                  <p className="text-xs text-neutral-600">
+                  <p className="text-xs text-white/25">
                     {label}
                   </p>
                 </div>
@@ -734,7 +734,7 @@ export default function VacancyPage() {
         {selectedIds.length > 0 && (
           <div className="bulk-bar">
             <div className="flex items-center gap-3">
-              <button onClick={toggleSelectAll} className="text-neutral-500">
+              <button onClick={toggleSelectAll} className="text-white/40">
                 {selectedIds.length === displayCandidates.length
                   ? <CheckSquare size={16} className="text-blue-400" />
                   : <Square size={16} />}
@@ -799,7 +799,7 @@ export default function VacancyPage() {
           </select>
 
           <div className="flex items-center gap-3">
-            <span className="text-sm text-neutral-500">
+            <span className="text-sm text-white/40">
               Мин. скор: <span className="text-orange-400 font-semibold">{minScore}%</span>
             </span>
             <input
@@ -886,7 +886,7 @@ export default function VacancyPage() {
               <UserPlus size={26} className="text-orange-500/50" />
             </div>
             <p className="text-white font-semibold text-lg mb-1">Нет кандидатов</p>
-            <p className="text-sm text-neutral-600 mb-6">
+            <p className="text-sm text-white/25 mb-6">
               Поделитесь ссылкой с кандидатами или добавьте вручную
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
@@ -954,7 +954,7 @@ export default function VacancyPage() {
               </button>
             </div>
             <div className="px-7 py-6">
-              <p className="text-sm text-neutral-400 mb-6">
+              <p className="text-sm text-white/60 mb-6">
                 Вакансия <span className="text-white font-semibold">{vacancy?.title}</span> и все связанные кандидаты будут удалены безвозвратно.
               </p>
               <div className="flex gap-3">
@@ -992,14 +992,14 @@ export default function VacancyPage() {
       {/* HH.uz Publish Modal */}
       {showHHModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowHHModal(false)}>
-          <div className="card w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
+          <div className="card w-full max-w-md mx-4 backdrop-blur-xl rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Публикация на hh.uz</h3>
-              <button onClick={() => setShowHHModal(false)} className="text-neutral-400 hover:text-white">
+              <button onClick={() => setShowHHModal(false)} className="text-white/60 hover:text-white">
                 <X size={20} />
               </button>
             </div>
-            <p className="text-sm text-neutral-400 mb-4">
+            <p className="text-sm text-white/60 mb-4">
               Введите ваш HH API токен для публикации вакансии. Получить токен можно на{' '}
               <a href="https://dev.hh.ru" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:underline">dev.hh.ru</a>
             </p>
@@ -1029,14 +1029,14 @@ export default function VacancyPage() {
 
       {showTelegramModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowTelegramModal(false)}>
-          <div className="card w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
+          <div className="card w-full max-w-md mx-4 backdrop-blur-xl rounded-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Публикация в Telegram канал</h3>
-              <button onClick={() => setShowTelegramModal(false)} className="text-neutral-400 hover:text-white">
+              <button onClick={() => setShowTelegramModal(false)} className="text-white/60 hover:text-white">
                 <X size={20} />
               </button>
             </div>
-            <p className="text-sm text-neutral-400 mb-4">
+            <p className="text-sm text-white/60 mb-4">
               Введите ID вашего Telegram канала. Бот должен быть добавлен как администратор канала с правами на публикацию.
             </p>
             <label className="label">Channel ID</label>
@@ -1118,14 +1118,14 @@ function CandidateCard({
           <p className="font-bold text-white truncate mb-1">{candidate.full_name}</p>
           <div className="flex items-center gap-1 mb-0.5">
             <Mail size={11} className="text-neutral-700 shrink-0" />
-            <p className="text-xs truncate text-neutral-500">
+            <p className="text-xs truncate text-white/40">
               {candidate.email}
             </p>
           </div>
           {candidate.phone && (
             <div className="flex items-center gap-1">
               <Phone size={11} className="text-neutral-700 shrink-0" />
-              <p className="text-xs text-neutral-500">
+              <p className="text-xs text-white/40">
                 {candidate.phone}
               </p>
             </div>
@@ -1152,12 +1152,12 @@ function CandidateCard({
             <span className={`text-xs font-bold ${getCategoryColor(analysis.category)}`}>
               {getCategoryLabel(analysis.category)}
             </span>
-            <span className="text-xs ml-auto text-neutral-600">
+            <span className="text-xs ml-auto text-white/25">
               {analysis.overall_score}%
             </span>
           </div>
           {analysis.summary && (
-            <p className="text-xs leading-relaxed line-clamp-2 text-neutral-500">
+            <p className="text-xs leading-relaxed line-clamp-2 text-white/40">
               {analysis.summary}
             </p>
           )}
@@ -1418,7 +1418,7 @@ function EditVacancyModal({
               id="edit-remote"
               checked={form.remote}
               onChange={(e) => setForm({ ...form, remote: e.target.checked })}
-              className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-orange-500 focus:ring-orange-500"
+              className="w-4 h-4 rounded border-white/[0.06] bg-white/[0.03] text-orange-500 focus:ring-orange-500"
             />
             <label htmlFor="edit-remote" className="text-sm text-neutral-300 cursor-pointer">
               Удалённая работа
@@ -1461,7 +1461,7 @@ function EditVacancyModal({
               onChange={(e) => setForm({ ...form, hard_skills: e.target.value })}
               placeholder="React, TypeScript, Node.js"
             />
-            <p className="text-xs text-neutral-600 mt-1">Через запятую</p>
+            <p className="text-xs text-white/25 mt-1">Через запятую</p>
           </div>
           <div className="flex gap-3 pt-2">
             <button type="button" className="btn-secondary flex-1 justify-center" onClick={onClose}>
@@ -1515,19 +1515,19 @@ function BulkUploadModal({ vacancyId, onClose, onSuccess }: { vacancyId: string;
       <div className="modal-content max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="p-6">
           <h3 className="text-lg font-bold text-white mb-1 tracking-wider">МАССОВАЯ ЗАГРУЗКА</h3>
-          <p className="text-sm text-neutral-400 mb-6">Загрузите до 100 резюме (PDF, DOC, DOCX)</p>
+          <p className="text-sm text-white/60 mb-6">Загрузите до 100 резюме (PDF, DOC, DOCX)</p>
           
           {!result ? (
             <>
               <div
-                className="border-2 border-dashed border-neutral-700 rounded-xl p-8 text-center hover:border-orange-500/50 transition-colors cursor-pointer mb-4"
+                className="border-2 border-dashed border-white/[0.06] rounded-xl p-8 text-center hover:border-orange-500/50 transition-colors cursor-pointer mb-4"
                 onDragOver={e => e.preventDefault()}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <Upload size={32} className="mx-auto mb-3 text-neutral-500" />
-                <p className="text-sm text-neutral-400">Перетащите файлы сюда или нажмите для выбора</p>
-                <p className="text-xs text-neutral-600 mt-1">PDF, DOC, DOCX — до 5MB каждый</p>
+                <Upload size={32} className="mx-auto mb-3 text-white/40" />
+                <p className="text-sm text-white/60">Перетащите файлы сюда или нажмите для выбора</p>
+                <p className="text-xs text-white/25 mt-1">PDF, DOC, DOCX — до 5MB каждый</p>
               </div>
               
               <input
@@ -1542,14 +1542,14 @@ function BulkUploadModal({ vacancyId, onClose, onSuccess }: { vacancyId: string;
               {files.length > 0 && (
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-neutral-400">{files.length} файлов выбрано</span>
+                    <span className="text-white/60">{files.length} файлов выбрано</span>
                     <button className="text-red-400 text-xs" onClick={() => setFiles([])}>Очистить</button>
                   </div>
                   <div className="max-h-32 overflow-y-auto space-y-1">
                     {files.map((f, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs p-2 bg-neutral-800 rounded">
+                      <div key={i} className="flex items-center justify-between text-xs p-2 bg-white/[0.02] rounded">
                         <span className="text-neutral-300 truncate">{f.name}</span>
-                        <span className="text-neutral-500 shrink-0 ml-2">{(f.size / 1024).toFixed(0)}KB</span>
+                        <span className="text-white/40 shrink-0 ml-2">{(f.size / 1024).toFixed(0)}KB</span>
                       </div>
                     ))}
                   </div>
@@ -1567,7 +1567,7 @@ function BulkUploadModal({ vacancyId, onClose, onSuccess }: { vacancyId: string;
             <div className="text-center py-4">
               <p className="text-4xl mb-3">&#10004;</p>
               <p className="text-lg font-bold text-white mb-2">Загрузка завершена</p>
-              <p className="text-sm text-neutral-400">
+              <p className="text-sm text-white/60">
                 Успешно: <span className="text-emerald-400 font-bold">{result.uploaded}</span> | 
                 Ошибок: <span className="text-red-400 font-bold">{result.errors}</span>
               </p>

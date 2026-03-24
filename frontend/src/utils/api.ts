@@ -186,6 +186,8 @@ export const tokensApi = {
   getHistory: () => api.get('/tokens/history'),
   useTokens: (action: string, description?: string) =>
     api.post('/tokens/use', { action, description }),
+  getCustomPrice: (amount: number) =>
+    api.post('/tokens/custom-price', { amount }),
   // Admin
   getAdminStats: () => api.get('/tokens/admin/stats'),
   giveBonus: (userId: string, amount: number, reason?: string) =>

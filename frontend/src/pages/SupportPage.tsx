@@ -22,18 +22,18 @@ const CATEGORY_CONFIG: Record<TicketCategory, { label: string; icon: typeof Bug;
   feature: { label: 'Идея', icon: Lightbulb, color: 'text-yellow-400' },
   question: { label: 'Вопрос', icon: QuestionIcon, color: 'text-blue-400' },
   billing: { label: 'Оплата', icon: CreditCard, color: 'text-green-400' },
-  other: { label: 'Другое', icon: MoreHorizontal, color: 'text-neutral-400' },
+  other: { label: 'Другое', icon: MoreHorizontal, color: 'text-white/60' },
 };
 
 const STATUS_CONFIG: Record<TicketStatus, { label: string; bg: string; text: string }> = {
   open: { label: 'Открыт', bg: 'bg-orange-500/20', text: 'text-orange-400' },
   in_progress: { label: 'В работе', bg: 'bg-blue-500/20', text: 'text-blue-400' },
   resolved: { label: 'Решён', bg: 'bg-green-500/20', text: 'text-green-400' },
-  closed: { label: 'Закрыт', bg: 'bg-neutral-500/20', text: 'text-neutral-400' },
+  closed: { label: 'Закрыт', bg: 'bg-neutral-500/20', text: 'text-white/60' },
 };
 
 const PRIORITY_CONFIG: Record<TicketPriority, { label: string; color: string }> = {
-  low: { label: 'Низкий', color: 'text-neutral-400 border-neutral-600' },
+  low: { label: 'Низкий', color: 'text-white/60 border-neutral-600' },
   medium: { label: 'Средний', color: 'text-blue-400 border-blue-600' },
   high: { label: 'Высокий', color: 'text-orange-400 border-orange-600' },
   urgent: { label: 'Срочный', color: 'text-red-400 border-red-600' },
@@ -128,7 +128,7 @@ export default function SupportPage() {
               <HelpCircle className="w-8 h-8 text-orange-400" />
               ПОДДЕРЖКА
             </h1>
-            <p className="text-neutral-400 mt-1">Свяжитесь с нами по любому вопросу</p>
+            <p className="text-white/60 mt-1">Свяжитесь с нами по любому вопросу</p>
           </div>
           <button
             onClick={() => setShowModal(true)}
@@ -150,9 +150,9 @@ export default function SupportPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-20"
           >
-            <MessageSquare className="w-16 h-16 text-neutral-600 mx-auto mb-4" />
-            <p className="text-neutral-400 text-lg">У вас пока нет обращений</p>
-            <p className="text-neutral-500 text-sm mt-1">
+            <MessageSquare className="w-16 h-16 text-white/25 mx-auto mb-4" />
+            <p className="text-white/60 text-lg">У вас пока нет обращений</p>
+            <p className="text-white/40 text-sm mt-1">
               Нажмите &laquo;Новое обращение&raquo;, чтобы связаться с нами
             </p>
           </motion.div>
@@ -172,7 +172,7 @@ export default function SupportPage() {
                 <motion.div
                   key={ticket.id}
                   variants={staggerItem}
-                  className="bg-neutral-900 border border-neutral-700 rounded-xl p-5 hover:border-neutral-600 transition-colors"
+                  className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 hover:border-white/[0.08] transition-colors backdrop-blur-xl"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3 min-w-0 flex-1">
@@ -186,8 +186,8 @@ export default function SupportPage() {
                             {statusConf.label}
                           </span>
                         </div>
-                        <p className="text-neutral-400 text-sm line-clamp-2">{ticket.message}</p>
-                        <div className="flex items-center gap-3 mt-2 text-xs text-neutral-500">
+                        <p className="text-white/60 text-sm line-clamp-2">{ticket.message}</p>
+                        <div className="flex items-center gap-3 mt-2 text-xs text-white/40">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5" />
                             {formatDate(ticket.created_at)}
@@ -230,13 +230,13 @@ export default function SupportPage() {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="bg-neutral-900 border border-neutral-700 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                className="bg-white/[0.03] border border-white/[0.06] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto backdrop-blur-xl"
               >
                 <div className="p-6">
                   {/* Modal header */}
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-bold text-white">Новое обращение</h2>
-                    <button onClick={closeModal} className="text-neutral-400 hover:text-white transition-colors">
+                    <button onClick={closeModal} className="text-white/60 hover:text-white transition-colors">
                       <X className="w-5 h-5" />
                     </button>
                   </div>
@@ -256,7 +256,7 @@ export default function SupportPage() {
                               className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all text-center ${
                                 isActive
                                   ? 'border-orange-500 bg-orange-500/10 text-orange-400'
-                                  : 'border-neutral-700 bg-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-neutral-300'
+                                  : 'border-white/[0.06] bg-white/[0.02] text-white/60 hover:border-white/[0.08] hover:text-neutral-300'
                               }`}
                             >
                               <Icon className="w-5 h-5" />
@@ -303,8 +303,8 @@ export default function SupportPage() {
                             onClick={() => setPriority(key)}
                             className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
                               priority === key
-                                ? `${conf.color} bg-neutral-800`
-                                : 'border-neutral-700 text-neutral-500 hover:text-neutral-400 hover:border-neutral-600'
+                                ? `${conf.color} bg-white/[0.02]`
+                                : 'border-white/[0.06] text-white/40 hover:text-white/60 hover:border-white/[0.08]'
                             }`}
                           >
                             {conf.label}
